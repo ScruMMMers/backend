@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - preConditions:
+      - onFail: HALT
+      - dbms:
+          type: postgresql
+
+  - changeSet:
+      id: 1
+      author: gordey_dovydenko
+      changes:
+        - sqlFile:
+            path: ddl/initial_schema.sql
+            relativeToChangelogFile: true

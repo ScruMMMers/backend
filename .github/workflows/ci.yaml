@@ -1,0 +1,132 @@
+name: Release
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  APP_VERSION: v0.${{ github.run_id }}
+
+jobs:
+  updateOpenapi:
+    runs-on: self-hosted
+    if: |
+      ${{ github.event_name == 'push' &&
+      github.event.head_commit.modified && 
+      github.ref == 'refs/heads/main' &&
+      contains(github.event.head_commit.modified, 'public/openapi/**') }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker images
+        run: ./deploy-swagger.sh
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Prepare repository
+        uses: ./.github/actions/prepare-repo
+
+      - name: Run Lint Check
+        uses: ./.github/actions/lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Prepare repository
+        uses: ./.github/actions/prepare-repo
+
+      - name: Run Test Check
+        uses: ./.github/actions/test
+
+  updateDatabase:
+    runs-on: ubuntu-latest
+    needs:
+      - lint
+      - test
+    if: |
+      ${{ github.event_name == 'push' &&
+      github.event.head_commit.modified && 
+      github.ref == 'refs/heads/main' &&
+      contains(github.event.head_commit.modified, 'migrations/**') }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Run Liquibase Update
+        uses: liquibase-github-actions/update@v4.29.1
+        with:
+          changelogFile: 'migration/changelog/root-changelog.yml'
+          url: ${{ secrets.DATABASE_URL }}
+          username: ${{ secrets.DATABASE_USERNAME }}
+          password: ${{ secrets.DATABASE_PASSWORD }}
+
+  build:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - updateDatabase
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Prepare docker
+        uses: ./.github/actions/prepare-docker
+        with:
+          password: ${{ secrets.CI_REGISTRY_PASSWORD }}
+          username: ${{ secrets.CI_REGISTRY_USER }}
+
+      - name: Build Docker images
+        env:
+          CI_REGISTRY_IMAGE: ${{ secrets.CI_REGISTRY_IMAGE }}
+        run: docker-compose build app
+
+      - name: Tag Docker images
+        run: |
+          docker tag ${{ secrets.CI_REGISTRY_IMAGE }}/app:$APP_VERSION ${{ secrets.CI_REGISTRY_IMAGE }}/app:latest
+
+      - name: Push Docker images
+        run: |
+          docker push -a ${{ secrets.CI_REGISTRY_IMAGE }}/app
+
+      - name: Display build completion date
+        run: echo "Build completed on $(date)"
+
+  release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.APP_VERSION }}
+          release_name: Release ${{ env.APP_VERSION }}
+          body: "New release of the application"
+          draft: false
+          prerelease: false
+
+  deploy:
+    runs-on: self-hosted
+    needs: release
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Deploy Docker Image
+        run: ./deploy.sh

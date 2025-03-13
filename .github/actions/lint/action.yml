@@ -1,0 +1,19 @@
+name: "Lint Check"
+description: "Runs lint checks using Gradle."
+runs:
+  using: "composite"
+  steps:
+    - name: Run lint checks
+      run: |
+        echo "Lint started"
+        chmod +x ./gradlew
+        ./gradlew checkstyleMain checkstyleTest
+        echo "Lint completed"
+      shell: bash
+
+    - name: Upload Checkstyle Report
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v4
+      with:
+        name: CheckstyleReport
+        path: '**/build/reports/checkstyle/main.html'

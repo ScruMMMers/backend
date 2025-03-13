@@ -1,0 +1,14 @@
+get:
+  tags:
+    - hello
+  summary: Hello
+  responses:
+    '200':
+      description: Hello
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string

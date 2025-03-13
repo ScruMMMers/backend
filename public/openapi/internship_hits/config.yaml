@@ -1,0 +1,17 @@
+# настройки генератора https://openapi-generator.tech/docs/generators/spring/
+additionalProperties:
+  enumPropertyNaming: original
+  dateLibrary: java8
+  delegatePattern: true
+  useTags: true
+  openApiNullable: false
+  defaultInterfaces: false
+  removeEnumValuePrefix: false
+  requestMappingMode: controller
+  serializationLibrary: jackson
+
+globalProperties:
+  skipFormModel: false
+
+typeMappings:
+  number+double: java.math.BigDecimal

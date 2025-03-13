@@ -1,0 +1,47 @@
+plugins {
+    id 'checkstyle'
+    id 'org.openapi.generator' version '7.11.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.25'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
+    id 'org.springframework.boot' version '3.4.3'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+dependencies {
+    implementation rootProject
+
+    // security
+//    implementation libs.spring.boot.starter.security
+//    implementation libs.security.oauth2.resource.server
+//    implementation libs.security.oauth2.client
+
+    // openapi
+    implementation libs.swagger.annotations
+    implementation libs.swagger.models
+    implementation libs.validation.api
+    implementation libs.javax.servlet.api
+    implementation libs.javax.annotation.api
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+openApiGenerate {
+    generatorName = "kotlin-spring"
+    library = "spring-boot"
+    inputSpec = "$rootDir/public/openapi/internship_hits/api.yaml"
+    outputDir = "$buildDir/generated"
+    apiPackage = "com.quqee.backend.internship_hits.api.rest"
+    modelPackage = "com.quqee.backend.internship_hits.model.rest"
+    configFile = "$rootDir/public/openapi/internship_hits/config.yaml"
+}
+
+sourceSets {
+    main {
+        java.srcDirs += "$buildDir/generated/src/main/java"
+        java.srcDirs += "$buildDir/generated/src/main/kotlin"
+    }
+}

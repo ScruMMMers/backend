@@ -1,0 +1,15 @@
+rootProject.name = 'internship_hits'
+
+include ':core'
+
+include ':student'
+include ':deanery'
+
+include ':public_interface:student'
+include ':public_interface:deanery'
+include ':public_interface:notification'
+include ':public_interface:company'
+
+include ':api:rest'
+
+include ':mapper'

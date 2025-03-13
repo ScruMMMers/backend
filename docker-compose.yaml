@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: "swagger-ui-container"
+    environment:
+      - PORT=9000
+      - BASE_URL=/swagger
+      - CONFIG_URL=/openapi/swagger-config.yaml
+    ports:
+      - '9000:9000'
+    volumes:
+      - ./public/openapi:/etc/nginx/html/openapi
+
+  app:
+    image: ggnathion/internship-app:${APP_VERSION}
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      cache_from:
+        - ggnathion/internship-app:latest
+    ports:
+      - '8080:8080'
+
+  db:
+    container_name: db
+    image: postgres:16-alpine
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "db_prod" ]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    networks:
+      - my_network
+
+volumes:
+  db:
+    driver: local
+
+networks:
+  my_network:
+    driver: bridge

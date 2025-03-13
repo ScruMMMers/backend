@@ -1,0 +1,15 @@
+openapi: 3.0.1
+info:
+  title: Сервис контроля за стажировками
+  version: v1
+
+servers:
+  - url: https://internship.staziss-tech.ru
+    description: Основной сервер
+tags:
+  - name: hello
+    description: Hello
+
+paths:
+  /hello:
+    $ref: './schemas/hello/HelloApi.yaml'

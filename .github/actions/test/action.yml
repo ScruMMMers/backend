@@ -1,0 +1,12 @@
+name: "Test Check"
+description: "Runs test checks using Gradle."
+runs:
+  using: "composite"
+  steps:
+    - name: Run lint checks
+      run: |
+        echo "Test started"
+        chmod +x ./gradlew
+        ./gradlew test
+        echo "Test completed"
+      shell: bash
