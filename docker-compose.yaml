@@ -13,7 +13,7 @@ services:
     volumes:
       - ./public/openapi:/etc/nginx/html/openapi
 
-  app:
+  internship-app:
     image: ggnathion/internship-app:${APP_VERSION}
     build:
       context: .

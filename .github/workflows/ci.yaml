@@ -88,15 +88,15 @@ jobs:
       - name: Build Docker images
         env:
           CI_REGISTRY_IMAGE: ${{ secrets.CI_REGISTRY_IMAGE }}
-        run: docker-compose build app
+        run: docker-compose build internship-app
 
       - name: Tag Docker images
         run: |
-          docker tag ${{ secrets.CI_REGISTRY_IMAGE }}/app:$APP_VERSION ${{ secrets.CI_REGISTRY_IMAGE }}/app:latest
+          docker tag ${{ secrets.CI_REGISTRY_IMAGE }}/internship-app:$APP_VERSION ${{ secrets.CI_REGISTRY_IMAGE }}/internship-app:latest
 
       - name: Push Docker images
         run: |
-          docker push -a ${{ secrets.CI_REGISTRY_IMAGE }}/app
+          docker push -a ${{ secrets.CI_REGISTRY_IMAGE }}/internship-app
 
       - name: Display build completion date
         run: echo "Build completed on $(date)"
