@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker pull ggnathion/app:latest
-docker stop my_app || true
-docker rm my_app || true
-docker run -d --name my_app -p 8080:8080 ggnathion/app:latest
+docker pull ggnathion/internship-app:latest
+docker stop internship-app || true
+docker rm internship-app || true
+docker run -d --name internship-app -p 8080:8080 ggnathion/internship-app:latest
