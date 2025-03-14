@@ -7,6 +7,6 @@ runs:
       run: |
         echo "Test started"
         chmod +x ./gradlew
-        ./gradlew test
+        ./gradlew test --project-dir core
         echo "Test completed"
       shell: bash

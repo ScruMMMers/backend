@@ -7,7 +7,7 @@ runs:
       run: |
         echo "Lint started"
         chmod +x ./gradlew
-        ./gradlew checkstyleMain checkstyleTest
+        ./gradlew checkstyleMain checkstyleTest --project-dir core
         echo "Lint completed"
       shell: bash
 
