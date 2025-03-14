@@ -45,3 +45,7 @@ sourceSets {
         java.srcDirs += "$buildDir/generated/src/main/kotlin"
     }
 }
+
+tasks.named("compileKotlin") {
+    dependsOn("openApiGenerate")
+}
