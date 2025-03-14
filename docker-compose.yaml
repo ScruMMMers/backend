@@ -22,6 +22,8 @@ services:
         - ggnathion/internship-app:latest
     ports:
       - '8080:8080'
+    networks:
+      - my_network
 
   db:
     container_name: db
