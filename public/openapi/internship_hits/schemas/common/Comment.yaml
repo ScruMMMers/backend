@@ -4,7 +4,6 @@ CommentView:
     - id
     - shortAccount
     - message
-    - replyTo
     - createdAt
     - updatedAt
   properties:

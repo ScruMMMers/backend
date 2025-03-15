@@ -1,5 +1,7 @@
 CreatedLogView:
   type: object
+  required:
+    - log
   properties:
     log:
       $ref: './Log.yaml#/LogView'

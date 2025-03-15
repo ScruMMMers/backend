@@ -10,6 +10,7 @@ ProfileView:
       description: Полное имя
     avatarUrl:
       type: string
+      format: uri
       description: Ссылка на аватар
     roles:
       type: array

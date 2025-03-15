@@ -1,6 +1,9 @@
 dependencies {
+    implementation rootProject
+
     implementation libs.spring.boot.starter.security
     implementation libs.security.oauth2.resource.server
     implementation libs.security.oauth2.client
+
     compileOnly libs.keycloak.core
 }

@@ -16,6 +16,13 @@ tags:
   - name: notifications
     description: Работа с уведомлениями
 
+components:
+  securitySchemes:
+    openIdConnect:
+      type: openIdConnect
+      openIdConnectUrl: https://auth.staziss-tech.ru/realms/internship/.well-known/openid-configuration
+
+
 paths:
   /logs/me:
     $ref: './schemas/logs/GetMyLogsApi.yaml'
