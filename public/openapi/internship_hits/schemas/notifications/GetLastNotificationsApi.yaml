@@ -1,0 +1,18 @@
+get:
+  tags:
+    - notifications
+  summary: Получить последее уведомление
+  parameters:
+    - in: query
+      name: type
+      schema:
+        $ref: './Notification.yaml#/NotificationTypeEnum'
+  responses:
+    '200':
+      description: Уведомление
+      content:
+        application/json:
+          schema:
+            $ref: './GetLastNotificationsResponse.yaml#/GetLastNotificationsResponseView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

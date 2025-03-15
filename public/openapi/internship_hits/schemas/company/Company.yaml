@@ -1,0 +1,18 @@
+ShortCompanyView:
+  type: object
+  required:
+    - companyId
+    - name
+    - avatarUrl
+    - primaryColor
+  properties:
+    companyId:
+      type: string
+      format: uuid
+    name:
+      type: string
+    avatarUrl:
+      type: string
+      format: uri
+    primaryColor:
+      type: string

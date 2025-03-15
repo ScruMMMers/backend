@@ -1,0 +1,26 @@
+CommentView:
+  type: object
+  required:
+    - id
+    - shortAccount
+    - message
+    - replyTo
+    - createdAt
+    - updatedAt
+  properties:
+    id:
+      type: string
+      format: uuid
+    shortAccount:
+      $ref: './Account.yaml#/ShortAccountView'
+    message:
+      type: string
+    replyTo:
+      type: string
+      format: uuid
+    createdAt:
+      type: string
+      format: date-time
+    updatedAt:
+      type: string
+      format: date-time

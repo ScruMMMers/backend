@@ -1,6 +1,7 @@
 rootProject.name = 'internship_hits'
 
 include ':core'
+include ':oauth2_security'
 
 include ':student'
 include ':deanery'
@@ -9,6 +10,7 @@ include ':public_interface:student'
 include ':public_interface:deanery'
 include ':public_interface:notification'
 include ':public_interface:company'
+include ':public_interface:common'
 
 include ':api:rest'
 

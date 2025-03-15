@@ -7,9 +7,34 @@ servers:
   - url: https://internship.staziss-tech.ru
     description: Основной сервер
 tags:
-  - name: hello
-    description: Hello
+  - name: logs
+    description: Работа с логами стажировок
+  - name: tags
+    description: Работа с тегами
+  - name: profile
+    description: Работа с профилем пользователя
+  - name: notifications
+    description: Работа с уведомлениями
 
 paths:
-  /hello:
-    $ref: './schemas/hello/HelloApi.yaml'
+  /logs/me:
+    $ref: './schemas/logs/GetMyLogsApi.yaml'
+  /logs/{userId}:
+    $ref: './schemas/logs/GetUserLogsApi.yaml'
+  /logs:
+    $ref: './schemas/logs/CreateLogApi.yaml'
+  /logs/{logId}:
+    $ref: './schemas/logs/EditLogApi.yaml'
+
+  /tags:
+    $ref: './schemas/tags/GetTagsApi.yaml'
+
+  /profile/me:
+    $ref: './schemas/profile/GetMyProfileApi.yaml'
+  /profile/header:
+    $ref: './schemas/profile/GetProfileHeaderApi.yaml'
+
+  /notifications/last:
+    $ref: './schemas/notifications/GetLastNotificationsApi.yaml'
+  /notifications:
+    $ref: './schemas/notifications/GetNotificationsApi.yaml'

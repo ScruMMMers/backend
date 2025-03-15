@@ -1,0 +1,7 @@
+TagsListView:
+  type: object
+  properties:
+    tags:
+      type: array
+      items:
+        $ref: './Tag.yaml#/TagView'

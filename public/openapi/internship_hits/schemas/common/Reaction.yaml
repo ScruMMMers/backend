@@ -1,0 +1,10 @@
+ReactionView:
+  type: object
+  required:
+    - shortAccount
+    - emoji
+  properties:
+    shortAccount:
+      $ref: './Account.yaml#/ShortAccountView'
+    emoji:
+      type: string

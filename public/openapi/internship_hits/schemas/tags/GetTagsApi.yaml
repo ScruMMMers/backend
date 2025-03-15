@@ -1,0 +1,18 @@
+get:
+  tags:
+    - tags
+  summary: Получить теги
+  parameters:
+    - in: query
+      name: name
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Список тегов
+      content:
+        application/json:
+          schema:
+            $ref: './TagsList.yaml#/TagsListView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

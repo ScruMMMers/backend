@@ -1,0 +1,59 @@
+ShortNotificationView:
+  type: object
+  required:
+    - notificationId
+    - title
+    - notificationType
+    - description
+    - createdAt
+    - isRead
+  properties:
+    notificationId:
+      type: string
+      format: uuid
+    title:
+      type: string
+    notificationType:
+      $ref: '#/NotificationTypeEnum'
+    description:
+      type: string
+    createdAt:
+      type: string
+      format: date-time
+    isRead:
+      type: boolean
+
+NotificationView:
+  type: object
+  required:
+    - notificationId
+    - title
+    - notificationType
+    - description
+    - createdAt
+    - isRead
+  properties:
+    notificationId:
+      type: string
+      format: uuid
+    title:
+      type: string
+    notificationType:
+      $ref: '#/NotificationTypeEnum'
+    description:
+      type: string
+    createdAt:
+      type: string
+      format: date-time
+    isRead:
+      type: boolean
+    pollId:
+      type: string
+      format: uuid
+
+NotificationTypeEnum:
+  type: string
+  enum:
+    - SYSTEM
+    - DEANERY
+    - POLL

@@ -1,0 +1,25 @@
+ProfileView:
+  type: object
+  required:
+    - fullName
+    - avatarUrl
+    - roles
+  properties:
+    fullName:
+      type: string
+      description: Полное имя
+    avatarUrl:
+      type: string
+      description: Ссылка на аватар
+    roles:
+      type: array
+      items:
+        $ref: '../common/Account.yaml#/RoleEnum'
+    course:
+      type: string
+      description: Курс
+    group:
+      type: string
+      description: Группа
+    shortCompany:
+      $ref: '../company/Company.yaml#/ShortCompanyView'

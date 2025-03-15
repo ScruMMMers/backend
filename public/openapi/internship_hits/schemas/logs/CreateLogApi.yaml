@@ -1,0 +1,24 @@
+post:
+  tags:
+    - logs
+  summary: Создание лога
+  requestBody:
+    description: Передаем сюда данные для создания лога
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './CreateLogRequest.yaml#/CreateLogRequestView'
+  responses:
+    '200':
+      description: Создали лог
+      content:
+        application/json:
+          schema:
+            $ref: './CreatedLog.yaml#/CreatedLogView'
+    '400':
+      description: Некорректные данные
+      content:
+        application/json:
+          schema:
+            $ref: '../common/Error.yaml#/ErrorView'

@@ -1,0 +1,20 @@
+get:
+  tags:
+    - notifications
+  summary: Получить уведомления
+  parameters:
+    - in: query
+      name: type
+      schema:
+        $ref: './Notification.yaml#/NotificationTypeEnum'
+    - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
+    - $ref: '../common/Pagination.yaml#/PaginationPageSize'
+  responses:
+    '200':
+      description: Список уведомлений
+      content:
+        application/json:
+          schema:
+            $ref: './GetNotificationsResponse.yaml#/GetNotificationsResponseView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

@@ -1,0 +1,30 @@
+LastIdPaginationView:
+  type: object
+  required:
+    - lastId
+    - pageSize
+    - hasNext
+  properties:
+    lastId:
+      type: string
+    pageSize:
+      type: integer
+      format: int32
+    hasNext:
+      type: boolean
+
+PaginationPageLastId:
+  in: query
+  name: lastId
+  schema:
+    type: integer
+    format: int32
+  description: Номер страницы
+
+PaginationPageSize:
+  in: query
+  name: size
+  schema:
+    type: integer
+    format: int32
+  description: Размер страницы

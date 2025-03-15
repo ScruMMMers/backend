@@ -1,0 +1,44 @@
+LogView:
+  type: object
+  required:
+    - id
+    - message
+    - tags
+    - type
+    - createdAt
+    - editedAt
+    - reactions
+    - comments
+  properties:
+    id:
+      type: string
+      format: uuid
+    message:
+      type: string
+    tags:
+      type: array
+      items:
+        $ref: '../tags/Tag.yaml#/TagView'
+    type:
+      $ref: '#/LogTypeEnum'
+    createdAt:
+      type: string
+      format: date-time
+    editedAt:
+      type: string
+      format: date-time
+    reactions:
+      type: array
+      items:
+        $ref: '../common/Reaction.yaml#/ReactionView'
+    comments:
+      type: array
+      items:
+        $ref: '../common/Comment.yaml#/CommentView'
+
+LogTypeEnum:
+  type: string
+  enum:
+    - DEFAULT
+    - OFFER
+    - INTERVIEW

@@ -1,0 +1,13 @@
+get:
+  tags:
+    - profile
+  summary: Получить свой профиль (заголовок)
+  responses:
+    '200':
+      description: Профиль в шапке
+      content:
+        application/json:
+          schema:
+            $ref: './GetProfileHeaderResponse.yaml#/GetProfileHeaderResponseView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

@@ -1,0 +1,12 @@
+GetNotificationsResponseView:
+  type: object
+  required:
+    - notifications
+    - page
+  properties:
+    notifications:
+      type: array
+      items:
+        $ref: './Notification.yaml#/NotificationView'
+    page:
+      $ref: '../common/Pagination.yaml#/LastIdPaginationView'

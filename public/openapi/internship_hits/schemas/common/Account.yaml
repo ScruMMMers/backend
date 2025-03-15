@@ -1,0 +1,31 @@
+ShortAccountView:
+  type: object
+  required:
+    - userId
+    - fullName
+    - roles
+    - avatarUrl
+    - primaryColor
+  properties:
+    userId:
+      type: string
+      format: uuid
+    fullName:
+      type: string
+    roles:
+      type: array
+      items:
+        $ref: '#/RoleEnum'
+    avatarUrl:
+      type: string
+      format: uri
+    primaryColor:
+      type: string
+
+RoleEnum:
+  type: string
+  enum:
+    - DEANERY
+    - STUDENT_SECOND
+    - STUDENT_THIRD
+    - STUDENT_FOURTH

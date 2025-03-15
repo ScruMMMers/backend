@@ -1,0 +1,7 @@
+GetMyProfileResponseView:
+  type: object
+  required:
+    - profile
+  properties:
+    profile:
+      $ref: './Profile.yaml#/ProfileView'

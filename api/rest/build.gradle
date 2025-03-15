@@ -10,10 +10,7 @@ plugins {
 dependencies {
     implementation rootProject
 
-    // security
-//    implementation libs.spring.boot.starter.security
-//    implementation libs.security.oauth2.resource.server
-//    implementation libs.security.oauth2.client
+    implementation project(":public_interface:common")
 
     // openapi
     implementation libs.swagger.annotations

@@ -1,0 +1,16 @@
+get:
+  tags:
+    - logs
+  summary: Получить свои логи
+  parameters:
+    - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
+    - $ref: '../common/Pagination.yaml#/PaginationPageSize'
+  responses:
+    '200':
+      description: Список логов
+      content:
+        application/json:
+          schema:
+            $ref: './LogsList.yaml#/LogsListView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

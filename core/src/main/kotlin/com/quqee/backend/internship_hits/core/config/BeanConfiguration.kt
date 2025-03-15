@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration
 @ComponentScan(
     basePackages = [
         "com.quqee.backend.internship_hits.api.rest",
+        "com.quqee.backend.internship_hits.oauth2_security"
     ]
 )
 open class BeanConfiguration

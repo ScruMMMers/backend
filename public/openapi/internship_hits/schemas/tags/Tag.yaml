@@ -1,0 +1,14 @@
+TagView:
+  type: object
+  required:
+    - id
+    - shortCompany
+    - name
+  properties:
+    id:
+      type: string
+      format: uuid
+    shortCompany:
+      $ref: '../company/Company.yaml#/ShortCompanyView'
+    name:
+      type: string

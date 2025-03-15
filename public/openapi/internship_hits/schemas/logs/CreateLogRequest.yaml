@@ -1,0 +1,10 @@
+CreateLogRequestView:
+  type: object
+  required:
+    - message
+    - type
+  properties:
+    message:
+      type: string
+    type:
+      $ref: './Log.yaml#/LogTypeEnum'

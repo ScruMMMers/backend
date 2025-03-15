@@ -1,0 +1,5 @@
+GetLastNotificationsResponseView:
+  type: object
+  properties:
+    notification:
+      $ref: './Notification.yaml#/NotificationView'

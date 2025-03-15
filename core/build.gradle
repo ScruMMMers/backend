@@ -13,4 +13,5 @@ dependencies {
     implementation rootProject
 
     implementation project(':api:rest')
+    implementation project(':oauth2_security')
 }

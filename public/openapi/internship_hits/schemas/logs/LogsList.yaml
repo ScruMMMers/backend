@@ -1,0 +1,9 @@
+LogsListView:
+  type: object
+  properties:
+    logs:
+      type: array
+      items:
+        $ref: './Log.yaml#/LogView'
+    pagination:
+      $ref: '../common/Pagination.yaml#/LastIdPaginationView'
