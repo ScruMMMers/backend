@@ -3,9 +3,12 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
-      APP_VERSION:
+      app_version:
         description: 'Tag version for the release'
         required: true
+
+env:
+  APP_VERSION: ${{ github.event.inputs.app_version }}
 
 jobs:
   updateOpenapi:
