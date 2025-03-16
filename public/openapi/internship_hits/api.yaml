@@ -4,7 +4,7 @@ info:
   version: v1
 
 servers:
-  - url: https://internship.staziss-tech.ru
+  - url: https://api.internship.staziss-tech.ru
     description: Основной сервер
   - url: http://localhost:8080
     description: Локальный сервер
