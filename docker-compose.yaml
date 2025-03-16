@@ -12,6 +12,8 @@ services:
       - '9000:9000'
     volumes:
       - ./public/openapi:/etc/nginx/html/openapi
+    networks:
+      - my_network
 
   internship-app:
     image: ggnathion/internship-app:${APP_VERSION}

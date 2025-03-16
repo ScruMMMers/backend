@@ -6,6 +6,9 @@ info:
 servers:
   - url: https://internship.staziss-tech.ru
     description: Основной сервер
+  - url: http://localhost:8080
+    description: Локальный сервер
+
 tags:
   - name: logs
     description: Работа с логами стажировок
@@ -21,7 +24,6 @@ components:
     openIdConnect:
       type: openIdConnect
       openIdConnectUrl: https://auth.staziss-tech.ru/realms/internship/.well-known/openid-configuration
-
 
 paths:
   /logs/me:

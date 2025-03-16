@@ -3,14 +3,28 @@ name: Release
 on:
   push:
     branches: [ main ]
-  pull_request:
+  workflow_run:
+    workflows: [ "Lint and test" ]
     branches: [ main ]
-
-env:
-  APP_VERSION: v0.${{ github.run_id }}
+    types:
+      - completed
+  workflow_dispatch:
+    inputs:
+      APP_VERSION:
+        description: 'Tag version for the release'
+        required: true
 
 jobs:
+  checkTestWorkflowSuccess:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Run a step
+        run: echo "This runs only if the previous workflow succeeded."
+
   updateOpenapi:
+    needs:
+      - checkTestWorkflowSuccess
     runs-on: self-hosted
     if: |
       ${{ github.event_name == 'push' &&
@@ -24,35 +38,10 @@ jobs:
       - name: Build Docker images
         run: ./deploy-swagger.sh
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Prepare repository
-        uses: ./.github/actions/prepare-repo
-
-      - name: Run Lint Check
-        uses: ./.github/actions/lint
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Prepare repository
-        uses: ./.github/actions/prepare-repo
-
-      - name: Run Test Check
-        uses: ./.github/actions/test
-
   updateDatabase:
     runs-on: ubuntu-latest
     needs:
-      - lint
-      - test
+      - updateOpenapi
     if: |
       ${{ github.event_name == 'push' &&
       github.event.head_commit.modified && 
