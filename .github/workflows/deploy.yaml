@@ -8,16 +8,7 @@ on:
         required: true
 
 jobs:
-  checkTestWorkflowSuccess:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    steps:
-      - name: Run a step
-        run: echo "This runs only if the previous workflow succeeded."
-
   updateOpenapi:
-    needs:
-      - checkTestWorkflowSuccess
     runs-on: self-hosted
     if: |
       ${{ github.event_name == 'push' &&
