@@ -61,3 +61,6 @@ security-oauth2-client = { module = "org.springframework.boot:spring-boot-starte
 
 # keycloak
 keycloak-core = { module = "org.keycloak:keycloak-core", version.ref = "keycloack" }
+
+#jpa
+spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot" }

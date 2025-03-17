@@ -5,6 +5,7 @@ include ':oauth2_security'
 
 include ':student'
 include ':deanery'
+include ':logs'
 
 include ':public_interface:student'
 include ':public_interface:deanery'
