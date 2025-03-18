@@ -1,14 +1,16 @@
 package com.quqee.backend.internship_hits.logs.mapper
 
 import com.quqee.backend.internship_hits.logs.entity.LogEntity
+import com.quqee.backend.internship_hits.logs.service.ReactionService
 import com.quqee.backend.internship_hits.model.rest.*
 import org.springframework.stereotype.Component
 import java.net.URI
 import java.util.*
 
 @Component
-class LogMapper {
-
+class LogMapper(
+    private val reactionService: ReactionService
+) {
     /**
      * Преобразование сущности лога в DTO представление
      */
@@ -20,7 +22,7 @@ class LogMapper {
             type = entity.type,
             createdAt = entity.createdAt,
             editedAt = entity.editedAt,
-            reactions = getReactionsForLog(entity.id),
+            reactions = reactionService.getLogReactions(entity.id),
             comments = getCommentsForLog(entity.id)
         )
     }
@@ -42,26 +44,6 @@ class LogMapper {
                 )
             )
         }
-    }
-    
-    /**
-     * Получение реакций для лога
-     * ПОКА ЗАГЛУШКА
-     */
-    private fun getReactionsForLog(logId: UUID): List<ReactionView> {
-        // Для примера возвращаем одну реакцию
-        return listOf(
-            ReactionView(
-                shortAccount = ShortAccountView(
-                    userId = UUID.randomUUID(),
-                    fullName = "Иван Иванов",
-                    avatarUrl = URI.create("https://example.com/avatar.png"),
-                    roles = listOf(RoleEnum.STUDENT_SECOND),
-                    primaryColor = "#533af9"
-                ),
-                emoji = "👍"
-            )
-        )
     }
     
     /**

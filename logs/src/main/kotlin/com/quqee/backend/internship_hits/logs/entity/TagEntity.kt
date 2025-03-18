@@ -7,7 +7,6 @@ import java.util.*
 @Table(name = "tags")
 data class TagEntity (
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     val id: UUID,
 
     @Column(name = "companyId", nullable = false)

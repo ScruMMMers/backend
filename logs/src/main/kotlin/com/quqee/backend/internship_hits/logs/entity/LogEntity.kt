@@ -12,7 +12,6 @@ import java.util.*
 @Table(name = "logs")
 data class LogEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     val id: UUID,
 
     @Column(name = "user_id", nullable = false)

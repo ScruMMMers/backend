@@ -1,6 +1,7 @@
 package com.quqee.backend.internship_hits.logs.service
 
 import com.quqee.backend.internship_hits.logs.repository.LogsRepository
+import com.quqee.backend.internship_hits.logs.repository.jpa.TagJpaRepository
 import com.quqee.backend.internship_hits.model.rest.*
 import org.springframework.stereotype.Service
 import java.util.*
@@ -14,7 +15,8 @@ interface LogsService {
 
 @Service
 class LogsServiceImpl (
-    private val logsRepository: LogsRepository
+    private val logsRepository: LogsRepository,
+    private val tagJpaRepository: TagJpaRepository
 ) : LogsService {
 
     /**
@@ -73,10 +75,30 @@ class LogsServiceImpl (
         val updatedLog = logsRepository.updateLog(
             logId = logId,
             message = updateLogRequest.message,
-            tagIds = emptyList(),
+            tagIds = findTagIdsByNames(extractTagsFromMessage(updateLogRequest.message)),
             type = updateLogRequest.type
         )
         
         return CreatedLogView(log = updatedLog)
+    }
+
+    /**
+     * Извлечение тегов из сообщения
+     */
+    private fun extractTagsFromMessage(message: String): List<String> {
+        return message.split(" ")
+            .filter { it.startsWith("@") }
+    }
+
+    /**
+     * Поиск тегов по имени и возврат их UUID
+     */
+    private fun findTagIdsByNames(tagNames: List<String>): List<UUID> {
+        val tagIds = mutableListOf<UUID>()
+        for (name in tagNames) {
+            val tags = tagJpaRepository.findByName(name)
+            tagIds.addAll(tags.map { it.id })
+        }
+        return tagIds
     }
 } 

@@ -7,7 +7,6 @@ import java.util.*
 @Table(name = "reactions")
 data class ReactionEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     val id: UUID,
 
     @Column(name = "emoji", nullable = false)

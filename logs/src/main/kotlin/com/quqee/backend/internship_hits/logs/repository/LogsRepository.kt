@@ -2,6 +2,7 @@ package com.quqee.backend.internship_hits.logs.repository
 
 import com.quqee.backend.internship_hits.logs.entity.LogEntity
 import com.quqee.backend.internship_hits.logs.mapper.LogMapper
+import com.quqee.backend.internship_hits.logs.repository.jpa.LogsJpaRepository
 import com.quqee.backend.internship_hits.model.rest.LogTypeEnum
 import com.quqee.backend.internship_hits.model.rest.LogView
 import org.springframework.data.domain.PageRequest
