@@ -8,6 +8,7 @@ import java.util.*
 
 @Component
 class LogMapper {
+
     /**
      * Преобразование сущности лога в DTO представление
      */

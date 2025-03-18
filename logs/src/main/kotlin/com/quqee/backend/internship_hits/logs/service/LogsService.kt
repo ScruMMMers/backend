@@ -5,14 +5,22 @@ import com.quqee.backend.internship_hits.model.rest.*
 import org.springframework.stereotype.Service
 import java.util.*
 
+interface LogsService {
+    fun getMyLogs(lastId: Int?, size: Int?): LogsListView
+    fun getUserLogs(userId: UUID, lastId: Int?, size: Int?): LogsListView
+    fun createLog(createLogRequest: CreateLogRequestView): CreatedLogView
+    fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestView): CreatedLogView
+}
+
 @Service
-class LogsService(
+class LogsServiceImpl (
     private val logsRepository: LogsRepository
-) {
+) : LogsService {
+
     /**
      * Получение логов текущего пользователя
      */
-    fun getMyLogs(lastId: Int?, size: Int?): LogsListView {
+    override fun getMyLogs(lastId: Int?, size: Int?): LogsListView {
         val pageSize = size ?: 20
         val logs = logsRepository.getLogsByCurrentUser(lastId, pageSize)
         val hasNext = logs.size >= pageSize
@@ -30,7 +38,7 @@ class LogsService(
     /**
      * Получение логов конкретного пользователя
      */
-    fun getUserLogs(userId: UUID, lastId: Int?, size: Int?): LogsListView {
+    override fun getUserLogs(userId: UUID, lastId: Int?, size: Int?): LogsListView {
         val pageSize = size ?: 20
         val logs = logsRepository.getLogsByUserId(userId, lastId, pageSize)
         val hasNext = logs.size >= pageSize
@@ -48,7 +56,7 @@ class LogsService(
     /**
      * Создание нового лога
      */
-    fun createLog(createLogRequest: CreateLogRequestView): CreatedLogView {
+    override fun createLog(createLogRequest: CreateLogRequestView): CreatedLogView {
         val newLog = logsRepository.createLog(
             message = createLogRequest.message,
             tagIds = emptyList(),
@@ -61,7 +69,7 @@ class LogsService(
     /**
      * Обновление существующего лога
      */
-    fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestView): CreatedLogView {
+    override fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestView): CreatedLogView {
         val updatedLog = logsRepository.updateLog(
             logId = logId,
             message = updateLogRequest.message,
