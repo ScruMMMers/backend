@@ -1,7 +1,6 @@
 LastIdPaginationView:
   type: object
   required:
-    - lastId
     - pageSize
     - hasNext
   properties:
