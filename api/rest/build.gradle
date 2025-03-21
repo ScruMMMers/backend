@@ -10,7 +10,6 @@ plugins {
 dependencies {
     implementation rootProject
 
-    implementation project(":public_interface:common")
     implementation project(":logs")
 
     // openapi
