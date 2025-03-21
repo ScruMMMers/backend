@@ -1,16 +1,21 @@
 package com.quqee.backend.internship_hits.logs.service
 
+import com.quqee.backend.internship_hits.logs.entity.TagEntity
 import com.quqee.backend.internship_hits.logs.repository.LogsRepository
 import com.quqee.backend.internship_hits.logs.repository.jpa.TagJpaRepository
-import com.quqee.backend.internship_hits.model.rest.*
+import com.quqee.backend.internship_hits.public_interface.common.LastIdPagination
+import com.quqee.backend.internship_hits.public_interface.logs.CreateLogRequestDto
+import com.quqee.backend.internship_hits.public_interface.logs.CreatedLogDto
+import com.quqee.backend.internship_hits.public_interface.logs.LogListDto
+import com.quqee.backend.internship_hits.public_interface.logs.UpdateLogRequestDto
 import org.springframework.stereotype.Service
 import java.util.*
 
 interface LogsService {
-    fun getMyLogs(lastId: Int?, size: Int?): LogsListView
-    fun getUserLogs(userId: UUID, lastId: Int?, size: Int?): LogsListView
-    fun createLog(createLogRequest: CreateLogRequestView): CreatedLogView
-    fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestView): CreatedLogView
+    fun getMyLogs(lastId: Int?, size: Int?): LogListDto
+    fun getUserLogs(userId: UUID, lastId: Int?, size: Int?): LogListDto
+    fun createLog(createLogRequest: CreateLogRequestDto): CreatedLogDto
+    fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestDto): CreatedLogDto
 }
 
 @Service
@@ -19,18 +24,22 @@ class LogsServiceImpl (
     private val tagJpaRepository: TagJpaRepository
 ) : LogsService {
 
+    companion object {
+        private const val DEFAULT_PAGE_SIZE = 20
+    }
+
     /**
      * Получение логов текущего пользователя
      */
-    override fun getMyLogs(lastId: Int?, size: Int?): LogsListView {
-        val pageSize = size ?: 20
+    override fun getMyLogs(lastId: Int?, size: Int?): LogListDto {
+        val pageSize = size ?: DEFAULT_PAGE_SIZE
         val logs = logsRepository.getLogsByCurrentUser(lastId, pageSize)
         val hasNext = logs.size >= pageSize
         
-        return LogsListView(
+        return LogListDto(
             logs = logs,
-            page = LastIdPaginationView(
-                lastId = if (logs.isNotEmpty()) logs.last().id.toString() else null,
+            page = LastIdPagination(
+                lastId = if (logs.isNotEmpty()) logs.last().id else null,
                 pageSize = pageSize,
                 hasNext = hasNext
             )
@@ -40,15 +49,15 @@ class LogsServiceImpl (
     /**
      * Получение логов конкретного пользователя
      */
-    override fun getUserLogs(userId: UUID, lastId: Int?, size: Int?): LogsListView {
-        val pageSize = size ?: 20
+    override fun getUserLogs(userId: UUID, lastId: Int?, size: Int?): LogListDto {
+        val pageSize = size ?: DEFAULT_PAGE_SIZE
         val logs = logsRepository.getLogsByUserId(userId, lastId, pageSize)
         val hasNext = logs.size >= pageSize
         
-        return LogsListView(
+        return LogListDto(
             logs = logs,
-            page = LastIdPaginationView(
-                lastId = if (logs.isNotEmpty()) logs.last().id.toString() else null,
+            page = LastIdPagination(
+                lastId = if (logs.isNotEmpty()) logs.last().id else null,
                 pageSize = pageSize,
                 hasNext = hasNext
             )
@@ -58,28 +67,28 @@ class LogsServiceImpl (
     /**
      * Создание нового лога
      */
-    override fun createLog(createLogRequest: CreateLogRequestView): CreatedLogView {
+    override fun createLog(createLogRequest: CreateLogRequestDto): CreatedLogDto {
         val newLog = logsRepository.createLog(
             message = createLogRequest.message,
-            tagIds = emptyList(),
+            tags = findTagsByNames(extractTagsFromMessage(createLogRequest.message)),
             type = createLogRequest.type
         )
         
-        return CreatedLogView(log = newLog)
+        return CreatedLogDto(log = newLog)
     }
 
     /**
      * Обновление существующего лога
      */
-    override fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestView): CreatedLogView {
+    override fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestDto): CreatedLogDto {
         val updatedLog = logsRepository.updateLog(
             logId = logId,
             message = updateLogRequest.message,
-            tagIds = findTagIdsByNames(extractTagsFromMessage(updateLogRequest.message)),
+            tags = findTagsByNames(extractTagsFromMessage(updateLogRequest.message)),
             type = updateLogRequest.type
         )
         
-        return CreatedLogView(log = updatedLog)
+        return CreatedLogDto(log = updatedLog)
     }
 
     /**
@@ -91,14 +100,10 @@ class LogsServiceImpl (
     }
 
     /**
-     * Поиск тегов по имени и возврат их UUID
+     * Поиск тегов по имени и возврат их сущностей
      */
-    private fun findTagIdsByNames(tagNames: List<String>): List<UUID> {
-        val tagIds = mutableListOf<UUID>()
-        for (name in tagNames) {
-            val tags = tagJpaRepository.findByName(name)
-            tagIds.addAll(tags.map { it.id })
-        }
-        return tagIds
+    private fun findTagsByNames(tagNames: List<String>): List<TagEntity> {
+        return tagNames.flatMap { name -> tagJpaRepository.findByName(name) }
     }
+
 } 

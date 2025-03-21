@@ -1,0 +1,3 @@
+dependencies {
+    implementation project(':public_interface:common')
+}

@@ -12,11 +12,13 @@ data class LogReaction (
     @Id
     val id: UUID,
 
-    @Column(name = "log_id", nullable = false)
-    val logId: UUID,
+    @ManyToOne
+    @JoinColumn(name = "log_id", nullable = false)
+    val log: LogEntity,
 
-    @Column(name = "reaction_id", nullable = false)
-    val reactionId: UUID,
+    @ManyToOne
+    @JoinColumn(name = "reaction_id", nullable = false)
+    val reaction: ReactionEntity,
 
     @Column(name = "user_id", nullable = false)
     val userId: UUID

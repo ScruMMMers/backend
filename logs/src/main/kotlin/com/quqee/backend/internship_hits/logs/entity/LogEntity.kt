@@ -1,6 +1,6 @@
 package com.quqee.backend.internship_hits.logs.entity
 
-import com.quqee.backend.internship_hits.model.rest.LogTypeEnum
+import com.quqee.backend.internship_hits.public_interface.enums.LogTypeEnum
 import jakarta.persistence.*
 import java.time.OffsetDateTime
 import java.util.*
@@ -20,10 +20,13 @@ data class LogEntity(
     @Column(name = "message", nullable = false)
     val message: String,
 
-    @ElementCollection
-    @CollectionTable(name = "log_tags", joinColumns = [JoinColumn(name = "log_id")])
-    @Column(name = "tag_id")
-    val tagIds: List<UUID>,
+    @ManyToMany
+    @JoinTable(
+        name = "log_tags",
+        joinColumns = [JoinColumn(name = "log_id")],
+        inverseJoinColumns = [JoinColumn(name = "tag_id")]
+    )
+    val tags: List<TagEntity> = mutableListOf(),
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
