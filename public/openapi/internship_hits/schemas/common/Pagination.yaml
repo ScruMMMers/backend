@@ -6,6 +6,7 @@ LastIdPaginationView:
   properties:
     lastId:
       type: string
+      format: uuid
     pageSize:
       type: integer
       format: int32
@@ -16,9 +17,9 @@ PaginationPageLastId:
   in: query
   name: lastId
   schema:
-    type: integer
-    format: int32
-  description: Номер страницы
+    type: string
+    format: uuid
+  description: Последний id
 
 PaginationPageSize:
   in: query
