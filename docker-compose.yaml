@@ -3,7 +3,7 @@ version: '3.8'
 services:
   swagger-ui:
     image: swaggerapi/swagger-ui
-    container_name: "swagger-ui-container"
+    container_name: "swagger-ui"
     environment:
       - PORT=9000
       - BASE_URL=/swagger
@@ -22,6 +22,13 @@ services:
       dockerfile: ./Dockerfile
       cache_from:
         - ggnathion/internship-app:latest
+    environment:
+      INTERNSHIP_DATABASE: ${INTERNSHIP_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ru-central1
     ports:
       - '8080:8080'
     networks:
