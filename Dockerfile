@@ -9,12 +9,13 @@ COPY core/build.gradle ./core/
 COPY core/src ./core/src
 COPY public ./public
 COPY api ./api
-COPY deanery ./deanery
-COPY student ./student
 COPY mapper ./mapper
 COPY public_interface ./public_interface
 COPY mapper ./mapper
 COPY migration ./migration
+COPY profile ./profile
+COPY file_storage ./file_storage
+COPY notification ./notification
 RUN gradle --no-daemon --project-dir core build
 
 FROM amazoncorretto:21-alpine

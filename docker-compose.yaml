@@ -17,6 +17,8 @@ services:
 
   internship-app:
     image: ggnathion/internship-app:${APP_VERSION}
+    env_file:
+      - .env
     build:
       context: .
       dockerfile: ./Dockerfile
