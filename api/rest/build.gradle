@@ -13,6 +13,11 @@ dependencies {
     implementation project(":logs")
     implementation project(":public_interface:logs_interface")
     implementation project(":public_interface:common")
+    implementation project(":profile")
+    implementation project(":public_interface:profile_public")
+    implementation project(":notification")
+    implementation project(":public_interface:notification_public")
+    implementation project(":oauth2_security")
     implementation project(":mapper")
 
     // openapi

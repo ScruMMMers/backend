@@ -24,3 +24,14 @@ spring:
               - profile
 server:
   port: 8080
+
+amazonProperties:
+  bucketName: internship-hits
+  endpointUrl: https://storage.yandexcloud.net
+
+keycloak:
+  internship:
+    uri: https://auth.staziss-tech.ru
+    realm: internship
+    client-id: server-app
+    client-secret: PnolycsH6gr9tNUZXBBEp47fbgzfBPSU

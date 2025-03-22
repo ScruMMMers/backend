@@ -14,4 +14,7 @@ dependencies {
 
     implementation project(':api:rest')
     implementation project(':oauth2_security')
+    implementation project(":profile")
+    implementation project(":file_storage")
+    implementation project(":notification")
 }
