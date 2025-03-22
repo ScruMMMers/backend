@@ -10,11 +10,11 @@ import com.quqee.backend.internship_hits.public_interface.common.exception.Excep
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import org.springframework.data.domain.PageRequest
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
 import java.util.*
 
-@Repository
+@Component
 class LogsRepository(
     private val logsJpaRepository: LogsJpaRepository,
     private val logMapper: LogMapper

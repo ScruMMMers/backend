@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class RoleEnumerationConfigurationMapper {
     @Bean
-    fun mapLogType(): EnumerationMapper<RoleEnum, Role> {
+    fun mapRoleType(): EnumerationMapper<RoleEnum, Role> {
         return makeEnumerationMapper(RoleEnum::class, Role::class)
     }
 }
