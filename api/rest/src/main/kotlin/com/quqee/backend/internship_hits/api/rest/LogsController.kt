@@ -80,12 +80,12 @@ class LogsController : LogsApiDelegate {
         )
     }
 
-    override fun logsMeGet(lastId: Int?, size: Int?): ResponseEntity<LogsListView> {
+    override fun logsMeGet(lastId: UUID?, size: Int?): ResponseEntity<LogsListView> {
         return ResponseEntity.ok(
             LogsListView(
                 logs = listOf(logView),
                 page = LastIdPaginationView(
-                    lastId = UUID.randomUUID().toString(),
+                    lastId = UUID.randomUUID(),
                     pageSize = 1,
                     hasNext = false
                 )
@@ -101,12 +101,12 @@ class LogsController : LogsApiDelegate {
         )
     }
 
-    override fun logsUserIdGet(userId: UUID, lastId: Int?, size: Int?): ResponseEntity<LogsListView> {
+    override fun logsUserIdGet(userId: UUID, lastId: UUID?, size: Int?): ResponseEntity<LogsListView> {
         return ResponseEntity.ok(
             LogsListView(
                 logs = listOf(logView),
                 page = LastIdPaginationView(
-                    lastId = UUID.randomUUID().toString(),
+                    lastId = UUID.randomUUID(),
                     pageSize = 1,
                     hasNext = false
                 )

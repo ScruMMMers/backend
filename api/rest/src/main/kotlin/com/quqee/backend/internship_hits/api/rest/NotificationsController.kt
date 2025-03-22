@@ -10,7 +10,7 @@ import java.util.UUID
 class NotificationsController : NotificationsApiDelegate {
     override fun notificationsGet(
         type: NotificationTypeEnum?,
-        lastId: Int?,
+        lastId: UUID?,
         size: Int?
     ): ResponseEntity<GetNotificationsResponseView> {
         return ResponseEntity.ok(
@@ -26,7 +26,7 @@ class NotificationsController : NotificationsApiDelegate {
                     )
                 ),
                 page = LastIdPaginationView(
-                    lastId = UUID.randomUUID().toString(),
+                    lastId = UUID.randomUUID(),
                     pageSize = 1,
                     hasNext = false,
                 )
