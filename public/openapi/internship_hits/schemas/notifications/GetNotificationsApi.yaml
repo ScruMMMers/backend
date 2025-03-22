@@ -3,7 +3,7 @@ get:
     - notifications
   summary: Получить уведомления
   security:
-    - bearerAuth: [ ]
+    - openIdConnect: []
   parameters:
     - in: query
       name: type

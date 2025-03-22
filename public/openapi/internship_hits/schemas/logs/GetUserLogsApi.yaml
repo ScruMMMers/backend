@@ -3,7 +3,7 @@ get:
     - logs
   summary: Получить логи пользователя
   security:
-    - bearerAuth: [ ]
+    - openIdConnect: []
   parameters:
     - in: path
       name: userId

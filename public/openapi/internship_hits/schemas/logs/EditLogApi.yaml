@@ -3,7 +3,7 @@ post:
     - logs
   summary: Изменение лога
   security:
-    - bearerAuth: [ ]
+    - openIdConnect: []
   parameters:
     - in: path
       name: logId

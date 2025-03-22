@@ -3,7 +3,7 @@ get:
     - logs
   summary: Получить свои логи
   security:
-    - bearerAuth: [ ]
+    - openIdConnect: []
   parameters:
     - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
     - $ref: '../common/Pagination.yaml#/PaginationPageSize'

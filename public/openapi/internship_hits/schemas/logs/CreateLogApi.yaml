@@ -3,7 +3,7 @@ post:
     - logs
   summary: Создание лога
   security:
-    - bearerAuth: [ ]
+    - openIdConnect: []
   requestBody:
     description: Передаем сюда данные для создания лога
     required: true

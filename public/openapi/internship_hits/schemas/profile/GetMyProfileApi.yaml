@@ -3,7 +3,7 @@ get:
     - profile
   summary: Получить свой профиль
   security:
-    - bearerAuth: [ ]
+    - openIdConnect: []
   responses:
     '200':
       description: Профиль пользователя
