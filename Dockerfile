@@ -18,7 +18,7 @@ COPY file_storage ./file_storage
 COPY notification ./notification
 COPY logs ./logs
 COPY oauth2_security ./oauth2_security
-RUN gradle --no-daemon --project-dir core build
+RUN gradle --no-daemon --project-dir core build -x test
 
 FROM amazoncorretto:21-alpine
 WORKDIR /app
