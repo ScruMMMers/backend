@@ -23,7 +23,7 @@ class LogMapper(
      */
     fun toLogView(entity: LogEntity): LogDto {
         return LogDto(
-            id = entity.id.toString(),
+            id = entity.id,
             message = entity.message,
             tags = getTagsForLog(entity.tags),
             type = entity.type,

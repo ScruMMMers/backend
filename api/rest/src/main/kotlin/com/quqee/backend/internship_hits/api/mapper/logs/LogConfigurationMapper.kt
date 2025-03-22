@@ -21,7 +21,7 @@ class LogConfigurationMapper(
     @Bean
     fun mapLog(): FromApiToInternalMapper<LogView, LogDto> = makeFromApiMapper { model ->
         LogDto(
-            id = model.id.toString(),
+            id = model.id,
             message = model.message,
             tags = model.tags.map { mapTag.fromApi(it) },
             type = mapLogType.mapToInternal(model.type),
@@ -39,7 +39,7 @@ class LogConfigurationMapper(
         mapComment: FromInternalToApiMapper<CommentView, CommentDto>
     ): FromInternalToApiMapper<LogView, LogDto> = makeToApiMapper { model ->
         LogView(
-            id = UUID.fromString(model.id),
+            id = model.id,
             message = model.message,
             tags = model.tags.map { mapTag.fromInternal(it) },
             type = mapLogType.mapToApi(model.type),
