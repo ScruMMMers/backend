@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 interface LogsService {
-    fun getMyLogs(lastId: Int?, size: Int?): LogListDto
-    fun getUserLogs(userId: UUID, lastId: Int?, size: Int?): LogListDto
+    fun getMyLogs(lastId: UUID?, size: Int?): LogListDto
+    fun getUserLogs(userId: UUID, lastId: UUID?, size: Int?): LogListDto
     fun createLog(createLogRequest: CreateLogRequestDto): CreatedLogDto
     fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestDto): CreatedLogDto
 }
@@ -31,7 +31,7 @@ class LogsServiceImpl (
     /**
      * Получение логов текущего пользователя
      */
-    override fun getMyLogs(lastId: Int?, size: Int?): LogListDto {
+    override fun getMyLogs(lastId: UUID?, size: Int?): LogListDto {
         val pageSize = size ?: DEFAULT_PAGE_SIZE
         val logs = logsRepository.getLogsByCurrentUser(lastId, pageSize)
         val hasNext = logs.size >= pageSize
@@ -49,7 +49,7 @@ class LogsServiceImpl (
     /**
      * Получение логов конкретного пользователя
      */
-    override fun getUserLogs(userId: UUID, lastId: Int?, size: Int?): LogListDto {
+    override fun getUserLogs(userId: UUID, lastId: UUID?, size: Int?): LogListDto {
         val pageSize = size ?: DEFAULT_PAGE_SIZE
         val logs = logsRepository.getLogsByUserId(userId, lastId, pageSize)
         val hasNext = logs.size >= pageSize

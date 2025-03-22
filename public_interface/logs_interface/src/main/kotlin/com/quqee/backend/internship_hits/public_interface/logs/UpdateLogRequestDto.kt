@@ -1,8 +1,8 @@
 package com.quqee.backend.internship_hits.public_interface.logs
 
-import com.quqee.backend.internship_hits.public_interface.enums.LogTypeEnum
+import com.quqee.backend.internship_hits.public_interface.enums.LogType
 
 data class UpdateLogRequestDto(
     val message: String,
-    val type: LogTypeEnum
+    val type: LogType
 )

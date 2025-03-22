@@ -1,6 +1,6 @@
 package com.quqee.backend.internship_hits.logs.entity
 
-import com.quqee.backend.internship_hits.public_interface.enums.LogTypeEnum
+import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import jakarta.persistence.*
 import java.time.OffsetDateTime
 import java.util.*
@@ -30,7 +30,7 @@ data class LogEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    val type: LogTypeEnum,
+    val type: LogType,
 
     @Column(name = "created_at", nullable = false)
     val createdAt: OffsetDateTime,

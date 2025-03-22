@@ -19,7 +19,7 @@ class LogsController(
         )
     }
 
-    override fun logsMeGet(lastId: Int?, size: Int?): ResponseEntity<LogsListView> {
+    override fun logsMeGet(lastId: UUID?, size: Int?): ResponseEntity<LogsListView> {
         return ResponseEntity.ok(
             logsService.getMyLogs(lastId, size)
         )
@@ -31,7 +31,7 @@ class LogsController(
         )
     }
 
-    override fun logsUserIdGet(userId: UUID, lastId: Int?, size: Int?): ResponseEntity<LogsListView> {
+    override fun logsUserIdGet(userId: UUID, lastId: UUID?, size: Int?): ResponseEntity<LogsListView> {
         return ResponseEntity.ok(
             logsService.getUserLogs(userId, lastId, size)
         )

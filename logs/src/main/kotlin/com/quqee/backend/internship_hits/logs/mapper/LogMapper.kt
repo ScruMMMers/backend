@@ -41,7 +41,7 @@ class LogMapper(
     private fun getTagsForLog(tags: List<TagEntity>): List<TagDto> {
         return tags.map {
             TagDto(
-                id = UUID.randomUUID().toString(),
+                id = UUID.randomUUID(),
                 name = "Яндекс",
                 shortCompany = ShortCompanyDto(
                     companyId = UUID.randomUUID().toString(),

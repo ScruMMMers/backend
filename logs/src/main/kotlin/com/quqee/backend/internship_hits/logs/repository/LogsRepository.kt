@@ -7,7 +7,7 @@ import com.quqee.backend.internship_hits.logs.repository.jpa.LogsJpaRepository
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionType
-import com.quqee.backend.internship_hits.public_interface.enums.LogTypeEnum
+import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Repository
@@ -22,7 +22,7 @@ class LogsRepository(
     /**
      * Получение логов текущего пользователя
      */
-    fun getLogsByCurrentUser(lastId: Int?, pageSize: Int): List<LogDto> {
+    fun getLogsByCurrentUser(lastId: UUID?, pageSize: Int): List<LogDto> {
         val currentUserId = KeycloakUtils.getUserId() ?: throw IllegalArgumentException("userId is null")
         return getLogsByUserId(currentUserId, lastId, pageSize)
     }
@@ -30,13 +30,12 @@ class LogsRepository(
     /**
      * Получение логов конкретного пользователя
      */
-    fun getLogsByUserId(userId: UUID, lastId: Int?, pageSize: Int): List<LogDto> {
-        val lastIdUuid = lastId?.let { UUID.fromString(it.toString()) }
+    fun getLogsByUserId(userId: UUID, lastId: UUID?, pageSize: Int): List<LogDto> {
         val pageable = PageRequest.of(0, pageSize)
         
         val logs = logsJpaRepository.findByUserIdAndIdLessThanOrderByCreatedAtDesc(
             userId = userId,
-            lastId = lastIdUuid,
+            lastId = lastId,
             pageable = pageable
         )
         
@@ -46,7 +45,7 @@ class LogsRepository(
     /**
      * Создание нового лога
      */
-    fun createLog(message: String, tags: List<TagEntity>, type: LogTypeEnum): LogDto {
+    fun createLog(message: String, tags: List<TagEntity>, type: LogType): LogDto {
         val currentUserId = KeycloakUtils.getUserId() ?: throw IllegalArgumentException("userId is null")
         val now = OffsetDateTime.now()
         
@@ -67,7 +66,7 @@ class LogsRepository(
     /**
      * Обновление существующего лога
      */
-    fun updateLog(logId: UUID, message: String, tags: List<TagEntity>, type: LogTypeEnum): LogDto {
+    fun updateLog(logId: UUID, message: String, tags: List<TagEntity>, type: LogType): LogDto {
         val currentUserId = KeycloakUtils.getUserId() ?: throw IllegalArgumentException("userId is null")
         val existingLog = logsJpaRepository.findById(logId)
             .orElseThrow { NoSuchElementException("Лог с ID $logId не найден") }
