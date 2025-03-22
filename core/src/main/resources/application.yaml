@@ -1,4 +1,8 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://84.201.168.8:5432/${POSTGRES_DATABASE}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
   security:
     oauth2:
       resourceserver:

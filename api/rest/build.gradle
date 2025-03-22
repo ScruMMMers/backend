@@ -10,7 +10,10 @@ plugins {
 dependencies {
     implementation rootProject
 
+    implementation project(":logs")
+    implementation project(":public_interface:logs_interface")
     implementation project(":public_interface:common")
+    implementation project(":mapper")
 
     // openapi
     implementation libs.swagger.annotations
