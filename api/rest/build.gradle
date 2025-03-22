@@ -11,6 +11,7 @@ dependencies {
     implementation rootProject
 
     implementation project(":logs")
+    implementation project(":mapper")
 
     // openapi
     implementation libs.swagger.annotations

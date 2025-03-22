@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: logs-service
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        ddl-auto: validate
+  datasource:
+    url: jdbc:postgresql://ачетут/${POSTGRES_DATABASE}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}

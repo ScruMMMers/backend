@@ -4,6 +4,7 @@ import com.quqee.backend.internship_hits.logs.entity.LogReaction
 import com.quqee.backend.internship_hits.logs.repository.jpa.LogReactionJpaRepository
 import com.quqee.backend.internship_hits.logs.repository.jpa.LogsJpaRepository
 import com.quqee.backend.internship_hits.logs.repository.jpa.ReactionJpaRepository
+import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.RoleEnum
 import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
@@ -29,14 +30,14 @@ class ReactionServiceImpl(
      */
     override fun getLogReactions(logId: UUID): List<ReactionDto> {
         return logReactionJpaRepository.findByLogId(logId)
-            .map { getReactionView(it) }
+            .map { getReactionDto(it) }
     }
 
     /**
      * Добавление реакции к логу
      */
     override fun addReactionToLog(logId: UUID, reactionId: UUID): ReactionDto {
-        val currentUserId = getCurrentUserId()
+        val currentUserId = KeycloakUtils.getUserId() ?: throw IllegalArgumentException("userId is null")
 
         val log = logJpaRepository.findById(logId)
             .orElseThrow { NoSuchElementException("Лог с ID $logId не найден") }
@@ -49,7 +50,7 @@ class ReactionServiceImpl(
         )
 
         if (existingReaction != null) {
-            return getReactionView(existingReaction)
+            return getReactionDto(existingReaction)
         }
 
         val logReaction = LogReaction(
@@ -60,14 +61,14 @@ class ReactionServiceImpl(
         )
 
         logReactionJpaRepository.save(logReaction)
-        return getReactionView(logReaction)
+        return getReactionDto(logReaction)
     }
 
     /**
      * Удаление реакции от лога
      */
     override fun removeReactionFromLog(logId: UUID, reactionId: UUID) {
-        val currentUserId = getCurrentUserId()
+        val currentUserId = KeycloakUtils.getUserId() ?: throw IllegalArgumentException("userId is null")
 
         val logReaction = logReactionJpaRepository.findByLogIdAndUserIdAndReactionId(
             logId, currentUserId, reactionId
@@ -79,7 +80,7 @@ class ReactionServiceImpl(
     /**
      * Преобразование сущности реакции во View
      */
-    private fun getReactionView(logReaction: LogReaction): ReactionDto {
+    private fun getReactionDto(logReaction: LogReaction): ReactionDto {
         val shortAccount = ShortAccountDto(
             userId = UUID.randomUUID().toString(),
             fullName = "Иван Иванов",
@@ -92,13 +93,5 @@ class ReactionServiceImpl(
             shortAccount = shortAccount,
             emoji = logReaction.reaction.emoji
         )
-    }
-
-    /**
-     * Получение текущего пользователя (заглушка, заменить на нормальный способ)
-     */
-    private fun getCurrentUserId(): UUID {
-        // TODO: Заменить на реальный способ получения ID текущего пользователя
-        return UUID.randomUUID()
     }
 }

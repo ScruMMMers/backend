@@ -11,3 +11,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/initial_schema.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 2
+      author: alexander_kirsanov
+      changes:
+        - sqlFile:
+            path: ddl/v2_logs_schemas.sql
+            relativeToChangelogFile: true
