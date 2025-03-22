@@ -10,12 +10,12 @@ CREATE TABLE logs (
 CREATE TABLE tags (
        id UUID PRIMARY KEY,
        company_id UUID NOT NULL,
-       name TEXT NOT NULL
+       name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE reactions (
          id UUID PRIMARY KEY,
-         emoji TEXT NOT NULL
+         emoji VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE log_reactions (
