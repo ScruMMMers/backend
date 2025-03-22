@@ -2,6 +2,8 @@ get:
   tags:
     - logs
   summary: Получить логи пользователя
+  security:
+    - bearerAuth: [ ]
   parameters:
     - in: path
       name: userId

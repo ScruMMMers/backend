@@ -2,6 +2,8 @@ get:
   tags:
     - profile
   summary: Получить свой профиль
+  security:
+    - bearerAuth: [ ]
   responses:
     '200':
       description: Профиль пользователя

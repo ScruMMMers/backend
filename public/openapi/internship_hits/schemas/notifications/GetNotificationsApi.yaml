@@ -2,6 +2,8 @@ get:
   tags:
     - notifications
   summary: Получить уведомления
+  security:
+    - bearerAuth: [ ]
   parameters:
     - in: query
       name: type

@@ -2,6 +2,8 @@ post:
   tags:
     - logs
   summary: Изменение лога
+  security:
+    - bearerAuth: [ ]
   parameters:
     - in: path
       name: logId

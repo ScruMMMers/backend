@@ -2,6 +2,8 @@ get:
   tags:
     - logs
   summary: Получить свои логи
+  security:
+    - bearerAuth: [ ]
   parameters:
     - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
     - $ref: '../common/Pagination.yaml#/PaginationPageSize'
