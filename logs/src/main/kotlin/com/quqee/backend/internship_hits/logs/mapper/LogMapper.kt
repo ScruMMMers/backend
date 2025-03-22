@@ -6,7 +6,7 @@ import com.quqee.backend.internship_hits.logs.service.ReactionService
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
-import com.quqee.backend.internship_hits.public_interface.common.enums.RoleEnum
+import com.quqee.backend.internship_hits.public_interface.common.enums.Role
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import com.quqee.backend.internship_hits.public_interface.tags.TagDto
 import org.springframework.stereotype.Component
@@ -44,7 +44,7 @@ class LogMapper(
                 id = UUID.randomUUID(),
                 name = "Яндекс",
                 shortCompany = ShortCompanyDto(
-                    companyId = UUID.randomUUID().toString(),
+                    companyId = UUID.randomUUID(),
                     name = "Яндекс",
                     avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png")
                         .toString(),
@@ -61,7 +61,7 @@ class LogMapper(
     private fun getCommentsForLog(logId: UUID): List<CommentDto> {
         return listOf(
             CommentDto(
-                id = UUID.fromString("475da269-90ba-4ca6-88d1-6f1227dd6cb8").toString(),
+                id = UUID.fromString("475da269-90ba-4ca6-88d1-6f1227dd6cb8"),
                 message = "Комментарий",
                 createdAt = OffsetDateTime.now(),
                 updatedAt = OffsetDateTime.now(),
@@ -70,13 +70,13 @@ class LogMapper(
                     fullName = "Эвилоныч",
                     avatarUrl = URI.create("https://sun9-25.userapi.com/s/v1/ig2/_BSpBnS-Zo2c2_J48KJk9POa1GDKa37nEJSdVoe-qeyNbIBoQmp4N4N6TtRIhr5xRvhB6O8VCBW2ke3jl9y2Y3NV.jpg?quality=96&as=32x43,48x64,72x96,108x144,160x214,240x320,360x480,480x641,540x721,640x854,720x961,959x1280&from=bu&u=o6kxoiUgTUztSx1nrI9fyiJnFMYWW64BuWCLXbMMpfc&cs=605x807")
                         .toString(),
-                    roles = listOf(RoleEnum.DEANERY),
+                    roles = listOf(Role.DEANERY),
                     primaryColor = "#533af9"
                 ),
                 replyTo = null,
             ),
             CommentDto(
-                id = UUID.fromString("953a4e9c-3a59-41d8-8083-36f6133c24d1").toString(),
+                id = UUID.fromString("953a4e9c-3a59-41d8-8083-36f6133c24d1"),
                 message = "Комментарий",
                 createdAt = OffsetDateTime.now(),
                 updatedAt = OffsetDateTime.now(),
@@ -85,10 +85,10 @@ class LogMapper(
                     fullName = "Подполковник Бустеренко",
                     avatarUrl = URI.create("https://super.ru/image/rs::3840:::/quality:90/plain/s3://super-static/prod/661faf8c06dba941afe9118a-1900x.jpeg")
                         .toString(),
-                    roles = listOf(RoleEnum.STUDENT_SECOND),
+                    roles = listOf(Role.STUDENT_SECOND),
                     primaryColor = "#ff8fe9"
                 ),
-                replyTo = UUID.fromString("475da269-90ba-4ca6-88d1-6f1227dd6cb8").toString(),
+                replyTo = UUID.fromString("475da269-90ba-4ca6-88d1-6f1227dd6cb8"),
             ),
         )
     }
