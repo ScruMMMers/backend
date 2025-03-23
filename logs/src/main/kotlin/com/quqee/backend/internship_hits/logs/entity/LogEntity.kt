@@ -12,13 +12,13 @@ import java.util.*
 @Table(name = "logs")
 data class LogEntity(
     @Id
-    val id: UUID,
+    var id: UUID,
 
     @Column(name = "user_id", nullable = false)
-    val userId: UUID,
+    var userId: UUID,
 
     @Column(name = "message", nullable = false)
-    val message: String,
+    var message: String,
 
     @ManyToMany
     @JoinTable(
@@ -26,15 +26,25 @@ data class LogEntity(
         joinColumns = [JoinColumn(name = "log_id")],
         inverseJoinColumns = [JoinColumn(name = "tag_id")]
     )
-    val tags: List<TagEntity> = mutableListOf(),
+    var tags: List<TagEntity> = mutableListOf(),
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    val type: LogType,
+    var type: LogType,
 
     @Column(name = "created_at", nullable = false)
-    val createdAt: OffsetDateTime,
+    var createdAt: OffsetDateTime,
 
     @Column(name = "edited_at", nullable = false)
-    val editedAt: OffsetDateTime
-) 
+    var editedAt: OffsetDateTime
+) {
+    constructor() : this(
+        UUID.randomUUID(),
+        UUID.randomUUID(),
+        "",
+        mutableListOf(),
+        LogType.DEFAULT,
+        OffsetDateTime.now(),
+        OffsetDateTime.now()
+    )
+}

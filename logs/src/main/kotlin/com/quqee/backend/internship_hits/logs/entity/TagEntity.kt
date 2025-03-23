@@ -7,11 +7,13 @@ import java.util.*
 @Table(name = "tags")
 data class TagEntity (
     @Id
-    val id: UUID,
+    var id: UUID,
 
     @Column(name = "companyId", nullable = false)
-    val companyId: UUID,
+    var companyId: UUID,
 
     @Column(name = "name", nullable = false)
-    val name: String
-)
+    var name: String
+) {
+    constructor() : this(UUID.randomUUID(), UUID.randomUUID(), "")
+}

@@ -10,16 +10,18 @@ import java.util.*
 @Table(name = "log_reactions")
 data class LogReaction (
     @Id
-    val id: UUID,
+    var id: UUID,
 
     @ManyToOne
     @JoinColumn(name = "log_id", nullable = false)
-    val log: LogEntity,
+    var log: LogEntity,
 
     @ManyToOne
     @JoinColumn(name = "reaction_id", nullable = false)
-    val reaction: ReactionEntity,
+    var reaction: ReactionEntity,
 
     @Column(name = "user_id", nullable = false)
-    val userId: UUID
-)
+    var userId: UUID
+) {
+    constructor() : this(UUID.randomUUID(), LogEntity(), ReactionEntity(), UUID.randomUUID())
+}
