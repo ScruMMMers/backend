@@ -3,6 +3,11 @@ description: "Runs lint checks using Gradle."
 runs:
   using: "composite"
   steps:
+    - name: Setup Testcontainers Cloud Client
+      uses: atomicjar/testcontainers-cloud-setup-action@v1
+      with:
+        token: ${{ secrets.TC_CLOUD_TOKEN }}
+
     - name: Run lint checks
       run: |
         echo "Lint started"

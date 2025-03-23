@@ -7,6 +7,7 @@ include ':logs'
 include ':profile'
 include ':file_storage'
 include ':notification'
+include ':cdc'
 
 include ':public_interface:company'
 include ':public_interface:common'

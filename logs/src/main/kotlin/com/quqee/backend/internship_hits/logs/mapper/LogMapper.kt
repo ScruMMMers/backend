@@ -6,7 +6,8 @@ import com.quqee.backend.internship_hits.logs.service.ReactionService
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
-import com.quqee.backend.internship_hits.public_interface.common.enums.Role
+import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
+import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import com.quqee.backend.internship_hits.public_interface.tags.TagDto
 import org.springframework.stereotype.Component
@@ -30,7 +31,8 @@ class LogMapper(
             createdAt = entity.createdAt,
             editedAt = entity.editedAt,
             reactions = reactionService.getLogReactions(entity.id),
-            comments = getCommentsForLog(entity.id)
+            comments = getCommentsForLog(entity.id),
+            userId = entity.userId,
         )
     }
     
@@ -66,12 +68,13 @@ class LogMapper(
                 createdAt = OffsetDateTime.now(),
                 updatedAt = OffsetDateTime.now(),
                 shortAccount = ShortAccountDto(
-                    userId = UUID.randomUUID().toString(),
+                    userId = UUID.randomUUID(),
                     fullName = "Эвилоныч",
                     avatarUrl = URI.create("https://sun9-25.userapi.com/s/v1/ig2/_BSpBnS-Zo2c2_J48KJk9POa1GDKa37nEJSdVoe-qeyNbIBoQmp4N4N6TtRIhr5xRvhB6O8VCBW2ke3jl9y2Y3NV.jpg?quality=96&as=32x43,48x64,72x96,108x144,160x214,240x320,360x480,480x641,540x721,640x854,720x961,959x1280&from=bu&u=o6kxoiUgTUztSx1nrI9fyiJnFMYWW64BuWCLXbMMpfc&cs=605x807")
                         .toString(),
-                    roles = listOf(Role.DEANERY),
-                    primaryColor = "#533af9"
+                    roles = listOf(UserRole.DEANERY),
+                    primaryColor = ColorEnum.NAVY,
+                    email = "wtf@mail.ru",
                 ),
                 replyTo = null,
             ),
@@ -81,12 +84,13 @@ class LogMapper(
                 createdAt = OffsetDateTime.now(),
                 updatedAt = OffsetDateTime.now(),
                 shortAccount = ShortAccountDto(
-                    userId = UUID.randomUUID().toString(),
+                    userId = UUID.randomUUID(),
                     fullName = "Подполковник Бустеренко",
                     avatarUrl = URI.create("https://super.ru/image/rs::3840:::/quality:90/plain/s3://super-static/prod/661faf8c06dba941afe9118a-1900x.jpeg")
                         .toString(),
-                    roles = listOf(Role.STUDENT_SECOND),
-                    primaryColor = "#ff8fe9"
+                    roles = listOf(UserRole.STUDENT_SECOND),
+                    primaryColor = ColorEnum.NAVY,
+                    email = "wtf@mail.ru",
                 ),
                 replyTo = UUID.fromString("475da269-90ba-4ca6-88d1-6f1227dd6cb8"),
             ),

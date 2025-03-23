@@ -3,8 +3,9 @@ package com.quqee.backend.internship_hits.profile
 import com.quqee.backend.internship_hits.file_storage.FileStorageService
 import com.quqee.backend.internship_hits.profile.client.RoleClient
 import com.quqee.backend.internship_hits.profile.client.UserClient
+import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
-import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.ProfileDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.ProfileForHeader
@@ -18,12 +19,25 @@ class ProfileService(
     private val fileStorageService: FileStorageService,
 ) {
 
+    fun getShortAccount(dto: GetProfileDto): ShortAccountDto {
+        val profile = getProfile(dto)
+
+        return ShortAccountDto(
+            userId = profile.userId,
+            fullName = profile.fullName,
+            roles = profile.roles.toList(),
+            avatarUrl = profile.avatarUrl ?: FALLBACK_PROFILE_IMAGE_URL,
+            primaryColor = profile.primaryColor,
+            email = profile.email,
+        )
+    }
+
     fun getProfileForHeader(dto: GetProfileDto): ProfileForHeader {
         val profile = getProfile(dto)
         return ProfileForHeader(
-            fullName = "${profile.firstName} ${profile.lastName}",
+            fullName = profile.fullName,
             // мб эти буквы вообще на клиенте рендерить чем сервер этим загружать
-            avatarUrl = profile.avatarUrl ?: "https://storage.yandexcloud.net/s3-metaratings-storage/images/8a/2e/8a2edb16e4505b0dad602c4949784e07.png"
+            avatarUrl = profile.avatarUrl ?: FALLBACK_PROFILE_IMAGE_URL
         )
     }
 
@@ -44,11 +58,12 @@ class ProfileService(
             roles = user.roles,
             username = user.username,
             // TODO: Убрать заглушку после создания фоток
-            avatarUrl = "https://storage.yandexcloud.net/s3-metaratings-storage/images/8a/2e/8a2edb16e4505b0dad602c4949784e07.png"
+            avatarUrl = FALLBACK_PROFILE_IMAGE_URL
         )
     }
 
     companion object {
+        private const val FALLBACK_PROFILE_IMAGE_URL = "https://storage.yandexcloud.net/s3-metaratings-storage/images/8a/2e/8a2edb16e4505b0dad602c4949784e07.png"
         private const val PROFILE_PICTURE_FILE_FORMATTED = "profile_picture_%s"
         private val log = LoggerFactory.getLogger(ProfileService::class.java)
     }

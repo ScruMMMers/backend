@@ -29,6 +29,8 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_REGION: ru-central1
+      SERVER_APP_KEYCLOAK_SECRET: ${SERVER_APP_KEYCLOAK_SECRET}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
     ports:
       - '8080:8080'
     networks:
@@ -69,6 +71,62 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    networks:
+      - my_network
+
+  internship_broker:
+    image: bitnami/kafka:3.9.0
+    container_name: internship_broker
+    ports:
+      - '9094:9094'
+    environment:
+      KAFKA_ENABLE_KRAFT: yes
+      KAFKA_CFG_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://internship_broker:9092,EXTERNAL://localhost:9094
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: '1@internship_broker:9093'
+      KAFKA_CFG_BROKER_ID: 1
+      ALLOW_PLAINTEXT_LISTENER: yes
+      KAFKA_KRAFT_CLUSTER_ID: r4zt_wrqTRuT7W2NJsB_GA
+      KAFKA_CFG_NODE_ID: 1
+    healthcheck:
+      test: nc -z localhost 9092 || exit -1
+      start_period: 15s
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - my_network
+
+  internship_debezium:
+    image: debezium/connect:3.0.0.Final
+    restart: always
+    container_name: internship_debezium
+    ports:
+      - '9040:8083'
+    environment:
+      BOOTSTRAP_SERVERS: internship_broker:9092
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: connect_configs
+      STATUS_STORAGE_TOPIC: connect_statuses
+      OFFSET_STORAGE_TOPIC: connect_offsets
+      KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      ENABLE_DEBEZIUM_SCRIPTING: 'true'
+    networks:
+      - my_network
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:v0.7.2
+    container_name: kafka-ui
+    ports:
+      - '10090:8080'
+    restart: always
+    environment:
+      KAFKA_CLUSTERS_0_NAME: r4zt_wrqTRuT7W2NJsB_GA
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: internship_broker:9092
     networks:
       - my_network
 

@@ -1,0 +1,15 @@
+dependencies {
+    implementation rootProject
+
+    implementation project(":notification")
+    implementation project(":public_interface:common")
+    implementation project(":public_interface:notification_public")
+    implementation project(":public_interface:profile_public")
+    implementation project(':public_interface:logs_interface')
+    implementation project(":logs")
+    implementation project(":profile")
+
+    implementation libs.spring.kafka
+    implementation libs.jackson.module.kotlin
+    implementation libs.kotlin.coroutines.core
+}

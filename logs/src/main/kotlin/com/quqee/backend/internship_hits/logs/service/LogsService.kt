@@ -4,10 +4,9 @@ import com.quqee.backend.internship_hits.logs.entity.TagEntity
 import com.quqee.backend.internship_hits.logs.repository.LogsRepository
 import com.quqee.backend.internship_hits.logs.repository.jpa.TagJpaRepository
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPagination
-import com.quqee.backend.internship_hits.public_interface.logs.CreateLogRequestDto
-import com.quqee.backend.internship_hits.public_interface.logs.CreatedLogDto
-import com.quqee.backend.internship_hits.public_interface.logs.LogListDto
-import com.quqee.backend.internship_hits.public_interface.logs.UpdateLogRequestDto
+import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
+import com.quqee.backend.internship_hits.public_interface.logs.*
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -16,6 +15,7 @@ interface LogsService {
     fun getUserLogs(userId: UUID, lastId: UUID?, size: Int?): LogListDto
     fun createLog(createLogRequest: CreateLogRequestDto): CreatedLogDto
     fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestDto): CreatedLogDto
+    fun getLogById(logId: UUID): LogDto
 }
 
 @Service
@@ -89,6 +89,14 @@ class LogsServiceImpl (
         )
         
         return CreatedLogDto(log = updatedLog)
+    }
+
+    /**
+     * Получаем лог по id
+     */
+    override fun getLogById(logId: UUID): LogDto {
+        return logsRepository.getLogById(logId) ?:
+            throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Log with id $logId not found")
     }
 
     /**

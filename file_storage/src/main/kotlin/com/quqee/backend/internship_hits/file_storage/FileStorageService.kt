@@ -1,7 +1,7 @@
 package com.quqee.backend.internship_hits.file_storage
 
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
-import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.file_storage_public.GetLinkForFileDto
 import com.quqee.backend.internship_hits.public_interface.file_storage_public.LinkForFileDto
 import com.quqee.backend.internship_hits.public_interface.file_storage_public.UploadFileDto

@@ -15,5 +15,6 @@ data class LogDto(
     val createdAt: OffsetDateTime,
     val editedAt: OffsetDateTime,
     val reactions: List<ReactionDto>,
-    val comments: List<CommentDto>
+    val comments: List<CommentDto>,
+    val userId: UUID,
 )

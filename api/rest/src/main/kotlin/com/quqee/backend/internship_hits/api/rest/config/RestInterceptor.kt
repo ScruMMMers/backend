@@ -1,7 +1,7 @@
 package com.quqee.backend.internship_hits.api.rest.config
 
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
-import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
