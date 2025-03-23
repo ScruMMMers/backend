@@ -20,6 +20,9 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+      args:
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       cache_from:
         - ggnathion/internship-app:latest
     environment:
