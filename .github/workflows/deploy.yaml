@@ -69,11 +69,6 @@ jobs:
           password: ${{ secrets.CI_REGISTRY_PASSWORD }}
           username: ${{ secrets.CI_REGISTRY_USER }}
 
-      - name: Setup Testcontainers Cloud Client
-        uses: atomicjar/testcontainers-cloud-setup-action@v1
-        with:
-          token: ${{ secrets.TC_CLOUD_TOKEN }}
-
       - name: Build Docker images
         env:
           CI_REGISTRY_IMAGE: ${{ secrets.CI_REGISTRY_IMAGE }}
