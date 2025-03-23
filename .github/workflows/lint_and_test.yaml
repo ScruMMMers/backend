@@ -9,7 +9,6 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: ru-central1
   SERVER_APP_KEYCLOAK_SECRET: ${{ secrets.SERVER_APP_KEYCLOAK_SECRET }}
-  TC_CLOUD_TOKEN: ${{ secrets.TC_CLOUD_TOKEN }}
   SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
 
 jobs:
@@ -24,8 +23,6 @@ jobs:
 
       - name: Run Lint Check
         uses: ./.github/actions/lint
-        with:
-          tc_token: ${{ secrets.TC_CLOUD_TOKEN }}
 
   test:
     runs-on: ubuntu-latest
@@ -39,5 +36,3 @@ jobs:
 
       - name: Run Test Check
         uses: ./.github/actions/test
-        with:
-          tc_token: ${{ secrets.TC_CLOUD_TOKEN }}

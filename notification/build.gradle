@@ -145,9 +145,16 @@ tasks.named("compileKotlin") {
     dependsOn("jooqCodegen")
 }
 
+tasks.register("jooq-build") {
+    System.setProperty("jooq.codegen.jdbc.url", "jdbc:postgresql://84.201.168.8:5432/internship")
+    System.setProperty("jooq.codegen.jdbc.username", System.getenv("POSTGRES_USER"))
+    System.setProperty("jooq.codegen.jdbc.password", System.getenv("POSTGRES_PASSWORD"))
+}
+
 tasks.named("jooqCodegen") {
-    dependsOn("tc-start")
-    finalizedBy("tc-stop")
+    dependsOn("jooq-build")
+//    dependsOn("tc-start")
+//    finalizedBy("tc-stop")
 }
 
 sourceSets {
