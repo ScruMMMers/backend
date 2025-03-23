@@ -32,13 +32,20 @@ class LogsRepository(
      */
     fun getLogsByUserId(userId: UUID, lastId: UUID?, pageSize: Int): List<LogDto> {
         val pageable = PageRequest.of(0, pageSize)
-        
-        val logs = logsJpaRepository.findByUserIdAndIdLessThanOrderByCreatedAtDesc(
-            userId = userId,
-            lastId = lastId,
-            pageable = pageable
-        )
-        
+
+        val logs = if (lastId != null) {
+            val lastLog = logsJpaRepository.findById(lastId).orElse(null)
+                ?: throw NoSuchElementException("Лог с ID $lastId не найден")
+
+            logsJpaRepository.findByUserIdAndCreatedAtLessThanOrderByCreatedAtDescIdDesc(
+                userId,
+                lastLog.createdAt,
+                pageable
+            )
+        } else {
+            logsJpaRepository.findByUserIdOrderByCreatedAtDescIdDesc(userId, pageable)
+        }
+
         return logs.map { logMapper.toLogView(it) }
     }
 
