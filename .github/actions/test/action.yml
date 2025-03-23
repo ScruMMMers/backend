@@ -1,12 +1,16 @@
 name: "Test Check"
 description: "Runs test checks using Gradle."
+inputs:
+  tc_token:
+    description: 'The test container token'
+    required: true
 runs:
   using: "composite"
   steps:
     - name: Setup Testcontainers Cloud Client
       uses: atomicjar/testcontainers-cloud-setup-action@v1
       with:
-        token: ${{ secrets.TC_CLOUD_TOKEN }}
+        token: ${{ inputs.tc_token }}
 
     - name: Run lint checks
       run: |
