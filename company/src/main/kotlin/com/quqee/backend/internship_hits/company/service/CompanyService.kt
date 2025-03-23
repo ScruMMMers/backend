@@ -27,7 +27,7 @@ class CompanyServiceImpl(
      * Создание компании
      */
     override fun createCompany(createCompanyDto: CreateCompanyDto): CompanyDto {
-        //TODO валидация
+        //TODO валидация по году и цвету
         return companyRepository.createCompany(createCompanyDto)
     }
 

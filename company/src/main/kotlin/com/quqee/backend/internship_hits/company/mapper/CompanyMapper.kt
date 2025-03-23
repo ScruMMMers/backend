@@ -20,7 +20,7 @@ class CompanyMapper(
         return CompanyDto(
             companyId = entity.companyId,
             name = entity.name,
-            // TODO получение shortAccountDto
+            // TODO получение shortAccountDto и картинка компании
             agent = ShortAccountDto(
                 userId = UUID.randomUUID().toString(),
                 fullName = "Эвилоныч",
@@ -44,6 +44,7 @@ class CompanyMapper(
         return ShortCompanyDto(
             companyId = entity.companyId,
             name = entity.name,
+            //  TODO картинка компании
             avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"), //TODO получение урла фото
             primaryColor = entity.primaryColor
         )

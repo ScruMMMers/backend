@@ -1,7 +1,6 @@
 package com.quqee.backend.internship_hits.company.entity
 
 import jakarta.persistence.*
-import java.net.URI
 import java.util.*
 
 
@@ -18,6 +17,8 @@ data class CompanyEntity(
 
     @Column(name = "name", nullable = false)
     var name: String,
+
+    // TODO картинка компании
 
     @Column(name = "agent", nullable = false)
     var agent: UUID,
