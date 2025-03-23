@@ -17,4 +17,5 @@ dependencies {
     implementation project(":profile")
     implementation project(":file_storage")
     implementation project(":notification")
+    implementation project(":cdc")
 }

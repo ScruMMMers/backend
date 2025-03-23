@@ -28,7 +28,8 @@ class LogConfigurationMapper(
             createdAt = model.createdAt,
             editedAt = model.editedAt,
             reactions = model.reactions.map { mapReaction.fromApi(it) },
-            comments = model.comments.map { mapComment.fromApi(it) }
+            comments = model.comments.map { mapComment.fromApi(it) },
+            userId = UUID.randomUUID()
         )
     }
 

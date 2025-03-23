@@ -1,0 +1,31 @@
+{
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "database.dbname": "origination",
+    "database.history.kafka.bootstrap.servers": "internship_broker:9092",
+    "database.history.kafka.topic": "log_reactions",
+    "database.hostname": "db",
+    "database.password": "cNBxF5Ang977BPz7kUr2jHHBMu6bQfnh",
+    "database.port": "5432",
+    "database.server.name": "postgres",
+    "database.user": "postgres",
+    "name": "log-reactions-db-connector",
+    "plugin.name": "pgoutput",
+    "table.include.list": "public.log_reactions",
+    "topic.creation.default.cleanup.policy": "delete",
+    "topic.creation.default.partitions": "3",
+    "topic.creation.default.replication.factor": "1",
+    "topic.creation.default.retention.ms": "604800000",
+    "topic.creation.enable": "true",
+    "transforms.AddPrefix.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.AddPrefix.regex": "postgres.public.log_reactions",
+    "transforms.AddPrefix.replacement": "raw.log_reactions",
+    "topic.prefix": "raw",
+    "message.key.columns": "public.log_reactions:id,log_id,user_id,reaction_id",
+    "key.converter.schemas.enable": "false",
+    "value.converter.schemas.enable": "false",
+    "decimal.handling.mode": "string",
+    "slot.name" : "log_reactions_slot"
+  },
+  "name": "log-reactions-db-connector"
+}

@@ -1,4 +1,4 @@
-package com.quqee.backend.internship_hits.public_interface.common.exception
+package com.quqee.backend.internship_hits.public_interface.common.enums
 
 enum class ExceptionType {
     IDEMPOTENT_OPERATION_FAILED,

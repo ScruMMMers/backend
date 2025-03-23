@@ -74,3 +74,6 @@ amazon-netty-nio-client = { module = "software.amazon.awssdk:netty-nio-client", 
 amazon-s3control = { module = "software.amazon.awssdk:s3control", version.ref = "awssdk" }
 amazon-s3-transfer-manager = { module = "software.amazon.awssdk:s3-transfer-manager", version.ref = "awssdk" }
 amazon-apache-client = { module = "software.amazon.awssdk:apache-client", version.ref = "awssdk" }
+
+#email
+email-api = { module = "org.springframework.boot:spring-boot-starter-mail", version.ref = "spring-boot" }

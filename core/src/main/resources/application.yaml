@@ -3,6 +3,10 @@ spring:
     url: jdbc:postgresql://84.201.168.8:5432/${INTERNSHIP_DATABASE}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+
+  jooq:
+    sql-dialect: postgres
+
   security:
     oauth2:
       resourceserver:
@@ -22,6 +26,30 @@ spring:
               - openid
               - microprofile-jwt
               - profile
+
+  kafka:
+    bootstrap-servers: localhost:9094
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+    listener:
+      ack-mode: MANUAL_IMMEDIATE
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: zdraviymalish@gmail.com
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 server:
   port: 8080
 
@@ -34,4 +62,13 @@ keycloak:
     uri: https://auth.staziss-tech.ru
     realm: internship
     client-id: server-app
-    client-secret: PnolycsH6gr9tNUZXBBEp47fbgzfBPSU
+    client-secret: ${SERVER_APP_KEYCLOAK_SECRET}
+
+exporter:
+  cdc:
+    log_reactions:
+      source-topic: "raw.public.log_reactions"
+      group-id: "exporter-log_reactions"
+    notification:
+      source-topic: "raw.public.notification"
+      group-id: "exporter-notification"

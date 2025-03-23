@@ -3,8 +3,8 @@ package com.quqee.backend.internship_hits.profile.client
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
 import com.quqee.backend.internship_hits.profile.entity.UserEntity
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
-import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionType
-import com.quqee.backend.internship_hits.public_interface.common.exception.UserRole
+import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import org.keycloak.admin.client.CreatedResponseUtil
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.admin.client.resource.UserResource

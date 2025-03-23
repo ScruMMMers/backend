@@ -1,6 +1,6 @@
 package com.quqee.backend.internship_hits.profile.entity
 
-import com.quqee.backend.internship_hits.public_interface.common.exception.UserRole
+import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import java.util.*
 
 data class UserEntity(

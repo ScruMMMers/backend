@@ -18,3 +18,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v2_logs_schemas.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 3
+      author: gordey_dovydenko
+      changes:
+        - sqlFile:
+            path: ddl/init_notification_schema.sql
+            relativeToChangelogFile: true

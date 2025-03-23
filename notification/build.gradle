@@ -1,5 +1,22 @@
+import org.slf4j.LoggerFactory
+import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.Network
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.containers.output.Slf4jLogConsumer
+import org.testcontainers.containers.wait.strategy.Wait
+
+buildscript {
+    dependencies {
+        classpath(libs.testcontainers.postgres)
+        classpath(libs.testcontainers)
+        classpath(libs.postgres)
+        classpath(libs.liquibase)
+    }
+}
+
 plugins {
     id 'checkstyle'
+    id 'org.jooq.jooq-codegen-gradle' version '3.19.18'
     id 'org.jetbrains.kotlin.jvm' version '1.9.25'
     id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
     id 'org.springframework.boot' version '3.4.3'
@@ -10,5 +27,138 @@ dependencies {
     implementation rootProject
 
     implementation project(":public_interface:common")
-    implementation project(':public_interface:notification_public')
+    implementation project(":public_interface:notification_public")
+    implementation project(":public_interface:profile_public")
+    implementation project(":profile")
+
+    implementation libs.email.api
+    implementation libs.jackson.module.kotlin
+    implementation libs.kotlin.coroutines.core
+
+    // jooq
+    implementation libs.spring.boot.starter.jooq
+    implementation libs.jooq
+    jooqCodegen libs.postgres
+    implementation libs.testcontainers
+    implementation libs.testcontainers.postgres
+    implementation libs.postgres
+}
+
+jooq {
+    version = dependencyManagement.importedProperties['jooq.version']
+    configuration {
+        generator {
+            name = 'org.jooq.codegen.KotlinGenerator'
+            database {
+                name = 'org.jooq.meta.postgres.PostgresDatabase'
+                excludes = 'public\\.(Databasechangelog|Databasechangeloglock)'
+                includes = 'public.*'
+            }
+            target {
+                packageName = 'com.quqee.backend.internship_hits.notification'
+            }
+        }
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+def dbUsername = "postgres"
+def dbPassword = "postgres"
+
+tasks.register("tc-start") {
+    doLast {
+        Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(LoggerFactory.getLogger("ContainerLogs"));
+        def network = Network.newNetwork()
+
+        def db = new PostgreSQLContainer("postgres:16-alpine")
+                .withUsername("${dbUsername}")
+                .withDatabaseName("postgres")
+                .withPassword("${dbPassword}")
+                .withNetwork(network)
+                .withNetworkAliases("internship-db")
+        println("Starting testcontainer postgres")
+        db.start()
+        db.followOutput(logConsumer)
+
+        System.setProperty("jooq.codegen.jdbc.url", db.getJdbcUrl())
+        System.setProperty("jooq.codegen.jdbc.username", db.getUsername())
+        System.setProperty("jooq.codegen.jdbc.password", db.getPassword())
+
+        def jdbcUrl = db.getJdbcUrl().replace("localhost", "internship-db")
+                .replace(":${db.getFirstMappedPort()}", ":5432")
+
+        def localChangelogPath = "${rootDir}/migration/changelog"
+        def containerChangelogPath = "/liquibase/changelog"
+        def liquibaseContainer = new GenericContainer("liquibase/liquibase:4.28")
+                .withNetwork(network)
+                .withFileSystemBind(localChangelogPath, containerChangelogPath)
+                .withCommand("update",
+                        "--changelog-file=/changelog/root-changelog.yml",
+                        "--url=${jdbcUrl}",
+                        "--username=${db.getUsername()}",
+                        "--password=${db.getPassword()}")
+                .waitingFor(Wait.forLogMessage(".*Liquibase command 'update' was executed successfully.*", 1))
+        println("Starting testcontainer liquibase")
+        liquibaseContainer.start()
+        liquibaseContainer.followOutput(logConsumer)
+
+        System.setProperty("testcontainer.db.containerid", db.getContainerId())
+        System.setProperty("testcontainer.db.imageName", db.getDockerImageName())
+        System.setProperty("testcontainer.liquibase.containerid", liquibaseContainer.getContainerId())
+        System.setProperty("testcontainer.liquibase.imageName", liquibaseContainer.getDockerImageName())
+        System.setProperty("testcontainer.network", network.getId())
+    }
+}
+
+tasks.register("tc-stop") {
+    doLast {
+        def containerDbId = System.getProperty("testcontainer.db.containerid")
+        def imageDbName = System.getProperty("testcontainer.db.imageName")
+
+        println("Stopping testcontainer $containerDbId - $imageDbName")
+        org.testcontainers.utility.ResourceReaper
+                .instance()
+                .stopAndRemoveContainer(containerDbId, imageDbName)
+
+        def containerLiquibaseId = System.getProperty("testcontainer.liquibase.containerid")
+        def imageLiquibaseName = System.getProperty("testcontainer.liquibase.imageName")
+
+        println("Stopping testcontainer $containerLiquibaseId - $imageLiquibaseName")
+        org.testcontainers.utility.ResourceReaper
+                .instance()
+                .stopAndRemoveContainer(containerLiquibaseId, imageLiquibaseName)
+
+        def networkId = System.getProperty("testcontainer.network")
+        println("Removing network $networkId")
+        org.testcontainers.utility.ResourceReaper
+                .instance()
+                .removeNetworkById(networkId)
+    }
+}
+
+tasks.named("compileKotlin") {
+    dependsOn("jooqCodegen")
+}
+
+tasks.register("jooq-build") {
+    System.setProperty("jooq.codegen.jdbc.url", "jdbc:postgresql://84.201.168.8:5432/internship")
+    System.setProperty("jooq.codegen.jdbc.username", System.getenv("POSTGRES_USER"))
+    System.setProperty("jooq.codegen.jdbc.password", System.getenv("POSTGRES_PASSWORD"))
+}
+
+tasks.named("jooqCodegen") {
+    dependsOn("jooq-build")
+//    dependsOn("tc-start")
+//    finalizedBy("tc-stop")
+}
+
+sourceSets {
+    main {
+        java.srcDirs += "$buildDir/generated-src/jooq/main"
+    }
 }

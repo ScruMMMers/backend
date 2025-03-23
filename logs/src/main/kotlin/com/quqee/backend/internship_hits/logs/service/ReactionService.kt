@@ -6,7 +6,8 @@ import com.quqee.backend.internship_hits.logs.repository.jpa.LogsJpaRepository
 import com.quqee.backend.internship_hits.logs.repository.jpa.ReactionJpaRepository
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
-import com.quqee.backend.internship_hits.public_interface.common.enums.Role
+import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
+import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
 import org.springframework.stereotype.Service
 import java.net.URI
@@ -82,12 +83,13 @@ class ReactionServiceImpl(
      */
     private fun getReactionDto(logReaction: LogReaction): ReactionDto {
         val shortAccount = ShortAccountDto(
-            userId = UUID.randomUUID().toString(),
+            userId = UUID.randomUUID(),
             fullName = "Иван Иванов",
             avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png")
                 .toString(),
-            roles = listOf(Role.DEANERY),
-            primaryColor = "#533af9"
+            roles = listOf(UserRole.DEANERY),
+            primaryColor = ColorEnum.AQUA,
+            email = "wtf@mail.ru",
         )
         return ReactionDto(
             shortAccount = shortAccount,

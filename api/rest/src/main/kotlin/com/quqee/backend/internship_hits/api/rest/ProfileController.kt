@@ -2,11 +2,11 @@ package com.quqee.backend.internship_hits.api.rest
 
 import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
 import com.quqee.backend.internship_hits.model.rest.*
-import com.quqee.backend.internship_hits.notification.NotificationService
+import com.quqee.backend.internship_hits.notification.service.NotificationService
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
-import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.notification_public.GetNotificationForHeaderDto
 import com.quqee.backend.internship_hits.public_interface.notification_public.ShortNotificationDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto

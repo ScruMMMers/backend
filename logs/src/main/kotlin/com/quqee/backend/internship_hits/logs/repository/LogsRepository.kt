@@ -6,7 +6,7 @@ import com.quqee.backend.internship_hits.logs.mapper.LogMapper
 import com.quqee.backend.internship_hits.logs.repository.jpa.LogsJpaRepository
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
-import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import org.springframework.data.domain.PageRequest
@@ -91,5 +91,13 @@ class LogsRepository(
         
         val savedLog = logsJpaRepository.save(updatedLog)
         return logMapper.toLogView(savedLog)
+    }
+
+    /**
+     * Получение лога по ID
+     */
+    fun getLogById(logId: UUID): LogDto? {
+        val log = logsJpaRepository.findById(logId)
+        return log.map { logMapper.toLogView(it) }.orElse(null)
     }
 } 
