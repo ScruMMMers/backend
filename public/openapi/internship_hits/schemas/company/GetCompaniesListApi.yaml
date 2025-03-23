@@ -1,0 +1,21 @@
+get:
+  tags:
+    - company
+  summary: Получить список компаний в системе
+  parameters:
+    - in: query
+      name: name
+      required: false
+      schema:
+        type: string
+    - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
+    - $ref: '../common/Pagination.yaml#/PaginationPageSize'
+  responses:
+    '200':
+      description: список компаний в системе
+      content:
+        application/json:
+          schema:
+            $ref: './CompaniesListView.yaml#/CompaniesListView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

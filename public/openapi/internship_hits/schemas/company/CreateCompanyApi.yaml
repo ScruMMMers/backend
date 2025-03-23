@@ -1,0 +1,20 @@
+post:
+  tags:
+    - company
+  summary: Создать компанию
+  requestBody:
+    description: Передаем сюда данные для создания компании
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './CreateCompanyView.yaml#/CreateCompanyView'
+  responses:
+    '200':
+      description: Компания
+      content:
+        application/json:
+          schema:
+            $ref: './CompanyView.yaml#/CompanyView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

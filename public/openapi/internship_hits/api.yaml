@@ -35,6 +35,13 @@ paths:
   /logs/{logId}:
     $ref: './schemas/logs/EditLogApi.yaml'
 
+  /company/{companyId}:
+    $ref: './schemas/company/GetCompanyApi.yaml'
+  /company/list:
+    $ref: './schemas/company/GetCompaniesListApi.yaml'
+  /company:
+    $ref: './schemas/company/CreateCompanyApi.yaml'
+
   /tags:
     $ref: './schemas/tags/GetTagsApi.yaml'
 
