@@ -80,7 +80,7 @@ services:
     ports:
       - '9094:9094'
     environment:
-      KAFKA_ENABLE_KRAFT: yes
+      KAFKA_ENABLE_KRAFT: "yes"
       KAFKA_CFG_PROCESS_ROLES: 'broker,controller'
       KAFKA_CFG_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
@@ -88,7 +88,7 @@ services:
       KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://internship_broker:9092,EXTERNAL://localhost:9094
       KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: '1@internship_broker:9093'
       KAFKA_CFG_BROKER_ID: 1
-      ALLOW_PLAINTEXT_LISTENER: yes
+      ALLOW_PLAINTEXT_LISTENER: "yes"
       KAFKA_KRAFT_CLUSTER_ID: r4zt_wrqTRuT7W2NJsB_GA
       KAFKA_CFG_NODE_ID: 1
     healthcheck:
