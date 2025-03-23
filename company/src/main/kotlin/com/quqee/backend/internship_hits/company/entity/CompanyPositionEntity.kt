@@ -1,9 +1,6 @@
 package com.quqee.backend.internship_hits.company.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.util.*
 
 
@@ -16,18 +13,27 @@ data class CompanyPositionEntity(
 
     @Id
     @Column(name = "id", nullable = false)
-    val positionId: UUID,
+    var positionId: UUID,
 
-    @Column(name = "company_id", nullable = false)
-    val companyId: UUID,
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false)
+    var company: CompanyEntity,
 
     @Column(name = "name", nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(name = "employed_count", nullable = false)
-    val employedCount: Int,
+    var employedCount: Int,
 
     @Column(name = "interviews_count", nullable = false)
-    val interviewsCount: Int
+    var interviewsCount: Int
 
-)
+) {
+    constructor() : this(
+        UUID.randomUUID(),
+        CompanyEntity(),
+        "",
+        0,
+        0
+    )
+}

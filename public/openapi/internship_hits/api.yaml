@@ -41,6 +41,8 @@ paths:
     $ref: './schemas/company/GetCompaniesListApi.yaml'
   /company:
     $ref: './schemas/company/CreateCompanyApi.yaml'
+  /company/{companyId}/position:
+    $ref: './schemas/company/CreateCompanyPositionApi.yaml'
 
   /tags:
     $ref: './schemas/tags/GetTagsApi.yaml'

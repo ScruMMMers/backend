@@ -3,9 +3,9 @@ package com.quqee.backend.internship_hits.company.repository
 import com.quqee.backend.internship_hits.company.entity.CompanyEntity
 import com.quqee.backend.internship_hits.company.mapper.CompanyMapper
 import com.quqee.backend.internship_hits.company.repository.jpa.CompanyJpaRepository
-import com.quqee.backend.internship_hits.model.rest.CompanyView
-import com.quqee.backend.internship_hits.model.rest.CreateCompanyView
-import com.quqee.backend.internship_hits.model.rest.ShortCompanyView
+import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
+import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
+import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -19,18 +19,18 @@ class CompanyRepository(
     /**
      * Создание компании
      */
-    fun createCompany(createCompanyView: CreateCompanyView): CompanyView {
+    fun createCompany(createCompanyDto: CreateCompanyDto): CompanyDto {
         val companyEntity = CompanyEntity(
             companyId = UUID.randomUUID(),
-            name = createCompanyView.name,
-            agent = createCompanyView.agentId,
-            avatarId = UUID.randomUUID(),
-            sinceYear = createCompanyView.sinceYear,
-            description = createCompanyView.description,
-            primaryColor = createCompanyView.primaryColor
+            name = createCompanyDto.name,
+            agent = createCompanyDto.agentId,
+            sinceYear = createCompanyDto.sinceYear,
+            description = createCompanyDto.description,
+            primaryColor = createCompanyDto.primaryColor,
+            positions = mutableListOf()
         )
 
-        return mapper.toCompanyView(
+        return mapper.toCompanyDto(
             companyJpaRepository.save(companyEntity)
         )
     }
@@ -38,8 +38,8 @@ class CompanyRepository(
     /**
      * Получение компании по идентификатору
      */
-    fun getCompany(companyId: UUID): CompanyView {
-        return mapper.toCompanyView(
+    fun getCompany(companyId: UUID): CompanyDto {
+        return mapper.toCompanyDto(
             companyJpaRepository.findById(companyId).orElse(null)
         )
     }
@@ -47,17 +47,16 @@ class CompanyRepository(
     /**
      * Получение списка компаний
      */
-    fun getCompaniesList(name: String?, lastId: Int?, pageSize: Int): List<ShortCompanyView> {
-        val lastUuid = lastId?.let { UUID.fromString(it.toString()) }
+    fun getCompaniesList(name: String?, lastId: UUID?, pageSize: Int): List<ShortCompanyDto> {
         val pageable = PageRequest.of(0, pageSize)
 
         val companies = companyJpaRepository.findByNameLikeAndCompanyIdLessThan(
             name = name,
-            lastId = lastUuid,
+            lastId = lastId,
             pageable = pageable
         )
 
-        return companies.map { mapper.toShortCompanyView(it) }
+        return companies.map { mapper.toShortCompanyDto(it) }
     }
 
 }

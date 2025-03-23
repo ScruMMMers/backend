@@ -9,17 +9,17 @@ import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
 import com.quqee.backend.internship_hits.public_interface.tags.TagDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import java.util.*
 
 @Configuration
-class LogConfigurationMapper(
+class LogConfigurationMapper (
     private val mapLogType: EnumerationMapper<LogTypeEnum, LogType>,
-    private val mapTag: FromApiToInternalMapper<TagView, TagDto>,
-    private val mapReaction: FromApiToInternalMapper<ReactionView, ReactionDto>,
-    private val mapComment: FromApiToInternalMapper<CommentView, CommentDto>
 ) {
     @Bean
-    fun mapLog(): FromApiToInternalMapper<LogView, LogDto> = makeFromApiMapper { model ->
+    fun mapLog(
+        mapTag: FromApiToInternalMapper<TagView, TagDto>,
+        mapReaction: FromApiToInternalMapper<ReactionView, ReactionDto>,
+        mapComment: FromApiToInternalMapper<CommentView, CommentDto>
+    ): FromApiToInternalMapper<LogView, LogDto> = makeFromApiMapper { model ->
         LogDto(
             id = model.id,
             message = model.message,

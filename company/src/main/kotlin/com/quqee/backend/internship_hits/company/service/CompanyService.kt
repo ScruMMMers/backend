@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 interface CompanyService {
-    fun createCompany(createCompanyView: CreateCompanyDto): CompanyDto
+    fun createCompany(createCompanyDto: CreateCompanyDto): CompanyDto
     fun getCompany(companyId: UUID): CompanyDto
-    fun getCompaniesList(name: String?, lastId: Int?, size: Int?): CompaniesListDto
+    fun getCompaniesList(name: String?, lastId: UUID?, size: Int?): CompaniesListDto
 }
 
 @Service
@@ -26,9 +26,9 @@ class CompanyServiceImpl(
     /**
      * Создание компании
      */
-    override fun createCompany(createCompanyView: CreateCompanyDto): CompanyDto {
+    override fun createCompany(createCompanyDto: CreateCompanyDto): CompanyDto {
         //TODO валидация
-        return companyRepository.createCompany(createCompanyView)
+        return companyRepository.createCompany(createCompanyDto)
     }
 
     /**
@@ -42,7 +42,7 @@ class CompanyServiceImpl(
     /**
      * Получение списка компаний
      */
-    override fun getCompaniesList(name: String?, lastId: Int?, size: Int?): CompaniesListDto {
+    override fun getCompaniesList(name: String?, lastId: UUID?, size: Int?): CompaniesListDto {
         val pageSize = size ?: DEFAULT_PAGE_SIZE
         val companies = companyRepository.getCompaniesList(name, lastId, pageSize)
         val hasNext = companies.size >= pageSize
@@ -50,7 +50,7 @@ class CompanyServiceImpl(
         return CompaniesListDto(
             companies = companies,
             page = LastIdPagination(
-                lastId = 10.toString(),
+                lastId = if (companies.isNotEmpty()) companies.last().companyId else null,
                 pageSize = pageSize,
                 hasNext = hasNext
             )

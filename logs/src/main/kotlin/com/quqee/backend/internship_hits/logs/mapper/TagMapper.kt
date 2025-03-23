@@ -16,8 +16,7 @@ class TagMapper {
             shortCompany = ShortCompanyDto(
                 companyId = UUID.randomUUID(),
                 name = "Яндекс",
-                avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png")
-                    .toString(),
+                avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"),
                 primaryColor = "#ef1818",
             ),
             name = tagEntity.name

@@ -1,9 +1,6 @@
 package com.quqee.backend.internship_hits.company.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.net.URI
 import java.util.*
 
@@ -17,24 +14,34 @@ data class CompanyEntity(
 
     @Id
     @Column(name = "id", nullable = false)
-    val companyId: UUID,
+    var companyId: UUID,
 
     @Column(name = "name", nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(name = "agent", nullable = false)
-    val agent: UUID,
-
-    @Column(name = "avatar_id", nullable = false)
-    val avatarId: UUID,
+    var agent: UUID,
 
     @Column(name = "since_year", nullable = false)
-    val sinceYear: String,
+    var sinceYear: String,
 
     @Column(name = "description", nullable = false)
-    val description: String,
+    var description: String,
 
     @Column(name = "primary_color", nullable = false)
-    val primaryColor: String
+    var primaryColor: String,
 
-)
+    @OneToMany(mappedBy = "company", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    var positions: List<CompanyPositionEntity> = mutableListOf()
+
+) {
+    constructor() : this(
+        UUID.randomUUID(),
+        "",
+        UUID.randomUUID(),
+        "",
+        "",
+        "",
+        mutableListOf()
+    )
+}

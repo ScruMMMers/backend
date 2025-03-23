@@ -9,7 +9,7 @@ data class CompanyDto(
     val companyId: UUID,
     val name: String,
     val agent: ShortAccountDto,
-    val avatarUri: URI,
+    val avatarUrl: URI,
     val sinceYear: String,
     val description: String,
     val primaryColor: String,
