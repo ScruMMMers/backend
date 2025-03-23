@@ -7,8 +7,10 @@ import java.util.*
 @Table(name = "reactions")
 data class ReactionEntity(
     @Id
-    val id: UUID,
+    var id: UUID,
 
     @Column(name = "emoji", nullable = false)
-    val emoji: String
-)
+    var emoji: String
+) {
+    constructor() : this(UUID.randomUUID(), "")
+}
