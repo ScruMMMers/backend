@@ -5,7 +5,7 @@ CREATE TABLE company
     agent         UUID         NOT NULL,
     since_year    VARCHAR(4)   NOT NULL,
     description   TEXT         NOT NULL,
-    primary_color VARCHAR(6)  NOT NULL
+    primary_color VARCHAR(7)  NOT NULL
 );
 
 CREATE TABLE company_position
