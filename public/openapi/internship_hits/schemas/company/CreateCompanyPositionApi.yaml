@@ -4,6 +4,13 @@ post:
   summary: Создать позицию в компании
   security:
     - openIdConnect: [ ]
+  parameters:
+    - in: path
+      name: companyId
+      required: true
+      schema:
+        type: string
+        format: uuid
   requestBody:
     description: Передаем сюда данные для создания позиции в компании
     required: true
