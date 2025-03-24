@@ -1,12 +1,12 @@
 package com.quqee.backend.internship_hits.logs.service
 
-import com.quqee.backend.internship_hits.logs.entity.TagEntity
 import com.quqee.backend.internship_hits.logs.repository.LogsRepository
-import com.quqee.backend.internship_hits.logs.repository.jpa.TagJpaRepository
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPagination
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.logs.*
+import com.quqee.backend.internship_hits.tags.entity.TagEntity
+import com.quqee.backend.internship_hits.tags.service.TagService
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -21,7 +21,7 @@ interface LogsService {
 @Service
 class LogsServiceImpl (
     private val logsRepository: LogsRepository,
-    private val tagJpaRepository: TagJpaRepository
+    private val tagService: TagService
 ) : LogsService {
 
     companion object {
@@ -111,7 +111,8 @@ class LogsServiceImpl (
      * Поиск тегов по имени и возврат их сущностей
      */
     private fun findTagsByNames(tagNames: List<String>): List<TagEntity> {
-        return tagNames.flatMap { name -> tagJpaRepository.findByName(name) }
+        return tagNames
+            .flatMap { name -> tagService.getTagsEntityByNamePart(name) }
+            .distinct()
     }
-
 } 

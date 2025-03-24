@@ -1,15 +1,17 @@
 package com.quqee.backend.internship_hits.logs.mapper
 
 import com.quqee.backend.internship_hits.logs.entity.LogEntity
-import com.quqee.backend.internship_hits.logs.entity.TagEntity
 import com.quqee.backend.internship_hits.logs.service.ReactionService
+import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
 import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
+import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
 import com.quqee.backend.internship_hits.public_interface.tags.TagDto
+import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import org.springframework.stereotype.Component
 import java.net.URI
 import java.time.OffsetDateTime
@@ -17,7 +19,8 @@ import java.util.*
 
 @Component
 class LogMapper(
-    private val reactionService: ReactionService
+    private val reactionService: ReactionService,
+    private val profileService: ProfileService,
 ) {
     /**
      * Преобразование сущности лога в DTO представление
@@ -32,7 +35,7 @@ class LogMapper(
             editedAt = entity.editedAt,
             reactions = reactionService.getLogReactions(entity.id),
             comments = getCommentsForLog(entity.id),
-            userId = entity.userId,
+            author = profileService.getShortAccount(GetProfileDto(userId = entity.userId)),
         )
     }
     
