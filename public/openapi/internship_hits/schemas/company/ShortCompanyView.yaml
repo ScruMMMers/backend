@@ -5,6 +5,7 @@ ShortCompanyView:
     - name
     - avatarUrl
     - primaryColor
+    - createdAt
   properties:
     companyId:
       type: string
@@ -16,3 +17,6 @@ ShortCompanyView:
       format: uri
     primaryColor:
       type: string
+    createdAt:
+      type: string
+      format: date-time

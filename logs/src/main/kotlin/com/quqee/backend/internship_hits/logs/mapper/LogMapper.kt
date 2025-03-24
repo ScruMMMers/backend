@@ -49,7 +49,8 @@ class LogMapper(
                     companyId = UUID.randomUUID(),
                     name = "Яндекс",
                     avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"),
-                    primaryColor = "#ef1818",
+                    primaryColor = ColorEnum.NAVY,
+                    createdAt = OffsetDateTime.now()
                 )
             )
         }

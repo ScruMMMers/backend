@@ -1,6 +1,7 @@
 package com.quqee.backend.internship_hits.company.entity
 
 import jakarta.persistence.*
+import java.time.OffsetDateTime
 import java.util.*
 
 
@@ -33,7 +34,10 @@ data class CompanyEntity(
     var primaryColor: String,
 
     @OneToMany(mappedBy = "company", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var positions: List<CompanyPositionEntity> = mutableListOf()
+    var positions: List<CompanyPositionEntity> = mutableListOf(),
+
+    @Column(name = "created_at", nullable = false)
+    var createdAt: OffsetDateTime
 
 ) {
     constructor() : this(
@@ -43,6 +47,7 @@ data class CompanyEntity(
         "",
         "",
         "",
-        mutableListOf()
+        mutableListOf(),
+        OffsetDateTime.now()
     )
 }

@@ -1,0 +1,2 @@
+ALTER TABLE company
+    ADD COLUMN created_at TIMESTAMPTZ NOT NULL;
