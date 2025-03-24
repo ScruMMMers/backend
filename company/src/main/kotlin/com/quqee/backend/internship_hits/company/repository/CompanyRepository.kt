@@ -8,6 +8,7 @@ import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
+import java.time.OffsetDateTime
 import java.util.*
 
 @Component
@@ -26,8 +27,9 @@ class CompanyRepository(
             agent = createCompanyDto.agentId,
             sinceYear = createCompanyDto.sinceYear,
             description = createCompanyDto.description,
-            primaryColor = createCompanyDto.primaryColor,
-            positions = mutableListOf()
+            primaryColor = createCompanyDto.primaryColor.hexColor,
+            positions = mutableListOf(),
+            createdAt = OffsetDateTime.now()
         )
 
         return mapper.toCompanyDto(
@@ -50,11 +52,14 @@ class CompanyRepository(
     fun getCompaniesList(name: String?, lastId: UUID?, pageSize: Int): List<ShortCompanyDto> {
         val pageable = PageRequest.of(0, pageSize)
 
-        val companies = companyJpaRepository.findByNameLikeAndCompanyIdLessThan(
-            name = name,
-            lastId = lastId,
-            pageable = pageable
-        )
+        var lastCompanyCreatedAt: OffsetDateTime? = null
+        if (lastId != null) {
+            lastCompanyCreatedAt = companyJpaRepository.findById(lastId)
+                .orElseThrow { throw NoSuchElementException("Компания с ID $lastId не найдена") }
+                .createdAt
+        }
+
+        val companies = companyJpaRepository.findAllByNameLikePage(name, lastCompanyCreatedAt, pageable)
 
         return companies.map { mapper.toShortCompanyDto(it) }
     }

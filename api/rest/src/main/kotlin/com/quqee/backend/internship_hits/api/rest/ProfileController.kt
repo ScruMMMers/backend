@@ -5,6 +5,7 @@ import com.quqee.backend.internship_hits.model.rest.*
 import com.quqee.backend.internship_hits.notification.service.NotificationService
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.profile.ProfileService
+import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.notification_public.GetNotificationForHeaderDto
@@ -13,6 +14,7 @@ import com.quqee.backend.internship_hits.public_interface.profile_public.GetProf
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import java.net.URI
+import java.time.OffsetDateTime
 import java.util.*
 
 @Component
@@ -51,7 +53,8 @@ class ProfileController(
                         companyId = UUID.randomUUID(),
                         name = "Яндекс",
                         avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"),
-                        primaryColor = "#ef1818",
+                        primaryColor = ColorEnum.NAVY.hexColor,
+                        createdAt = OffsetDateTime.now()
                     )
                 )
             )

@@ -34,8 +34,9 @@ class CompanyMapper(
             avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"), //TODO получение урла фото
             sinceYear = entity.sinceYear,
             description = entity.description,
-            primaryColor = entity.primaryColor,
-            positions = entity.positions.map { companyPositionMapper.toCompanyPositionDto(it) }
+            primaryColor = ColorEnum.fromHex(entity.primaryColor),
+            positions = entity.positions.map { companyPositionMapper.toCompanyPositionDto(it) },
+            createdAt = entity.createdAt
         )
     }
 
@@ -48,7 +49,8 @@ class CompanyMapper(
             name = entity.name,
             //  TODO картинка компании
             avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"), //TODO получение урла фото
-            primaryColor = entity.primaryColor
+            primaryColor = ColorEnum.fromHex(entity.primaryColor),
+            createdAt = entity.createdAt
         )
     }
     
