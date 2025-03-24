@@ -23,6 +23,7 @@ COPY profile ./profile
 COPY file_storage ./file_storage
 COPY notification ./notification
 COPY logs ./logs
+COPY company ./company
 COPY oauth2_security ./oauth2_security
 RUN gradle --no-daemon --project-dir core build -x test
 
