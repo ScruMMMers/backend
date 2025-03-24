@@ -8,6 +8,7 @@ import com.quqee.backend.internship_hits.model.rest.CompanyPositionView
 import com.quqee.backend.internship_hits.model.rest.CompanyView
 import com.quqee.backend.internship_hits.model.rest.ShortAccountView
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
+import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company_position.CompanyPositionDto
 import org.springframework.context.annotation.Bean
@@ -28,8 +29,9 @@ class CompanyConfigurationMapper {
             avatarUrl = model.avatarUrl,
             sinceYear = model.sinceYear,
             description = model.description,
-            primaryColor = model.primaryColor,
-            positions = model.positions.map { companyPositionMapper.fromApi(it) }
+            primaryColor = ColorEnum.fromHex(model.primaryColor),
+            positions = model.positions.map { companyPositionMapper.fromApi(it) },
+            createdAt = model.createdAt
         )
     }
 
@@ -45,8 +47,9 @@ class CompanyConfigurationMapper {
             avatarUrl = model.avatarUrl,
             sinceYear = model.sinceYear,
             description = model.description,
-            primaryColor = model.primaryColor,
-            positions = model.positions.map { companyPositionMapper.fromInternal(it) }
+            primaryColor = model.primaryColor.hexColor,
+            positions = model.positions.map { companyPositionMapper.fromInternal(it) },
+            createdAt = model.createdAt
         )
     }
 }

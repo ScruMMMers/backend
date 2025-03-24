@@ -1,11 +1,13 @@
 package com.quqee.backend.internship_hits.tags.mapper
 
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
+import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
 import com.quqee.backend.internship_hits.public_interface.tags.TagDto
 import com.quqee.backend.internship_hits.public_interface.tags.TagListDto
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import org.springframework.stereotype.Service
 import java.net.URI
+import java.time.OffsetDateTime
 import java.util.*
 
 @Service
@@ -17,7 +19,8 @@ class TagMapper {
                 companyId = UUID.randomUUID(),
                 name = "Яндекс",
                 avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"),
-                primaryColor = "#ef1818",
+                primaryColor = ColorEnum.NAVY,
+                createdAt = OffsetDateTime.now()
             ),
             name = tagEntity.name
         )

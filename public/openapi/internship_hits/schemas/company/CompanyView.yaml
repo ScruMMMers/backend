@@ -9,6 +9,7 @@ CompanyView:
     - description
     - primaryColor
     - positions
+    - createdAt
   properties:
     companyId:
       type: string
@@ -30,3 +31,6 @@ CompanyView:
       type: array
       items:
         $ref: './CompanyPositionView.yaml#/CompanyPositionView'
+    createdAt:
+      type: string
+      format: date-time
