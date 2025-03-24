@@ -18,6 +18,8 @@ tags:
     description: Работа с профилем пользователя
   - name: notifications
     description: Работа с уведомлениями
+  - name: company
+    description: Работа с компаниями
 
 components:
   securitySchemes:

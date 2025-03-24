@@ -2,6 +2,8 @@ get:
   tags:
     - company
   summary: Получить список компаний в системе
+  security:
+    - openIdConnect: [ ]
   parameters:
     - in: query
       name: name

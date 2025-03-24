@@ -2,6 +2,8 @@ get:
   tags:
     - tags
   summary: Получить теги
+  security:
+    - openIdConnect: [ ]
   parameters:
     - in: query
       name: name

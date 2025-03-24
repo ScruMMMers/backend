@@ -2,6 +2,8 @@ post:
   tags:
     - company
   summary: Создать компанию
+  security:
+    - openIdConnect: [ ]
   requestBody:
     description: Передаем сюда данные для создания компании
     required: true

@@ -2,6 +2,8 @@ get:
   tags:
     - company
   summary: Получить компанию по идентификатору
+  security:
+    - openIdConnect: [ ]
   parameters:
     - in: path
       name: companyId
