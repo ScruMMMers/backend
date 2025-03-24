@@ -1,7 +1,6 @@
 package com.quqee.backend.internship_hits.logs.repository
 
 import com.quqee.backend.internship_hits.logs.entity.LogEntity
-import com.quqee.backend.internship_hits.logs.entity.TagEntity
 import com.quqee.backend.internship_hits.logs.mapper.LogMapper
 import com.quqee.backend.internship_hits.logs.repository.jpa.LogsJpaRepository
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
@@ -9,6 +8,7 @@ import com.quqee.backend.internship_hits.public_interface.common.exception.Excep
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
+import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime

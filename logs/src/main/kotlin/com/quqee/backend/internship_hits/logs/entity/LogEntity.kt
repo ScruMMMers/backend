@@ -1,6 +1,7 @@
 package com.quqee.backend.internship_hits.logs.entity
 
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
+import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import jakarta.persistence.*
 import java.time.OffsetDateTime
 import java.util.*

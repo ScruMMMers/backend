@@ -1,15 +1,11 @@
 package com.quqee.backend.internship_hits.api.rest
 
-import com.quqee.backend.internship_hits.logs.service.TagService
 import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
-import com.quqee.backend.internship_hits.model.rest.ShortCompanyView
-import com.quqee.backend.internship_hits.model.rest.TagView
 import com.quqee.backend.internship_hits.model.rest.TagsListView
 import com.quqee.backend.internship_hits.public_interface.tags.TagListDto
+import com.quqee.backend.internship_hits.tags.service.TagService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
-import java.net.URI
-import java.util.*
 
 @Component
 class TagsController(

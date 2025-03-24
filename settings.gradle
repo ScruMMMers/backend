@@ -9,6 +9,7 @@ include ':profile'
 include ':file_storage'
 include ':notification'
 include ':cdc'
+include ':tags'
 
 include ':public_interface:common'
 include ':public_interface:profile_public'

@@ -1,9 +1,9 @@
-package com.quqee.backend.internship_hits.logs.mapper
+package com.quqee.backend.internship_hits.tags.mapper
 
-import com.quqee.backend.internship_hits.logs.entity.TagEntity
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.tags.TagDto
 import com.quqee.backend.internship_hits.public_interface.tags.TagListDto
+import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import org.springframework.stereotype.Service
 import java.net.URI
 import java.util.*

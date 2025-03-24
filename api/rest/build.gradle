@@ -13,6 +13,7 @@ dependencies {
     implementation project(":logs")
     implementation project(":company")
     implementation project(":profile")
+    implementation project(":tags")
 
     implementation project(":public_interface:logs_interface")
     implementation project(":public_interface:company_interface")

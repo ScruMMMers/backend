@@ -1,4 +1,4 @@
-package com.quqee.backend.internship_hits.logs.entity
+package com.quqee.backend.internship_hits.tags.entity
 
 import jakarta.persistence.*
 import java.util.*
