@@ -1,0 +1,20 @@
+post:
+  tags:
+    - company
+  summary: Создать позицию в компании
+  requestBody:
+    description: Передаем сюда данные для создания позиции в компании
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './CreateCompanyPositionView.yaml#/CreateCompanyPositionView'
+  responses:
+    '200':
+      description: Позиция в компании
+      content:
+        application/json:
+          schema:
+            $ref: './CompanyPositionView.yaml#/CompanyPositionView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

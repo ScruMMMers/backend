@@ -17,7 +17,7 @@ class ShortCompanyConfigurationMapper {
         ShortCompanyDto(
             companyId = model.companyId,
             name = model.name,
-            avatarUrl = model.avatarUrl.toString(),
+            avatarUrl = model.avatarUrl,
             primaryColor = model.primaryColor
         )
     }
@@ -27,7 +27,7 @@ class ShortCompanyConfigurationMapper {
         ShortCompanyView(
             companyId = model.companyId,
             name = model.name,
-            avatarUrl = URI(model.avatarUrl),
+            avatarUrl = model.avatarUrl,
             primaryColor = model.primaryColor
         )
     }

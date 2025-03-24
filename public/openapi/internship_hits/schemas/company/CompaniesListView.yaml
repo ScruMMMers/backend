@@ -1,0 +1,12 @@
+CompaniesListView:
+  type: object
+  required:
+    - companies
+    - page
+  properties:
+    companies:
+      type: array
+      items:
+        $ref: './ShortCompanyView.yaml#/ShortCompanyView'
+    page:
+      $ref: '../common/Pagination.yaml#/LastIdPaginationView'

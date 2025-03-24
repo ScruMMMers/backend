@@ -1,0 +1,32 @@
+CompanyView:
+  type: object
+  required:
+    - companyId
+    - name
+    - agent
+    - avatarUrl
+    - sinceYear
+    - description
+    - primaryColor
+    - positions
+  properties:
+    companyId:
+      type: string
+      format: uuid
+    name:
+      type: string
+    agent:
+      $ref: '../common/Account.yaml#/ShortAccountView'
+    avatarUrl:
+      type: string
+      format: uri
+    sinceYear:
+      type: string
+    description:
+      type: string
+    primaryColor:
+      type: string
+    positions:
+      type: array
+      items:
+        $ref: './CompanyPositionView.yaml#/CompanyPositionView'

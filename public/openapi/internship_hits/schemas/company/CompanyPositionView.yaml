@@ -1,0 +1,21 @@
+CompanyPositionView:
+  type: object
+  required:
+    - positionId
+    - companyId
+    - name
+    - employedCount
+    - interviewsCount
+  properties:
+    positionId:
+      type: string
+      format: uuid
+    companyId:
+      type: string
+      format: uuid
+    name:
+      type: string
+    employedCount:
+      type: integer
+    interviewsCount:
+      type: integer

@@ -25,3 +25,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/init_notification_schema.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 4
+      author: yuriy_sitdikov
+      changes:
+        - sqlFile:
+            path: ddl/v3_companies_schemas.sql
+            relativeToChangelogFile: true

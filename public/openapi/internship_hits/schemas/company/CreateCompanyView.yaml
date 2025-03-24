@@ -1,0 +1,20 @@
+CreateCompanyView:
+  type: object
+  required:
+    - name
+    - sinceYear
+    - agentId
+    - description
+    - primaryColor
+  properties:
+    name:
+      type: string
+    sinceYear:
+      type: string
+    agentId:
+      type: string
+      format: uuid
+    description:
+      type: string
+    primaryColor:
+      type: string
