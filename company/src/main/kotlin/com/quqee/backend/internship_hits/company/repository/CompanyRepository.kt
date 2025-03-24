@@ -8,6 +8,7 @@ import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
@@ -52,7 +53,7 @@ class CompanyRepository(
      * Получение списка компаний
      */
     fun getCompaniesList(name: String?, lastId: UUID?, pageSize: Int): List<ShortCompanyDto> {
-        val pageable = PageRequest.of(0, pageSize)
+        val pageable = PageRequest.of(0, pageSize, Sort.by("createdAt").descending())
 
         var lastCompany: CompanyEntity? = null
         if (lastId != null) {
