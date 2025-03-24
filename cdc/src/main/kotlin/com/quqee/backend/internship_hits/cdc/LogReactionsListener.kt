@@ -86,7 +86,7 @@ class LogReactionsListener(
                     type = NotificationType.SYSTEM,
                     channels = CHANNELS,
                     title = TITLE,
-                    userId = log.userId,
+                    userId = log.author.userId,
                     message = MESSAGE_FORMATTED.format(profileUserWhoLeaveReaction.fullName, log.message),
                 )
             }
