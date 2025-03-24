@@ -40,6 +40,7 @@ class CompanyController(
     }
 
     override fun companyCompanyIdPositionPost(
+        companyId: UUID,
         createCompanyPositionView: CreateCompanyPositionView
     ): ResponseEntity<CompanyPositionView> {
         val createCompanyPositionDto = mapCreateCompanyPosition.fromApi(createCompanyPositionView)

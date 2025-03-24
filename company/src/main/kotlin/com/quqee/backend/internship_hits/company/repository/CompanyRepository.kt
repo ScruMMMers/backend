@@ -3,10 +3,13 @@ package com.quqee.backend.internship_hits.company.repository
 import com.quqee.backend.internship_hits.company.entity.CompanyEntity
 import com.quqee.backend.internship_hits.company.mapper.CompanyMapper
 import com.quqee.backend.internship_hits.company.repository.jpa.CompanyJpaRepository
+import com.quqee.backend.internship_hits.company.specification.CompanySpecification
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
 import java.util.*
@@ -50,20 +53,20 @@ class CompanyRepository(
      * Получение списка компаний
      */
     fun getCompaniesList(name: String?, lastId: UUID?, pageSize: Int): List<ShortCompanyDto> {
-        val pageable = PageRequest.of(0, pageSize)
+        val pageable = PageRequest.of(0, pageSize, Sort.by("createdAt").descending())
 
-        val companies = if (lastId != null) {
-            val lastCompany = companyJpaRepository.findById(lastId).orElse(null)
+        var lastCompany: CompanyEntity? = null
+        if (lastId != null) {
+            lastCompany = companyJpaRepository.findById(lastId).orElse(null)
                 ?: throw NoSuchElementException("Компания с ID $lastId не найдена")
-
-            companyJpaRepository.findByNameContainingIgnoreCaseAndCreatedAtLessThanOrderByCreatedAtDesc(
-                name,
-                lastCompany.createdAt,
-                pageable
-            )
-        } else {
-            companyJpaRepository.findByNameContainingIgnoreCaseOrderByCreatedAtDesc(name, pageable)
         }
+
+        val spec = Specification.where(CompanySpecification.hasNameLike(name))
+            .and(CompanySpecification.createdBefore(
+                lastCompany?.createdAt
+            ))
+
+        val companies = companyJpaRepository.findAll(spec, pageable).content
 
         return companies.map { mapper.toShortCompanyDto(it) }
     }
