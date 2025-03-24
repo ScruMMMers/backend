@@ -9,6 +9,7 @@ import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
 import com.quqee.backend.internship_hits.public_interface.tags.TagDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import java.util.*
 
 @Configuration
 class LogConfigurationMapper (
