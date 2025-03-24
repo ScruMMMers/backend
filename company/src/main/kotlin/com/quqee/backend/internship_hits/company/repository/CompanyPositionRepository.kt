@@ -6,10 +6,10 @@ import com.quqee.backend.internship_hits.company.repository.jpa.CompanyJpaReposi
 import com.quqee.backend.internship_hits.company.repository.jpa.CompanyPositionJpaRepository
 import com.quqee.backend.internship_hits.public_interface.company_position.CompanyPositionDto
 import com.quqee.backend.internship_hits.public_interface.company_position.CreateCompanyPositionDto
-import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Component
 import java.util.*
 
-@Repository
+@Component
 class CompanyPositionRepository(
     private val companyPositionJpaRepository: CompanyPositionJpaRepository,
     private val mapper: CompanyPositionMapper,
