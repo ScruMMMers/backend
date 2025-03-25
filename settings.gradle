@@ -19,5 +19,7 @@ include ':public_interface:logs_interface'
 include ':public_interface:company_interface'
 
 include ':api:rest'
+include ':api:websocket'
+include ':websocket_common'
 
 include ':mapper'

@@ -98,8 +98,7 @@ class LogReactionsListener(
     companion object {
         private const val TITLE = "Оставлена реакция под записью"
         private const val MESSAGE_FORMATTED = "Пользователь %s оставил реакцию под вашей записью %s"
-        // TODO: пуши пока не сделал поэтому проверяю по почте в будущем нужно будет поставить пуш
-        private val CHANNELS = setOf(NotificationChannel.EMAIL)
+        private val CHANNELS = setOf(NotificationChannel.PUSH)
         private val jsonMapper = jacksonObjectMapper()
         private val log = LoggerFactory.getLogger(LogReactionsListener::class.java)
     }

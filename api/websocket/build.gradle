@@ -1,0 +1,13 @@
+dependencies {
+    implementation rootProject
+
+    implementation project(":notification")
+    implementation project(":public_interface:notification_public")
+    implementation project(":public_interface:common")
+    implementation project(":oauth2_security")
+    implementation project(":mapper")
+    implementation project(":websocket_common")
+
+    implementation libs.spring.websocket.starter
+    implementation libs.jackson.module.kotlin
+}

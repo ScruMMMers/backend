@@ -1,0 +1,8 @@
+dependencies {
+    implementation rootProject
+
+    implementation project(":public_interface:common")
+
+    implementation libs.spring.websocket.starter
+    implementation libs.jackson.module.kotlin
+}
