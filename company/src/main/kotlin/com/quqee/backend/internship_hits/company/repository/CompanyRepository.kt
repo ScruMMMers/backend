@@ -43,10 +43,19 @@ class CompanyRepository(
     /**
      * Получение компании по идентификатору
      */
-    fun getCompany(companyId: UUID): CompanyDto {
-        return mapper.toCompanyDto(
-            companyJpaRepository.findById(companyId).orElse(null)
-        )
+    fun getCompany(companyId: UUID): CompanyDto? {
+        val company = companyJpaRepository.findById(companyId).orElse(null)
+        company ?: return null
+        return mapper.toCompanyDto(company)
+    }
+
+    /**
+     * Получение компании по названию
+     */
+    fun getCompanyByName(name: String): CompanyDto? {
+        val company = companyJpaRepository.findByName(name).orElse(null)
+        company ?: return null
+        return mapper.toCompanyDto(company)
     }
 
     /**

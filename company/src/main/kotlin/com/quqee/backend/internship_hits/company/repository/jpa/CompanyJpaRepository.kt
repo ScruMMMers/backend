@@ -8,4 +8,5 @@ import java.util.*
 
 @Repository
 interface CompanyJpaRepository : JpaRepository<CompanyEntity, UUID>, JpaSpecificationExecutor<CompanyEntity> {
+    fun findByName(name: String): Optional<CompanyEntity>
 }

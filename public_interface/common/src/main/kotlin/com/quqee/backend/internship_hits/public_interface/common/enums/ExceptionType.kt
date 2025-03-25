@@ -5,4 +5,6 @@ enum class ExceptionType {
     FORBIDDEN,
     NOT_FOUND,
     FATAL,
+    BAD_REQUEST,
+    CONFLICT,
 }
