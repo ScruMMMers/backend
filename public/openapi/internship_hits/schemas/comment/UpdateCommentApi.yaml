@@ -1,0 +1,35 @@
+put:
+  tags:
+    - logs
+  summary: Редактировать комментарий к логу
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - in: path
+      name: logId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - in: path
+      name: commentId
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    description: Измененный текст комментария
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './UpdateCommentView.yaml#/UpdateCommentView'
+  responses:
+    '200':
+      description: Измененный комментарий
+      content:
+        application/json:
+          schema:
+            $ref: '../common/Comment.yaml#/CommentView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

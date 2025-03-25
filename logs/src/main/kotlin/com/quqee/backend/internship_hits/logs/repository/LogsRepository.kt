@@ -46,7 +46,7 @@ class LogsRepository(
             logsJpaRepository.findByUserIdOrderByCreatedAtDescIdDesc(userId, pageable)
         }
 
-        return logs.map { logMapper.toLogView(it) }
+        return logs.map { logMapper.toLogDto(it) }
     }
 
     /**
@@ -67,7 +67,7 @@ class LogsRepository(
         )
         
         val savedLog = logsJpaRepository.save(logEntity)
-        return logMapper.toLogView(savedLog)
+        return logMapper.toLogDto(savedLog)
     }
 
     /**
@@ -90,7 +90,7 @@ class LogsRepository(
         )
         
         val savedLog = logsJpaRepository.save(updatedLog)
-        return logMapper.toLogView(savedLog)
+        return logMapper.toLogDto(savedLog)
     }
 
     /**
@@ -98,6 +98,6 @@ class LogsRepository(
      */
     fun getLogById(logId: UUID): LogDto? {
         val log = logsJpaRepository.findById(logId)
-        return log.map { logMapper.toLogView(it) }.orElse(null)
+        return log.map { logMapper.toLogDto(it) }.orElse(null)
     }
 } 

@@ -9,6 +9,6 @@ TagView:
       type: string
       format: uuid
     shortCompany:
-      $ref: '../company/ShortCompanyView.yaml#/ShortCompanyView'
+      $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
     name:
       type: string

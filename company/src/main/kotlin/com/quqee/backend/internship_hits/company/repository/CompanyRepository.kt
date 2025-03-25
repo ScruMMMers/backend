@@ -5,6 +5,8 @@ import com.quqee.backend.internship_hits.company.mapper.CompanyMapper
 import com.quqee.backend.internship_hits.company.repository.jpa.CompanyJpaRepository
 import com.quqee.backend.internship_hits.company.specification.CompanySpecification
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
+import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
 import org.springframework.data.domain.PageRequest
@@ -67,7 +69,7 @@ class CompanyRepository(
         var lastCompany: CompanyEntity? = null
         if (lastId != null) {
             lastCompany = companyJpaRepository.findById(lastId).orElse(null)
-                ?: throw NoSuchElementException("Компания с ID $lastId не найдена")
+                ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Компания с ID $lastId не найдена")
         }
 
         val spec = Specification.where(CompanySpecification.hasNameLike(name))

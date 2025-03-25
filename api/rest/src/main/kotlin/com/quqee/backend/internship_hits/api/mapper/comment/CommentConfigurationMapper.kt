@@ -19,11 +19,12 @@ class CommentConfigurationMapper(
     fun mapComment(): FromApiToInternalMapper<CommentView, CommentDto> = makeFromApiMapper { model ->
         CommentDto(
             id = model.id,
-            shortAccount = mapShortAccount.fromApi(model.shortAccount),
+            author = mapShortAccount.fromApi(model.author),
             message = model.message,
             replyTo = model.replyTo,
             createdAt = model.createdAt,
-            updatedAt = model.updatedAt
+            updatedAt = model.updatedAt,
+            isDeleted = model.isDeleted
         )
     }
 
@@ -33,11 +34,12 @@ class CommentConfigurationMapper(
     ): FromInternalToApiMapper<CommentView, CommentDto> = makeToApiMapper { model ->
         CommentView(
             id = model.id,
-            shortAccount = mapShortAccount.fromInternal(model.shortAccount),
+            author = mapShortAccount.fromInternal(model.author),
             message = model.message,
             createdAt = model.createdAt,
             updatedAt = model.updatedAt,
-            replyTo = model.replyTo
+            replyTo = model.replyTo,
+            isDeleted = model.isDeleted
         )
     }
 }

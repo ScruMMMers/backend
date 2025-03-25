@@ -36,6 +36,14 @@ paths:
     $ref: './schemas/logs/CreateLogApi.yaml'
   /logs/{logId}:
     $ref: './schemas/logs/EditLogApi.yaml'
+  /logs/{logId}/comments:
+    $ref: './schemas/comment/GetCommentsListApi.yaml'
+  /logs/{logId}/comment:
+    $ref: './schemas/comment/CreateCommentApi.yaml'
+  /logs/{logId}/comment/{commentId}:
+    $ref: './schemas/comment/UpdateCommentApi.yaml'
+  /logs/{logId}/comment/{commentId}/delete:
+    $ref: './schemas/comment/DeleteCommentApi.yaml'
 
   /company/{companyId}:
     $ref: './schemas/company/GetCompanyApi.yaml'

@@ -39,3 +39,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v4_update_company_table.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 6
+      author: yuriy_sitdikov
+      changes:
+        - sqlFile:
+            path: ddl/v5_create_comment_table.sql
+            relativeToChangelogFile: true
