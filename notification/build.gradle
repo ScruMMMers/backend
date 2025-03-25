@@ -30,6 +30,7 @@ dependencies {
     implementation project(":public_interface:notification_public")
     implementation project(":public_interface:profile_public")
     implementation project(":profile")
+    implementation project(":websocket_common")
 
     implementation libs.email.api
     implementation libs.jackson.module.kotlin

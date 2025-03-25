@@ -9,6 +9,7 @@ import java.time.Clock
 @ComponentScan(
     basePackages = [
         "com.quqee.backend.internship_hits.api.rest",
+        "com.quqee.backend.internship_hits.api.websocket",
         "com.quqee.backend.internship_hits.oauth2_security",
         "com.quqee.backend.internship_hits.profile",
         "com.quqee.backend.internship_hits.notification",
@@ -16,6 +17,7 @@ import java.time.Clock
         "com.quqee.backend.internship_hits.tags",
         "com.quqee.backend.internship_hits.company",
         "com.quqee.backend.internship_hits.cdc",
+        "com.quqee.backend.internship_hits.websocket_common",
     ]
 )
 open class BeanConfiguration {

@@ -7,6 +7,13 @@ spring:
   jooq:
     sql-dialect: postgres
 
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 1000MB
+  codec:
+    max-in-memory-size: 500KB
+
   security:
     oauth2:
       resourceserver:

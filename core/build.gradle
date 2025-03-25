@@ -13,6 +13,7 @@ dependencies {
     implementation rootProject
 
     implementation project(':api:rest')
+    implementation project(':api:websocket')
     implementation project(':oauth2_security')
     implementation project(":profile")
     implementation project(":file_storage")
