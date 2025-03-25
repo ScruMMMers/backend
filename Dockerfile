@@ -26,6 +26,7 @@ COPY logs ./logs
 COPY company ./company
 COPY tags ./tags
 COPY oauth2_security ./oauth2_security
+COPY websocket_common ./websocket_common
 RUN gradle --no-daemon --project-dir core build -x test
 
 FROM amazoncorretto:21-alpine
