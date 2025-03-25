@@ -7,6 +7,7 @@ import com.quqee.backend.internship_hits.public_interface.common.exception.Excep
 import com.quqee.backend.internship_hits.public_interface.logs.*
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import com.quqee.backend.internship_hits.tags.service.TagService
+import org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -23,10 +24,6 @@ class LogsServiceImpl (
     private val logsRepository: LogsRepository,
     private val tagService: TagService
 ) : LogsService {
-
-    companion object {
-        private const val DEFAULT_PAGE_SIZE = 20
-    }
 
     /**
      * Получение логов текущего пользователя

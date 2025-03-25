@@ -1,12 +1,12 @@
-CompaniesListView:
+CommentsListView:
   type: object
   required:
-    - companies
+    - comments
     - page
   properties:
-    companies:
+    comments:
       type: array
       items:
-        $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
+        $ref: '../common/Comment.yaml#/CommentView'
     page:
       $ref: '../common/Pagination.yaml#/LastIdPaginationView'

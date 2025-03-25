@@ -5,9 +5,10 @@ import java.util.UUID
 
 data class CommentDto(
     val id: UUID,
-    val shortAccount: ShortAccountDto,
+    val author: ShortAccountDto,
     val message: String,
-    val replyTo: UUID?,
+    val replyTo: UUID,
     val createdAt: OffsetDateTime,
-    val updatedAt: OffsetDateTime
+    val updatedAt: OffsetDateTime?,
+    val isDeleted: Boolean
 )

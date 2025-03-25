@@ -25,7 +25,7 @@ class LogMapper(
     /**
      * Преобразование сущности лога в DTO представление
      */
-    fun toLogView(entity: LogEntity): LogDto {
+    fun toLogDto(entity: LogEntity): LogDto {
         return LogDto(
             id = entity.id,
             message = entity.message,
@@ -70,7 +70,7 @@ class LogMapper(
                 message = "Комментарий",
                 createdAt = OffsetDateTime.now(),
                 updatedAt = OffsetDateTime.now(),
-                shortAccount = ShortAccountDto(
+                author = ShortAccountDto(
                     userId = UUID.randomUUID(),
                     fullName = "Эвилоныч",
                     avatarUrl = URI.create("https://sun9-25.userapi.com/s/v1/ig2/_BSpBnS-Zo2c2_J48KJk9POa1GDKa37nEJSdVoe-qeyNbIBoQmp4N4N6TtRIhr5xRvhB6O8VCBW2ke3jl9y2Y3NV.jpg?quality=96&as=32x43,48x64,72x96,108x144,160x214,240x320,360x480,480x641,540x721,640x854,720x961,959x1280&from=bu&u=o6kxoiUgTUztSx1nrI9fyiJnFMYWW64BuWCLXbMMpfc&cs=605x807")
@@ -79,14 +79,15 @@ class LogMapper(
                     primaryColor = ColorEnum.NAVY,
                     email = "wtf@mail.ru",
                 ),
-                replyTo = null,
+                replyTo = UUID.fromString("475da269-90ba-4ca6-88d1-6f1227dd6cb8"),
+                isDeleted = false,
             ),
             CommentDto(
                 id = UUID.fromString("953a4e9c-3a59-41d8-8083-36f6133c24d1"),
                 message = "Комментарий",
                 createdAt = OffsetDateTime.now(),
                 updatedAt = OffsetDateTime.now(),
-                shortAccount = ShortAccountDto(
+                author = ShortAccountDto(
                     userId = UUID.randomUUID(),
                     fullName = "Подполковник Бустеренко",
                     avatarUrl = URI.create("https://super.ru/image/rs::3840:::/quality:90/plain/s3://super-static/prod/661faf8c06dba941afe9118a-1900x.jpeg")
@@ -96,6 +97,7 @@ class LogMapper(
                     email = "wtf@mail.ru",
                 ),
                 replyTo = UUID.fromString("475da269-90ba-4ca6-88d1-6f1227dd6cb8"),
+                isDeleted = false,
             ),
         )
     }

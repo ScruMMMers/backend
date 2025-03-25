@@ -2,15 +2,16 @@ CommentView:
   type: object
   required:
     - id
-    - shortAccount
+    - author
     - message
+    - replyTo
     - createdAt
-    - updatedAt
+    - isDeleted
   properties:
     id:
       type: string
       format: uuid
-    shortAccount:
+    author:
       $ref: './Account.yaml#/ShortAccountView'
     message:
       type: string
@@ -23,3 +24,5 @@ CommentView:
     updatedAt:
       type: string
       format: date-time
+    isDeleted:
+      type: boolean

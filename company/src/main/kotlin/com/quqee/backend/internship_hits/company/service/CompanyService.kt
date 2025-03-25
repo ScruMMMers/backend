@@ -8,6 +8,7 @@ import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CompaniesListDto
 import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
 import com.quqee.backend.internship_hits.tags.service.TagService
+import org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Year
@@ -24,10 +25,6 @@ open class CompanyServiceImpl(
     private val companyRepository: CompanyRepository,
     private val tagService: TagService
 ) : CompanyService {
-
-    companion object {
-        private const val DEFAULT_PAGE_SIZE = 20
-    }
 
     /**
      * Создание компании

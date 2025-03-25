@@ -1,0 +1,29 @@
+post:
+  tags:
+    - logs
+  summary: Создать комментарий под логом
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - in: path
+      name: logId
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    description: Комментарий
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './CreateCommentView.yaml#/CreateCommentView'
+  responses:
+    '200':
+      description: Созданный комментарий
+      content:
+        application/json:
+          schema:
+            $ref: '../common/Comment.yaml#/CommentView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

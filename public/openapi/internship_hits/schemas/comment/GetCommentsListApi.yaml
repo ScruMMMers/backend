@@ -1,0 +1,29 @@
+get:
+  tags:
+    - logs
+  summary: Получить комментарии к логу
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - in: path
+      name: logId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - in: query
+      name: isDeleted
+      required: false
+      schema:
+        type: boolean
+    - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
+    - $ref: '../common/Pagination.yaml#/PaginationPageSize'
+  responses:
+    '200':
+      description: Комментарии к логу
+      content:
+        application/json:
+          schema:
+            $ref: './CommentsListView.yaml#/CommentsListView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу
