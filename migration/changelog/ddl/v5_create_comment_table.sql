@@ -1,7 +1,7 @@
 CREATE TABLE comment
 (
     id         UUID PRIMARY KEY,
-    author     UUID        NOT NULL,
+    author_id  UUID        NOT NULL,
     message    TEXT        NOT NULL,
     replyTo    UUID        NOT NULL,
     created_at TIMESTAMPTZ NOT NULL,
