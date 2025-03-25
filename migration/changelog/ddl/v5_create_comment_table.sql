@@ -5,6 +5,6 @@ CREATE TABLE comment
     message    TEXT        NOT NULL,
     replyTo    UUID        NOT NULL,
     created_at TIMESTAMPTZ NOT NULL,
-    updated_at TIMESTAMPTZ NULLABLE,
+    updated_at TIMESTAMPTZ NULL,
     isDeleted  BOOLEAN     NOT NULL
 )
