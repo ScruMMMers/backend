@@ -22,7 +22,9 @@ class RestInterceptor : ResponseEntityExceptionHandler() {
             ExceptionType.IDEMPOTENT_OPERATION_FAILED to HttpStatus.CONFLICT,
             ExceptionType.NOT_FOUND to HttpStatus.NOT_FOUND,
             ExceptionType.FORBIDDEN to HttpStatus.FORBIDDEN,
-            ExceptionType.FATAL to HttpStatus.INTERNAL_SERVER_ERROR
+            ExceptionType.FATAL to HttpStatus.INTERNAL_SERVER_ERROR,
+            ExceptionType.CONFLICT to HttpStatus.CONFLICT,
+            ExceptionType.BAD_REQUEST to HttpStatus.BAD_REQUEST
         )
         private val log = LoggerFactory.getLogger(RestInterceptor::class.java)
     }

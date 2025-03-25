@@ -1,6 +1,6 @@
 package com.quqee.backend.internship_hits.tags.service
 
-import com.quqee.backend.internship_hits.public_interface.tags.TagDto
+import com.quqee.backend.internship_hits.public_interface.common.TagDto
 import com.quqee.backend.internship_hits.public_interface.tags.TagListDto
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import com.quqee.backend.internship_hits.tags.mapper.TagMapper

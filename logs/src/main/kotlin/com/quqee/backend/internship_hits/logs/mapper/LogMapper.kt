@@ -10,7 +10,7 @@ import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
 import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
-import com.quqee.backend.internship_hits.public_interface.tags.TagDto
+import com.quqee.backend.internship_hits.public_interface.common.TagDto
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import org.springframework.stereotype.Component
 import java.net.URI

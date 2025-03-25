@@ -14,6 +14,7 @@ import java.time.Clock
         "com.quqee.backend.internship_hits.notification",
         "com.quqee.backend.internship_hits.logs",
         "com.quqee.backend.internship_hits.tags",
+        "com.quqee.backend.internship_hits.company",
         "com.quqee.backend.internship_hits.cdc",
     ]
 )

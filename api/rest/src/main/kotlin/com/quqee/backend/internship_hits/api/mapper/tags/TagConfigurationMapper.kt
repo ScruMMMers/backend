@@ -7,7 +7,7 @@ import com.quqee.backend.internship_hits.mapper.makeToApiMapper
 import com.quqee.backend.internship_hits.model.rest.ShortCompanyView
 import com.quqee.backend.internship_hits.model.rest.TagView
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
-import com.quqee.backend.internship_hits.public_interface.tags.TagDto
+import com.quqee.backend.internship_hits.public_interface.common.TagDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

@@ -4,6 +4,8 @@ import com.quqee.backend.internship_hits.company.entity.CompanyPositionEntity
 import com.quqee.backend.internship_hits.company.mapper.CompanyPositionMapper
 import com.quqee.backend.internship_hits.company.repository.jpa.CompanyJpaRepository
 import com.quqee.backend.internship_hits.company.repository.jpa.CompanyPositionJpaRepository
+import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.company_position.CompanyPositionDto
 import com.quqee.backend.internship_hits.public_interface.company_position.CreateCompanyPositionDto
 import org.springframework.stereotype.Component
@@ -20,8 +22,13 @@ class CompanyPositionRepository(
      * Создание позиции в компании
      */
     fun createCompanyPosition(createCompanyPositionDto: CreateCompanyPositionDto): CompanyPositionDto {
-        // TODO exception
-        val companyEntity = companyJpaRepository.findById(createCompanyPositionDto.companyId).orElse(null)
+        val companyEntity = companyJpaRepository.findById(createCompanyPositionDto.companyId)
+            .orElseThrow {
+                ExceptionInApplication(
+                    ExceptionType.NOT_FOUND,
+                    "Компания не найдена с идентификатором $createCompanyPositionDto.companyId"
+                )
+            }
 
         val companyPositionEntity = CompanyPositionEntity(
             positionId = UUID.randomUUID(),
@@ -38,8 +45,13 @@ class CompanyPositionRepository(
      * Увеличить счетчик интервью
      */
     fun incrementInterviewsCount(positionId: UUID): CompanyPositionDto {
-        // TODO exception
-        val positionEntity = companyPositionJpaRepository.findById(positionId).orElse(null)
+        val positionEntity = companyPositionJpaRepository.findById(positionId)
+            .orElseThrow {
+                ExceptionInApplication(
+                    ExceptionType.NOT_FOUND,
+                    "Позиция в компании не найдена с идентификатором $positionId"
+                )
+            }
 
         positionEntity.interviewsCount++
 
@@ -50,8 +62,13 @@ class CompanyPositionRepository(
      * Увеличить счетчик принятых на стажировку
      */
     fun incrementEmployedCount(positionId: UUID): CompanyPositionDto {
-        // TODO exception
-        val positionEntity = companyPositionJpaRepository.findById(positionId).orElse(null)
+        val positionEntity = companyPositionJpaRepository.findById(positionId)
+            .orElseThrow {
+                ExceptionInApplication(
+                    ExceptionType.NOT_FOUND,
+                    "Позиция в компании не найдена с идентификатором $positionId"
+                )
+            }
 
         positionEntity.employedCount++
 

@@ -4,7 +4,7 @@ import com.quqee.backend.internship_hits.public_interface.common.CommentDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
-import com.quqee.backend.internship_hits.public_interface.tags.TagDto
+import com.quqee.backend.internship_hits.public_interface.common.TagDto
 import java.time.OffsetDateTime
 import java.util.UUID
 
