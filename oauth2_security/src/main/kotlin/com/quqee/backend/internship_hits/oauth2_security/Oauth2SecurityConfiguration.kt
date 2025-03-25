@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext
+import org.springframework.web.cors.CorsConfiguration
 import java.util.function.Supplier
 import java.util.stream.Stream
 
@@ -31,7 +32,19 @@ open class Oauth2SecurityConfiguration {
     @Throws(Exception::class)
     open fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .cors(Customizer.withDefaults<CorsConfigurer<HttpSecurity>>())
+            .cors { obj: CorsConfigurer<HttpSecurity> ->
+                obj.configurationSource { _ ->
+                    val corsConfiguration = CorsConfiguration()
+                    corsConfiguration.allowedOrigins = listOf(
+                        "https://internship.staziss-tech.ru",
+                        "https://localhost:3000",
+                        "http://localhost:3000",
+                    )
+                    corsConfiguration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE")
+                    corsConfiguration.allowedHeaders = listOf("*")
+                    corsConfiguration
+                }
+            }
             .csrf { obj: CsrfConfigurer<HttpSecurity> -> obj.disable() }
             .sessionManagement { c ->
                 c.sessionCreationPolicy(
