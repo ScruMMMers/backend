@@ -20,6 +20,8 @@ tags:
     description: Работа с уведомлениями
   - name: company
     description: Работа с компаниями
+  - name: reaction
+    description: Работа с реакциями под логами
 
 components:
   securitySchemes:
@@ -66,3 +68,12 @@ paths:
     $ref: './schemas/notifications/GetLastNotificationsApi.yaml'
   /notifications:
     $ref: './schemas/notifications/GetNotificationsApi.yaml'
+
+  /reactions/{logId}:
+    $ref: './schemas/reactions/GetLogReactionsApi.yaml'
+  /reactions/add/{logId}:
+    $ref: './schemas/reactions/AddReactionApi.yaml'
+  /reactions/delete/{logId}:
+    $ref: './schemas/reactions/DeleteReactionApi.yaml'
+  /reactions/possible:
+    $ref: './schemas/reactions/GetPossibleReactionsApi.yaml'

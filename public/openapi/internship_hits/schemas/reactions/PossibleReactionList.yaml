@@ -1,0 +1,9 @@
+PossibleReactionListView:
+  type: object
+  required:
+    - reactions
+  properties:
+    logs:
+      type: array
+      items:
+        $ref: './PossibleReaction.yaml#/PossibleReactionView'

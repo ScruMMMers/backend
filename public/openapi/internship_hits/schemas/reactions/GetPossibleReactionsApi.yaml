@@ -1,0 +1,14 @@
+get:
+  tags:
+    - reaction
+  summary: Получить все возможные реакции
+  security:
+    - openIdConnect: [ ]
+  description: Возвращает список всех доступных реакций, которые можно добавить к логу.
+  responses:
+    '200':
+      description: Список возможных реакций
+      content:
+        application/json:
+          schema:
+            $ref: './PossibleReactionList.yaml#/PossibleReactionListView'

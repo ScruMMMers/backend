@@ -1,0 +1,9 @@
+ReactionListView:
+  type: object
+  required:
+    - reactions
+  properties:
+    logs:
+      type: array
+      items:
+        $ref: '../common/Reaction.yaml#/ReactionView'

@@ -1,0 +1,35 @@
+post:
+  tags:
+    - reaction
+  summary: Добавить реакцию к логу
+  security:
+    - openIdConnect: [ ]
+  description: Добавляет реакцию к указанному логу от текущего пользователя.
+  parameters:
+    - name: logId
+      in: path
+      required: true
+      description: UUID лога, к которому добавляется реакция.
+      schema:
+        type: string
+        format: uuid
+    - name: reactionId
+      in: query
+      required: true
+      description: UUID реакции, которую нужно добавить.
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Успешное добавление реакции
+      content:
+        application/json:
+          schema:
+            $ref: '../common/Reaction.yaml#/ReactionView'
+    '400':
+      description: Некорректный запрос (например, отсутствует userId)
+    '404':
+      description: Лог или реакция не найдены
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

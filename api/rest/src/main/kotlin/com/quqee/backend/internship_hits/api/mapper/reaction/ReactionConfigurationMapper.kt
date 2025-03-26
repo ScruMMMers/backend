@@ -18,6 +18,7 @@ class ReactionConfigurationMapper(
     @Bean
     fun mapReaction(): FromApiToInternalMapper<ReactionView, ReactionDto> = makeFromApiMapper { model ->
         ReactionDto(
+            id = model.id,
             shortAccount = mapShortAccount.fromApi(model.shortAccount),
             emoji = model.emoji
         )
@@ -28,6 +29,7 @@ class ReactionConfigurationMapper(
         mapShortAccount: FromInternalToApiMapper<ShortAccountView, ShortAccountDto>
     ): FromInternalToApiMapper<ReactionView, ReactionDto> = makeToApiMapper { model ->
         ReactionView(
+            id = model.id,
             shortAccount = mapShortAccount.fromInternal(model.shortAccount),
             emoji = model.emoji
         )
