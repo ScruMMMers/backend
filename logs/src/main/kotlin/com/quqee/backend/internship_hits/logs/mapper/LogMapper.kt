@@ -63,7 +63,6 @@ class LogMapper(
     
     /**
      * Получение комментариев для лога
-     * ПОКА ЗАГЛУШКА
      */
     private fun getCommentsForLog(logId: UUID): List<CommentDto> {
         return commentService.getCommentsList(
