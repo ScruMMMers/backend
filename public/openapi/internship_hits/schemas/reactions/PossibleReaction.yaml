@@ -1,14 +1,11 @@
-ReactionView:
+PossibleReactionView:
   type: object
   required:
     - id
-    - shortAccount
     - emoji
   properties:
     id:
       type: string
       format: uuid
-    shortAccount:
-      $ref: './Account.yaml#/ShortAccountView'
     emoji:
       type: string

@@ -9,6 +9,7 @@ LogView:
     - editedAt
     - reactions
     - comments
+    - author
   properties:
     id:
       type: string
@@ -35,6 +36,8 @@ LogView:
       type: array
       items:
         $ref: '../common/Comment.yaml#/CommentView'
+    author:
+      $ref: '../common/Account.yaml#/ShortAccountView'
 
 LogTypeEnum:
   type: string

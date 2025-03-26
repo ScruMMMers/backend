@@ -5,26 +5,41 @@ import com.quqee.backend.internship_hits.logs.repository.jpa.LogReactionJpaRepos
 import com.quqee.backend.internship_hits.logs.repository.jpa.LogsJpaRepository
 import com.quqee.backend.internship_hits.logs.repository.jpa.ReactionJpaRepository
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
-import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
-import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
-import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
+import com.quqee.backend.internship_hits.profile.ProfileService
+import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
+import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
+import com.quqee.backend.internship_hits.public_interface.reaction.PossibleReactionDto
 import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
 import org.springframework.stereotype.Service
-import java.net.URI
 import java.util.*
 
 interface ReactionService {
     fun getLogReactions(logId: UUID): List<ReactionDto>
     fun addReactionToLog(logId: UUID, reactionId: UUID): ReactionDto
     fun removeReactionFromLog(logId: UUID, reactionId: UUID)
+    fun getAllPossibleReactions(): List<PossibleReactionDto>
 }
 
 @Service
 class ReactionServiceImpl(
     private val logReactionJpaRepository: LogReactionJpaRepository,
     private val reactionJpaRepository: ReactionJpaRepository,
-    private val logJpaRepository: LogsJpaRepository
+    private val logJpaRepository: LogsJpaRepository,
+    private val profileService: ProfileService,
 ) : ReactionService {
+
+    /**
+     * Получение всех возможных реакций
+     */
+    override fun getAllPossibleReactions(): List<PossibleReactionDto> {
+        return reactionJpaRepository.findAll().map { reaction ->
+            PossibleReactionDto(
+                id = reaction.id,
+                emoji = reaction.emoji
+            )
+        }
+    }
 
     /**
      * Получение всех реакций лога
@@ -69,11 +84,12 @@ class ReactionServiceImpl(
      * Удаление реакции от лога
      */
     override fun removeReactionFromLog(logId: UUID, reactionId: UUID) {
-        val currentUserId = KeycloakUtils.getUserId() ?: throw IllegalArgumentException("userId is null")
+        val currentUserId = KeycloakUtils.getUserId() ?:
+            throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "UserId is null")
 
         val logReaction = logReactionJpaRepository.findByLogIdAndUserIdAndReactionId(
             logId, currentUserId, reactionId
-        ) ?: throw NoSuchElementException("Реакция не найдена у пользователя")
+        ) ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Reaction with id $reactionId not found")
 
         logReactionJpaRepository.delete(logReaction)
     }
@@ -82,16 +98,9 @@ class ReactionServiceImpl(
      * Преобразование сущности реакции во View
      */
     private fun getReactionDto(logReaction: LogReaction): ReactionDto {
-        val shortAccount = ShortAccountDto(
-            userId = UUID.randomUUID(),
-            fullName = "Иван Иванов",
-            avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png")
-                .toString(),
-            roles = listOf(UserRole.DEANERY),
-            primaryColor = ColorEnum.AQUA,
-            email = "wtf@mail.ru",
-        )
+        val shortAccount = profileService.getShortAccount(GetProfileDto(userId = logReaction.userId))
         return ReactionDto(
+            id = logReaction.id,
             shortAccount = shortAccount,
             emoji = logReaction.reaction.emoji
         )

@@ -1,0 +1,31 @@
+delete:
+  tags:
+    - reaction
+  summary: Удалить реакцию от лога
+  security:
+    - openIdConnect: [ ]
+  description: Удаляет указанную реакцию, если она была добавлена текущим пользователем.
+  parameters:
+    - name: logId
+      in: path
+      required: true
+      description: UUID лога, из которого удаляется реакция.
+      schema:
+        type: string
+        format: uuid
+    - name: reactionId
+      in: query
+      required: true
+      description: UUID реакции, которую нужно удалить.
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Успешное удаление реакции
+    '400':
+      description: Некорректный запрос (например, отсутствует userId)
+    '404':
+      description: Реакция не найдена или не принадлежит пользователю
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

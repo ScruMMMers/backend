@@ -1,0 +1,24 @@
+get:
+  tags:
+    - reaction
+  summary: Получить все реакции лога
+  security:
+    - openIdConnect: [ ]
+  description: Возвращает список всех реакций, добавленных к указанному логу.
+  parameters:
+    - name: logId
+      in: path
+      required: true
+      description: UUID лога, для которого необходимо получить реакции.
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Список реакций
+      content:
+        application/json:
+          schema:
+            $ref: './ReactionList.yaml#/ReactionListView'
+    '404':
+      description: Лог не найден
