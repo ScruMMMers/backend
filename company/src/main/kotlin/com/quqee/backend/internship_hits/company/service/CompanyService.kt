@@ -2,6 +2,7 @@ package com.quqee.backend.internship_hits.company.service
 
 import com.quqee.backend.internship_hits.company.repository.CompanyRepository
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPagination
+import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
@@ -17,6 +18,7 @@ import java.util.UUID
 interface CompanyService {
     fun createCompany(createCompanyDto: CreateCompanyDto): CompanyDto
     fun getCompany(companyId: UUID): CompanyDto
+    fun getShortCompany(companyId: UUID): ShortCompanyDto?
     fun getCompaniesList(name: String?, lastId: UUID?, size: Int?): CompaniesListDto
 }
 
@@ -59,6 +61,11 @@ open class CompanyServiceImpl(
             "Компания не найдена по идентификатору $companyId"
         )
         return company
+    }
+
+    @Transactional(readOnly = true)
+    override fun getShortCompany(companyId: UUID): ShortCompanyDto? {
+        return companyRepository.getShortCompany(companyId)
     }
 
     /**

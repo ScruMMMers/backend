@@ -52,6 +52,15 @@ class CompanyRepository(
     }
 
     /**
+     * Получение компании по идентификатору
+     */
+    fun getShortCompany(companyId: UUID): ShortCompanyDto? {
+        val company = companyJpaRepository.findById(companyId).orElse(null)
+        company ?: return null
+        return mapper.toShortCompanyDto(company)
+    }
+
+    /**
      * Получение компании по названию
      */
     fun getCompanyByName(name: String): CompanyDto? {
