@@ -22,6 +22,8 @@ tags:
     description: Работа с компаниями
   - name: reaction
     description: Работа с реакциями под логами
+  - name: debug
+    description: Ручки для отладки
 
 components:
   securitySchemes:
@@ -77,3 +79,6 @@ paths:
     $ref: './schemas/reactions/DeleteReactionApi.yaml'
   /reactions/possible:
     $ref: './schemas/reactions/GetPossibleReactionsApi.yaml'
+
+  /debug/ws/receive/notification:
+    $ref: './schemas/debug/ReceiveNotificationApi.yaml'
