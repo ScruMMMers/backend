@@ -16,6 +16,7 @@ class CreateCompanyConfigurationMapper {
         CreateCompanyDto(
             name = model.name,
             sinceYear = model.sinceYear,
+            avatarId = model.avatarId,
             agentId = model.agentId,
             description = model.description,
             primaryColor = ColorEnum.fromHex(model.primaryColor)

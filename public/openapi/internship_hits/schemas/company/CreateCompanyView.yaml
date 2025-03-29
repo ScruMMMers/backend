@@ -3,6 +3,7 @@ CreateCompanyView:
   required:
     - name
     - sinceYear
+    - avatarId
     - agentId
     - description
     - primaryColor
@@ -11,6 +12,9 @@ CreateCompanyView:
       type: string
     sinceYear:
       type: string
+    avatarId:
+      type: string
+      format: uuid
     agentId:
       type: string
       format: uuid

@@ -22,7 +22,7 @@ interface FileService {
      * @param file Загружаемый файл
      * @return ID созданной записи о файле
      */
-    fun uploadFile(file: MultipartFile): FileUploadResponse
+    fun uploadFile(file: MultipartFile): FileDto
     
     /**
      * Получает ссылку для доступа к файлу
@@ -52,7 +52,7 @@ class FileServiceImpl(
     private val fileStorageService: FileStorageService
 ) : FileService {
     
-    override fun uploadFile(file: MultipartFile): FileUploadResponse {
+    override fun uploadFile(file: MultipartFile): FileDto {
         val fileId = UUID.randomUUID()
         val fileName = "${file.originalFilename}"
         val fileKey = "${fileId}_${file.originalFilename}"
@@ -71,7 +71,7 @@ class FileServiceImpl(
             fileSize = fileSize
         )
         
-        return FileUploadResponse(fileRepository.saveFile(fileEntity).id)
+        return fileMapper.toDto(fileRepository.saveFile(fileEntity))
     }
     
     override fun getFileLink(fileId: UUID): FileDownloadLinkDto {

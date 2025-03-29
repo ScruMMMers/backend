@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
+import java.net.URI
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -31,9 +32,11 @@ class CompanyRepository(
         val agent = KeycloakUtils.getUserId()
         agent ?: throw ExceptionInApplication(ExceptionType.FORBIDDEN, "Ошибка получения идентификатора")
 
+        // TODO Валидация файла (проверка на картинку)?
         val companyEntity = CompanyEntity(
             companyId = UUID.randomUUID(),
             name = createCompanyDto.name,
+            avatarId = createCompanyDto.avatarId,
             agent = agent,
             sinceYear = createCompanyDto.sinceYear,
             description = createCompanyDto.description,
