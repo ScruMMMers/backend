@@ -16,7 +16,8 @@ open class UpdateLogRequestConfigurationMapper(
     open fun mapUpdateLogRequest(): FromApiToInternalMapper<UpdateLogRequestView, UpdateLogRequestDto> = makeFromApiMapper { model ->
         UpdateLogRequestDto(
             message = model.message,
-            type = mapLogType.mapToInternal(model.type)
+            type = mapLogType.mapToInternal(model.type),
+            files = model.files
         )
     }
 
@@ -24,7 +25,8 @@ open class UpdateLogRequestConfigurationMapper(
     open fun mapUpdateLogRequestToApi(): FromInternalToApiMapper<UpdateLogRequestView, UpdateLogRequestDto> = makeToApiMapper { model ->
         UpdateLogRequestView(
             message = model.message,
-            type = mapLogType.mapToApi(model.type)
+            type = mapLogType.mapToApi(model.type),
+            files = model.files
         )
     }
 }

@@ -68,7 +68,8 @@ class LogsServiceImpl (
         val newLog = logsRepository.createLog(
             message = createLogRequest.message,
             tags = findTagsByNames(extractTagsFromMessage(createLogRequest.message)),
-            type = createLogRequest.type
+            type = createLogRequest.type,
+            files = createLogRequest.files ?: emptyList()
         )
         
         return CreatedLogDto(log = newLog)
@@ -82,7 +83,8 @@ class LogsServiceImpl (
             logId = logId,
             message = updateLogRequest.message,
             tags = findTagsByNames(extractTagsFromMessage(updateLogRequest.message)),
-            type = updateLogRequest.type
+            type = updateLogRequest.type,
+            files = updateLogRequest.files ?: emptyList()
         )
         
         return CreatedLogDto(log = updatedLog)

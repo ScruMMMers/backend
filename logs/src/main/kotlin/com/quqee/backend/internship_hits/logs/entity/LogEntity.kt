@@ -37,7 +37,12 @@ data class LogEntity(
     var createdAt: OffsetDateTime,
 
     @Column(name = "edited_at", nullable = false)
-    var editedAt: OffsetDateTime
+    var editedAt: OffsetDateTime,
+
+    @ElementCollection
+    @CollectionTable(name = "log_files", joinColumns = [JoinColumn(name = "log_id")])
+    @Column(name = "file_id", nullable = false)
+    var fileIds: List<UUID> = mutableListOf()
 ) {
     constructor() : this(
         UUID.randomUUID(),

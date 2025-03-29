@@ -8,3 +8,9 @@ UpdateLogRequestView:
       type: string
     type:
       $ref: './Log.yaml#/LogTypeEnum'
+    files:
+      type: array
+      items:
+        type: string
+        format: uuid
+

@@ -60,3 +60,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v7_update_company_avatar.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 9
+      author: alexander_kirsanov
+      changes:
+        - sqlFile:
+            path: ddl/v8_create_logs_files.sql
+            relativeToChangelogFile: true

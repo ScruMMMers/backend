@@ -1,5 +1,12 @@
 FileView:
   type: object
+  required:
+    - id
+    - fileName
+    - contentType
+    - fileSize
+    - fileKey
+    - uri
   properties:
     id:
       type: string
@@ -24,6 +31,8 @@ FileView:
 
 FileDownloadLinkResponseView:
   type: object
+  required:
+    - uri
   properties:
     downloadUrl:
       type: string
