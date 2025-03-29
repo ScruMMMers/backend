@@ -22,6 +22,8 @@ tags:
     description: Работа с компаниями
   - name: reaction
     description: Работа с реакциями под логами
+  - name: debug
+    description: Ручки для отладки
   - name: file
     description: Работа с файлами
 
@@ -79,7 +81,10 @@ paths:
     $ref: './schemas/reactions/DeleteReactionApi.yaml'
   /reactions/possible:
     $ref: './schemas/reactions/GetPossibleReactionsApi.yaml'
-    
+
+  /debug/ws/receive/notification:
+    $ref: './schemas/debug/ReceiveNotificationApi.yaml'
+
   /files:
     $ref: './schemas/file/UploadFileApi.yaml'
   /files/{fileId}:

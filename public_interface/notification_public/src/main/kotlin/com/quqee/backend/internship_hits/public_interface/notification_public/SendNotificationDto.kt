@@ -7,4 +7,6 @@ data class SendNotificationDto(
     val message: String,
     val userId: UUID,
     val channels: Set<NotificationChannel>,
+    val type: NotificationType,
+    val id: UUID,
 )

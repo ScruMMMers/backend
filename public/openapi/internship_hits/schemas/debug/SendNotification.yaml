@@ -1,0 +1,17 @@
+SendNotificationView:
+  type: object
+  required:
+    - id
+    - type
+    - title
+    - description
+  properties:
+    id:
+      type: string
+      format: uuid
+    type:
+      $ref: '../notifications/Notification.yaml#/NotificationTypeEnum'
+    title:
+      type: string
+    description:
+      type: string
