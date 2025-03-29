@@ -10,6 +10,7 @@ LogView:
     - reactions
     - comments
     - author
+    - files
   properties:
     id:
       type: string
@@ -38,6 +39,11 @@ LogView:
         $ref: '../common/Comment.yaml#/CommentView'
     author:
       $ref: '../common/Account.yaml#/ShortAccountView'
+    files:
+      type: array
+      items:
+        $ref: '../file/FileModels.yaml#/FileView'
+
 
 LogTypeEnum:
   type: string
@@ -45,3 +51,4 @@ LogTypeEnum:
     - DEFAULT
     - OFFER
     - INTERVIEW
+    - FINAL

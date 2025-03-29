@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration
     basePackages = [
         "com.quqee.backend.internship_hits.tags",
         "com.quqee.backend.internship_hits.profile",
+        "com.quqee.backend.internship_hits.file",
     ]
 )
 open class LogBeanConfiguration

@@ -1,5 +1,6 @@
 package com.quqee.backend.internship_hits.logs.mapper
 
+import com.quqee.backend.internship_hits.file.service.FileService
 import com.quqee.backend.internship_hits.logs.entity.LogEntity
 import com.quqee.backend.internship_hits.logs.service.CommentService
 import com.quqee.backend.internship_hits.logs.service.ReactionService
@@ -23,6 +24,7 @@ class LogMapper(
     private val reactionService: ReactionService,
     private val profileService: ProfileService,
     private val commentService: CommentService,
+    private val fileService: FileService
 ) {
     /**
      * Преобразование сущности лога в DTO представление
@@ -38,6 +40,7 @@ class LogMapper(
             reactions = reactionService.getLogReactions(entity.id),
             comments = getCommentsForLog(entity.id),
             author = profileService.getShortAccount(GetProfileDto(userId = entity.userId)),
+            files = entity.fileIds.map { fileService.getFileById(it) }
         )
     }
     

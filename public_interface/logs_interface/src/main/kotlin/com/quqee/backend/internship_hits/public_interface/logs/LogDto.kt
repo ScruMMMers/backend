@@ -1,6 +1,7 @@
 package com.quqee.backend.internship_hits.public_interface.logs
 
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
+import com.quqee.backend.internship_hits.public_interface.common.FileDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
@@ -18,4 +19,5 @@ data class LogDto(
     val reactions: List<ReactionDto>,
     val comments: List<CommentDto>,
     val author: ShortAccountDto,
+    val files: List<FileDto>
 )

@@ -53,13 +53,13 @@ class ReactionServiceImpl(
      * Добавление реакции к логу
      */
     override fun addReactionToLog(logId: UUID, reactionId: UUID): ReactionDto {
-        val currentUserId = KeycloakUtils.getUserId() ?: throw IllegalArgumentException("userId is null")
+        val currentUserId = KeycloakUtils.getUserId() ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "User is null")
 
         val log = logJpaRepository.findById(logId)
-            .orElseThrow { NoSuchElementException("Лог с ID $logId не найден") }
+            .orElseThrow { throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Лог с ID $logId не найден") }
 
         val reaction = reactionJpaRepository.findById(reactionId)
-            .orElseThrow { NoSuchElementException("Реакция с ID $reactionId не найдена") }
+            .orElseThrow { throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Реакция с ID $reactionId не найден") }
 
         val existingReaction = logReactionJpaRepository.findByLogIdAndUserIdAndReactionId(
             logId, currentUserId, reactionId
