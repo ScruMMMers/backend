@@ -1,0 +1,31 @@
+post:
+  tags:
+    - file
+  summary: Загрузить файл
+  description: Загружает файл в систему и возвращает идентификатор файла
+  security:
+    - openIdConnect: []
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            file:
+              type: string
+              format: binary
+              description: Файл для загрузки
+  responses:
+    '200':
+      description: Файл успешно загружен
+      content:
+        application/json:
+          schema:
+            $ref: './FileModels.yaml#/FileUploadResponseView'
+    '400':
+      description: Некорректный запрос
+    '401':
+      description: Не авторизован
+    '413':
+      description: Файл слишком большой 

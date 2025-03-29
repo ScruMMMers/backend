@@ -46,3 +46,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v5_create_comment_table.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 7
+      author: alexander_kirsanov
+      changes:
+        - sqlFile:
+            path: ddl/v6_create_file_table.sql
+            relativeToChangelogFile: true

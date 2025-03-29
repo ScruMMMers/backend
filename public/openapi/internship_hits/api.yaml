@@ -24,6 +24,8 @@ tags:
     description: Работа с реакциями под логами
   - name: debug
     description: Ручки для отладки
+  - name: file
+    description: Работа с файлами
 
 components:
   securitySchemes:
@@ -82,3 +84,12 @@ paths:
 
   /debug/ws/receive/notification:
     $ref: './schemas/debug/ReceiveNotificationApi.yaml'
+
+  /files:
+    $ref: './schemas/file/UploadFileApi.yaml'
+  /files/{fileId}:
+    $ref: './schemas/file/GetFileInfoApi.yaml'
+  /files/{fileId}/delete:
+    $ref: './schemas/file/DeleteFileApi.yaml'
+  /files/{fileId}/download-link:
+    $ref: './schemas/file/GetFileLinkApi.yaml'

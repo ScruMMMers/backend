@@ -1,0 +1,26 @@
+delete:
+  tags:
+    - file
+  summary: Удалить файл
+  description: Удаляет файл из системы
+  security:
+    - openIdConnect: []
+  parameters:
+    - name: fileId
+      in: path
+      required: true
+      description: Идентификатор файла
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Файл успешно удален
+    '400':
+      description: Некорректный запрос
+    '401':
+      description: Не авторизован
+    '403':
+      description: Недостаточно прав
+    '404':
+      description: Файл не найден 

@@ -53,7 +53,7 @@ class FileStorageService(
             s3Client.use { client ->
                 val putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
-                    .key(metadata.fileName)
+                    .key(metadata.fileKey.toString())
                     .metadata(metadata.getMapMetadata())
                     .build()
                 client.putObject(

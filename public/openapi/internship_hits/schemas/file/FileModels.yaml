@@ -1,0 +1,39 @@
+FileView:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Уникальный идентификатор файла
+    fileName:
+      type: string
+      description: Имя файла
+    contentType:
+      type: string
+      description: MIME-тип файла
+    fileSize:
+      type: integer
+      format: int64
+      description: Размер файла в байтах
+    fileKey:
+      type: string
+      description: Ключ файла в хранилище
+    uri:
+      type: string
+      description: Ссылка на загрузку файла
+
+FileUploadResponseView:
+  type: object
+  properties:
+    fileId:
+      type: string
+      format: uuid
+      description: Уникальный идентификатор загруженного файла
+
+FileDownloadLinkResponseView:
+  type: object
+  properties:
+    downloadUrl:
+      type: string
+      format: uri
+      description: URL для скачивания файла 
