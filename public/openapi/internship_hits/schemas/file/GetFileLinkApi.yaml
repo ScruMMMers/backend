@@ -1,0 +1,28 @@
+get:
+  tags:
+    - file
+  summary: Получить ссылку на скачивание файла
+  description: Возвращает ссылку для скачивания файла
+  security:
+    - openIdConnect: []
+  parameters:
+    - name: fileId
+      in: path
+      required: true
+      description: Идентификатор файла
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Ссылка на скачивание файла
+      content:
+        application/json:
+          schema:
+            $ref: './FileModels.yaml#/FileDownloadLinkResponseView'
+    '400':
+      description: Некорректный запрос
+    '401':
+      description: Не авторизован
+    '404':
+      description: Файл не найден 

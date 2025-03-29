@@ -22,6 +22,8 @@ tags:
     description: Работа с компаниями
   - name: reaction
     description: Работа с реакциями под логами
+  - name: file
+    description: Работа с файлами
 
 components:
   securitySchemes:
@@ -77,3 +79,12 @@ paths:
     $ref: './schemas/reactions/DeleteReactionApi.yaml'
   /reactions/possible:
     $ref: './schemas/reactions/GetPossibleReactionsApi.yaml'
+    
+  /files:
+    $ref: './schemas/file/UploadFileApi.yaml'
+  /files/{fileId}:
+    $ref: './schemas/file/GetFileInfoApi.yaml'
+  /files/{fileId}/delete:
+    $ref: './schemas/file/DeleteFileApi.yaml'
+  /files/{fileId}/download-link:
+    $ref: './schemas/file/GetFileLinkApi.yaml'
