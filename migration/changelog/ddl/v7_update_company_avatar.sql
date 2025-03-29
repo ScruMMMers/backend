@@ -1,0 +1,1 @@
+ALTER TABLE company ADD COLUMN avatar_id UUID NOT NULL;

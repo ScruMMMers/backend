@@ -1,6 +1,7 @@
 package com.quqee.backend.internship_hits.company.entity
 
 import jakarta.persistence.*
+import java.net.URI
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -19,7 +20,8 @@ data class CompanyEntity(
     @Column(name = "name", nullable = false)
     var name: String,
 
-    // TODO картинка компании
+    @Column(name = "avatar_id", nullable = false)
+    var avatarId: UUID,
 
     @Column(name = "agent", nullable = false)
     var agent: UUID,
@@ -43,6 +45,7 @@ data class CompanyEntity(
     constructor() : this(
         UUID.randomUUID(),
         "",
+        UUID.randomUUID(),
         UUID.randomUUID(),
         "",
         "",

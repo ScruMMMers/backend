@@ -22,14 +22,6 @@ FileView:
       type: string
       description: Ссылка на загрузку файла
 
-FileUploadResponseView:
-  type: object
-  properties:
-    fileId:
-      type: string
-      format: uuid
-      description: Уникальный идентификатор загруженного файла
-
 FileDownloadLinkResponseView:
   type: object
   properties:

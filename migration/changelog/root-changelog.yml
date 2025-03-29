@@ -53,3 +53,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v6_create_file_table.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 8
+      author: yuriy_sitdikov
+      changes:
+        - sqlFile:
+            path: ddl/v7_update_company_avatar.sql
+            relativeToChangelogFile: true

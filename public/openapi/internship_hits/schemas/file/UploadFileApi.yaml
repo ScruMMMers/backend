@@ -22,7 +22,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: './FileModels.yaml#/FileUploadResponseView'
+            $ref: './FileModels.yaml#/FileView'
     '400':
       description: Некорректный запрос
     '401':

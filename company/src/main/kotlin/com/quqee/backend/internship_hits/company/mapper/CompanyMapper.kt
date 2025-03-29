@@ -1,6 +1,7 @@
 package com.quqee.backend.internship_hits.company.mapper
 
 import com.quqee.backend.internship_hits.company.entity.CompanyEntity
+import com.quqee.backend.internship_hits.file.service.FileService
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
@@ -13,6 +14,7 @@ import java.net.URI
 class CompanyMapper(
     private val companyPositionMapper: CompanyPositionMapper,
     private val profileService: ProfileService,
+    private val fileService: FileService,
 ) {
     /**
      * Преобразование сущности компании в DTO представление
@@ -22,7 +24,7 @@ class CompanyMapper(
             companyId = entity.companyId,
             name = entity.name,
             agent = profileService.getShortAccount(GetProfileDto(entity.agent)),
-            avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"), //TODO получение урла фото
+            avatarUrl = URI.create(fileService.getFileLink(entity.avatarId).downloadUrl),
             sinceYear = entity.sinceYear,
             description = entity.description,
             primaryColor = ColorEnum.fromHex(entity.primaryColor),
@@ -38,8 +40,7 @@ class CompanyMapper(
         return ShortCompanyDto(
             companyId = entity.companyId,
             name = entity.name,
-            //  TODO картинка компании
-            avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"),
+            avatarUrl = URI.create(fileService.getFileLink(entity.avatarId).downloadUrl),
             primaryColor = ColorEnum.fromHex(entity.primaryColor),
             createdAt = entity.createdAt
         )
