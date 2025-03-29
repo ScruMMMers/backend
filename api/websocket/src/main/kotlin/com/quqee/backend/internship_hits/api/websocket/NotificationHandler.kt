@@ -26,7 +26,7 @@ class NotificationHandler(
     @Throws(Exception::class)
     override fun handleTransportError(session: WebSocketSession, exception: Throwable) {
         log.info("Exception occurred: {} on session: {}", exception.message, session.id)
-        session.close(CloseStatus.SERVER_ERROR.withReason(exception.message!!))
+        session.close(CloseStatus.SERVER_ERROR.withReason(exception.message ?: "Unknown error"))
         webSocketStorage.remove(session)
     }
 
