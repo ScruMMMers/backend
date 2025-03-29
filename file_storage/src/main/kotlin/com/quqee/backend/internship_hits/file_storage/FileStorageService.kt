@@ -32,6 +32,7 @@ class FileStorageService(
         } catch (e: Exception) {
             throw ExceptionInApplication(ExceptionType.FATAL)
         }
+
         val objectRequest = GetObjectRequest.builder()
             .bucket(bucketName)
             .key(dto.fileKey)
@@ -50,17 +51,15 @@ class FileStorageService(
         val file = dto.file
         val metadata = dto.metadata
         try {
-            s3Client.use { client ->
-                val putObjectRequest = PutObjectRequest.builder()
-                    .bucket(bucketName)
-                    .key(metadata.fileKey.toString())
-                    .metadata(metadata.getMapMetadata())
-                    .build()
-                client.putObject(
-                    putObjectRequest,
-                    RequestBody.fromInputStream(file.inputStream, file.size)
-                )
-            }
+            val putObjectRequest = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(metadata.fileKey)
+                .metadata(metadata.getMapMetadata())
+                .build()
+            s3Client.putObject(
+                putObjectRequest,
+                RequestBody.fromInputStream(file.inputStream, file.size)
+            )
         } catch (e: java.lang.Exception) {
             throw ExceptionInApplication(ExceptionType.FATAL, "Ошибка при загрузке файлов")
         }
@@ -68,7 +67,7 @@ class FileStorageService(
 
     fun deleteFile(fileKey: String) {
         try {
-            s3Client.deleteObject {
+            s3Client.deleteObject{
                 it.bucket(bucketName)
                 it.key(fileKey)
             }
