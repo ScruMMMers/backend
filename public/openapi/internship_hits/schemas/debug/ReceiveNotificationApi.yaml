@@ -1,0 +1,18 @@
+post:
+  tags:
+    - debug
+  summary: Отправить нотификацию через websocket
+  security:
+    - openIdConnect: [ ]
+  requestBody:
+    description: Нотификация
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './SendNotification.yaml#/SendNotificationView'
+  responses:
+    '200':
+      description: OK
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

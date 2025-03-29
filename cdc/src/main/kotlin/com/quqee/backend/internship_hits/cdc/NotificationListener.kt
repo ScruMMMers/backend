@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.quqee.backend.internship_hits.notification.service.NotificationService
 import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationChannel
+import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationType
 import com.quqee.backend.internship_hits.public_interface.notification_public.SendNotificationDto
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.LoggerFactory
@@ -57,6 +58,8 @@ class NotificationListener(
                 .asSequence()
                 .map { NotificationChannel.fromString(it.asText()) }
                 .toSet(),
+            type = NotificationType.fromDataBase(node.get("type").asInt()),
+            id = UUID.fromString(node.get("id").asText())
         )
     }
 
