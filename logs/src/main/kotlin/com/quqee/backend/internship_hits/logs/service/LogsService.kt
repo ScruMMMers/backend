@@ -6,7 +6,7 @@ import com.quqee.backend.internship_hits.public_interface.common.enums.Exception
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.logs.*
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
-import com.quqee.backend.internship_hits.tags.service.TagService
+import com.quqee.backend.internship_hits.tags_query.service.TagQueryService
 import org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE
 import org.springframework.stereotype.Service
 import java.util.*
@@ -22,7 +22,7 @@ interface LogsService {
 @Service
 class LogsServiceImpl (
     private val logsRepository: LogsRepository,
-    private val tagService: TagService
+    private val tagQueryService: TagQueryService
 ) : LogsService {
 
     /**
@@ -111,7 +111,7 @@ class LogsServiceImpl (
      */
     private fun findTagsByNames(tagNames: List<String>): List<TagEntity> {
         return tagNames
-            .flatMap { name -> tagService.getTagsEntityByNamePart(name) }
+            .flatMap { name -> tagQueryService.getTagsEntityByNamePart(name) }
             .distinct()
     }
 } 

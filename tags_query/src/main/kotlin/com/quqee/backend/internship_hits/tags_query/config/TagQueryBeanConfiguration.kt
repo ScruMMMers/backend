@@ -1,4 +1,4 @@
-package com.quqee.backend.internship_hits.logs.config
+package com.quqee.backend.internship_hits.tags_query.config
 
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -7,10 +7,7 @@ import org.springframework.context.annotation.Configuration
 @ComponentScan(
     basePackages = [
         "com.quqee.backend.internship_hits.tags",
-        "com.quqee.backend.internship_hits.tags_query",
-        "com.quqee.backend.internship_hits.profile",
-        "com.quqee.backend.internship_hits.file",
         "com.quqee.backend.internship_hits.company",
     ]
 )
-open class LogBeanConfiguration
+open class TagQueryBeanConfiguration

@@ -1,5 +1,6 @@
-package com.quqee.backend.internship_hits.tags.mapper
+package com.quqee.backend.internship_hits.tags_query.mapper
 
+import com.quqee.backend.internship_hits.company.service.CompanyService
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
 import com.quqee.backend.internship_hits.public_interface.common.TagDto
@@ -11,17 +12,13 @@ import java.time.OffsetDateTime
 import java.util.*
 
 @Service
-class TagMapper {
+class TagQueryMapper(
+    private val companyService: CompanyService,
+) {
     fun toTagDto(tagEntity: TagEntity): TagDto {
         return TagDto(
             id = tagEntity.id,
-            shortCompany = ShortCompanyDto(
-                companyId = UUID.randomUUID(),
-                name = "Яндекс",
-                avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"),
-                primaryColor = ColorEnum.NAVY,
-                createdAt = OffsetDateTime.now()
-            ),
+            shortCompany = companyService.getShortCompany(companyId = tagEntity.companyId) ?: ShortCompanyDto(),
             name = tagEntity.name
         )
     }

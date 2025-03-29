@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: tags-query-service
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        ddl-auto: validate
+  datasource:
+    url: jdbc:postgresql://84.201.168.8:5432/${POSTGRES_DATABASE}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}

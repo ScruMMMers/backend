@@ -25,6 +25,7 @@ COPY notification ./notification
 COPY logs ./logs
 COPY company ./company
 COPY tags ./tags
+COPY tags_query ./tags_query
 COPY file ./file
 COPY oauth2_security ./oauth2_security
 COPY websocket_common ./websocket_common
