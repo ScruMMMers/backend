@@ -4,6 +4,7 @@ import com.quqee.backend.internship_hits.company.entity.CompanyEntity
 import com.quqee.backend.internship_hits.company.mapper.CompanyMapper
 import com.quqee.backend.internship_hits.company.repository.jpa.CompanyJpaRepository
 import com.quqee.backend.internship_hits.company.specification.CompanySpecification
+import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
@@ -26,10 +27,14 @@ class CompanyRepository(
      * Создание компании
      */
     fun createCompany(createCompanyDto: CreateCompanyDto): CompanyDto {
+        // TODO пока нет получения списка пользователей, агент будет всегда тот кто создает компанию
+        val agent = KeycloakUtils.getUserId()
+        agent ?: throw ExceptionInApplication(ExceptionType.FORBIDDEN, "Ошибка получения идентификатора")
+
         val companyEntity = CompanyEntity(
             companyId = UUID.randomUUID(),
             name = createCompanyDto.name,
-            agent = createCompanyDto.agentId,
+            agent = agent,
             sinceYear = createCompanyDto.sinceYear,
             description = createCompanyDto.description,
             primaryColor = createCompanyDto.primaryColor.hexColor,
