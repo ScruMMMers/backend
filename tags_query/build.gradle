@@ -1,12 +1,8 @@
 dependencies {
     implementation project(':oauth2_security')
     implementation project(':public_interface:logs_interface')
-    implementation project(':public_interface:profile_public')
-    implementation project(':profile')
     implementation project(':public_interface:common')
     implementation project(':tags')
-    implementation project(':tags_query')
-    implementation project(':file')
     implementation project(':company')
     implementation libs.spring.boot.starter.data.jpa
 }
