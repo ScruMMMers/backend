@@ -6,5 +6,6 @@ dependencies {
     implementation project(':public_interface:common')
     implementation project(':tags')
     implementation project(':file')
+    implementation project(':company')
     implementation libs.spring.boot.starter.data.jpa
 }

@@ -1,5 +1,6 @@
 package com.quqee.backend.internship_hits.logs.mapper
 
+import com.quqee.backend.internship_hits.company.service.CompanyService
 import com.quqee.backend.internship_hits.file.service.FileService
 import com.quqee.backend.internship_hits.logs.entity.LogEntity
 import com.quqee.backend.internship_hits.logs.service.CommentService
@@ -24,7 +25,8 @@ class LogMapper(
     private val reactionService: ReactionService,
     private val profileService: ProfileService,
     private val commentService: CommentService,
-    private val fileService: FileService
+    private val fileService: FileService,
+    private val companyService: CompanyService
 ) {
     /**
      * Преобразование сущности лога в DTO представление
@@ -53,13 +55,7 @@ class LogMapper(
             TagDto(
                 id = tag.id,
                 name = tag.name,
-                shortCompany = ShortCompanyDto(
-                    companyId = UUID.randomUUID(),
-                    name = "Яндекс",
-                    avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"),
-                    primaryColor = ColorEnum.NAVY,
-                    createdAt = OffsetDateTime.now()
-                )
+                shortCompany = companyService.getShortCompany(tag.companyId) ?: ShortCompanyDto()
             )
         }
     }

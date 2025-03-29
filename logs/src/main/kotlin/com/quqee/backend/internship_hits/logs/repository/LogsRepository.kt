@@ -78,7 +78,8 @@ class LogsRepository(
     fun updateLog(logId: UUID, message: String, tags: List<TagEntity>, type: LogType, files: List<UUID>): LogDto {
         val currentUserId = KeycloakUtils.getUserId() ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "User is null")
         val existingLog = logsJpaRepository.findById(logId)
-            .orElseThrow { NoSuchElementException("Лог с ID $logId не найден") }
+            .orElseThrow { ExceptionInApplication(ExceptionType.NOT_FOUND, "Лог с ID $logId не найден") }
+
 
         if (existingLog.userId != currentUserId) {
             throw ExceptionInApplication(ExceptionType.FORBIDDEN)
