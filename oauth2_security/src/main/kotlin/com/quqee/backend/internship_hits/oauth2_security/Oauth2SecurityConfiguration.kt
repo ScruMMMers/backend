@@ -48,6 +48,7 @@ open class Oauth2SecurityConfiguration {
                     )
                     corsConfiguration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE")
                     corsConfiguration.allowedHeaders = listOf("*")
+                    corsConfiguration.allowCredentials = true
                     corsConfiguration
                 }
             }
@@ -100,6 +101,7 @@ open class Oauth2SecurityConfiguration {
     companion object {
         private val WHITE_LIST = arrayOf(
             "/hello",
+            "/ws/notification/**"
         )
     }
 }

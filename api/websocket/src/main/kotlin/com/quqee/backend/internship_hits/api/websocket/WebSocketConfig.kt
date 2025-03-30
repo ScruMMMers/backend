@@ -12,16 +12,17 @@ import org.springframework.web.socket.config.annotation.*
 @EnableWebSocket
 @EnableWebSocketMessageBroker
 open class WebSocketConfig(
-    private val notificationHandler: NotificationHandler
+    private val notificationHandler: NotificationHandler,
 ) : WebSocketConfigurer, WebSocketMessageBrokerConfigurer {
 
     override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
         registry.addHandler(notificationHandler, "/ws/notification")
-            .setAllowedOrigins("*")
+            .setAllowedOriginPatterns("*")
+            .withSockJS()
     }
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS()
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS()
 
         registry.setErrorHandler(WebSocketExceptionInterceptor())
     }

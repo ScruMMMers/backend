@@ -1,6 +1,5 @@
 package com.quqee.backend.internship_hits.api.websocket
 
-import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.websocket_common.SessionKey
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.socket.CloseStatus
 import org.springframework.web.socket.WebSocketSession
 import org.springframework.web.socket.handler.AbstractWebSocketHandler
-import java.util.UUID
+import java.util.*
 
 @Component
 class NotificationHandler(
@@ -35,9 +34,11 @@ class NotificationHandler(
     }
 
     private fun getUserId(session: WebSocketSession): UUID {
-        val principal = session.principal
-        return principal?.let { KeycloakUtils.getUserId(it) } ?:
-            throw ExceptionInApplication(ExceptionType.FATAL, "Invalid principal")
+        return session.uri
+            ?.query
+            ?.removePrefix("userId=")
+            ?.let { UUID.fromString(it) }
+            ?: throw ExceptionInApplication(ExceptionType.FORBIDDEN, "Invalid principal")
     }
 
     companion object {
