@@ -37,10 +37,14 @@ open class Oauth2SecurityConfiguration {
                     val corsConfiguration = CorsConfiguration()
                     corsConfiguration.allowedOrigins = listOf(
                         "https://internship.staziss-tech.ru",
+                        "ws://internship.staziss-tech.ru",
                         "https://api.internship.staziss-tech.ru",
+                        "ws://api.internship.staziss-tech.ru",
                         "https://localhost:3000",
                         "http://localhost:3000",
+                        "ws://localhost:3000",
                         "http://localhost:9000",
+                        "ws://localhost:9000",
                     )
                     corsConfiguration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE")
                     corsConfiguration.allowedHeaders = listOf("*")
