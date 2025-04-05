@@ -25,41 +25,61 @@ class LogsRepository(
     /**
      * Получение логов текущего пользователя
      */
-    fun getLogsByCurrentUser(lastId: UUID?, pageSize: Int): List<LogDto> {
+    fun getLogsByCurrentUser(
+        lastId: UUID?,
+        pageSize: Int,
+        logTypes: List<LogType>? = null,
+        approvalStatuses: List<ApprovalStatus>? = null
+    ): List<LogDto> {
         val currentUserId = KeycloakUtils.getUserId()
             ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "User is null")
-        return getLogsByUserId(currentUserId, lastId, pageSize)
+        return getLogsByUserId(currentUserId, lastId, pageSize, logTypes, approvalStatuses)
     }
 
     /**
      * Получение логов конкретного пользователя
      */
-    fun getLogsByUserId(userId: UUID, lastId: UUID?, pageSize: Int): List<LogDto> {
+    fun getLogsByUserId(
+        userId: UUID,
+        lastId: UUID?,
+        pageSize: Int,
+        logTypes: List<LogType>?,
+        approvalStatuses: List<ApprovalStatus>?
+    ): List<LogDto> {
         val pageable = PageRequest.of(0, pageSize)
 
         val logs = if (lastId != null) {
             val lastLog = logsJpaRepository.findById(lastId).orElse(null)
                 ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Лог с ID $lastId не найден")
 
-            logsJpaRepository.findByUserIdAndCreatedAtLessThanOrderByCreatedAtDescIdDesc(
-                userId,
-                lastLog.createdAt,
-                pageable
+            logsJpaRepository.findByUserIdAndCreatedAtLessThanAndFilters(
+                userId = userId,
+                createdAt = lastLog.createdAt,
+                logTypes = logTypes,
+                approvalStatuses = approvalStatuses,
+                pageable = pageable
             )
         } else {
-            logsJpaRepository.findByUserIdOrderByCreatedAtDescIdDesc(userId, pageable)
+            logsJpaRepository.findByUserIdAndFilters(
+                userId = userId,
+                logTypes = logTypes,
+                approvalStatuses = approvalStatuses,
+                pageable = pageable
+            )
         }
 
         return logs.map { logMapper.toLogDto(it) }
     }
 
+
     /**
      * Создание нового лога
      */
     fun createLog(message: String, tags: List<TagEntity>, type: LogType, files: List<UUID>): LogDto {
-        val currentUserId = KeycloakUtils.getUserId() ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "User is null")
+        val currentUserId = KeycloakUtils.getUserId()
+            ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "User is null")
         val now = OffsetDateTime.now()
-        
+
         val logEntity = LogEntity(
             id = UUID.randomUUID(),
             userId = currentUserId,
@@ -71,7 +91,7 @@ class LogsRepository(
             fileIds = files,
             approvalStatus = getApprovalStatus(type)
         )
-        
+
         val savedLog = logsJpaRepository.save(logEntity)
         return logMapper.toLogDto(savedLog)
     }
@@ -80,7 +100,8 @@ class LogsRepository(
      * Обновление существующего лога
      */
     fun updateLog(logId: UUID, message: String, tags: List<TagEntity>, type: LogType, files: List<UUID>): LogDto {
-        val currentUserId = KeycloakUtils.getUserId() ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "User is null")
+        val currentUserId = KeycloakUtils.getUserId()
+            ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "User is null")
         val existingLog = logsJpaRepository.findById(logId)
             .orElseThrow { ExceptionInApplication(ExceptionType.NOT_FOUND, "Лог с ID $logId не найден") }
 
@@ -97,7 +118,7 @@ class LogsRepository(
             fileIds = files,
             approvalStatus = getApprovalStatus(type)
         )
-        
+
         val savedLog = logsJpaRepository.save(updatedLog)
         return logMapper.toLogDto(savedLog)
     }

@@ -2,6 +2,7 @@ package com.quqee.backend.internship_hits.api.rest
 
 import com.quqee.backend.internship_hits.logs.service.CommentService
 import com.quqee.backend.internship_hits.logs.service.LogsService
+import com.quqee.backend.internship_hits.mapper.EnumerationMapper
 import com.quqee.backend.internship_hits.mapper.FromApiToInternalMapper
 import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
 import com.quqee.backend.internship_hits.model.rest.*
@@ -9,6 +10,8 @@ import com.quqee.backend.internship_hits.public_interface.comment.CommentsListDt
 import com.quqee.backend.internship_hits.public_interface.comment.CreateCommentDto
 import com.quqee.backend.internship_hits.public_interface.comment.UpdateCommentDto
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
+import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
+import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.CreateLogRequestDto
 import com.quqee.backend.internship_hits.public_interface.logs.CreatedLogDto
 import com.quqee.backend.internship_hits.public_interface.logs.LogListDto
@@ -28,7 +31,9 @@ class LogsController(
     private val mapCommentList: FromInternalToApiMapper<CommentsListView, CommentsListDto>,
     private val mapComment: FromInternalToApiMapper<CommentView, CommentDto>,
     private val mapCreateComment: FromApiToInternalMapper<CreateCommentView, CreateCommentDto>,
-    private val mapUpdateComment: FromApiToInternalMapper<UpdateCommentView, UpdateCommentDto>
+    private val mapUpdateComment: FromApiToInternalMapper<UpdateCommentView, UpdateCommentDto>,
+    private val mapLogType: EnumerationMapper<LogTypeEnum, LogType>,
+    private val mapApprovalStatus: EnumerationMapper<ApprovalStatusEnum, ApprovalStatus>
 ) : LogsApiDelegate {
 
     override fun logsLogIdPost(
@@ -40,8 +45,16 @@ class LogsController(
         return ResponseEntity.ok(mapCreatedLog.fromInternal(updatedLog))
     }
 
-    override fun logsMeGet(lastId: UUID?, size: Int?): ResponseEntity<LogsListView> {
-        val logsListDto = logsService.getMyLogs(lastId, size)
+    override fun logsMeGet(
+        lastId: UUID?,
+        size: Int?,
+        logTypes: List<LogTypeEnum>?,
+        approvalStatuses: List<ApprovalStatusEnum>?
+    ): ResponseEntity<LogsListView> {
+        val logTypesInternal = logTypes?.map { logType -> mapLogType.mapToInternal(logType) }
+        val approvalStatusesInternal = approvalStatuses?.map { approvalStatus -> mapApprovalStatus.mapToInternal(approvalStatus) }
+
+        val logsListDto = logsService.getMyLogs(lastId, size, logTypesInternal, approvalStatusesInternal)
         return ResponseEntity.ok(mapLogsList.fromInternal(logsListDto))
     }
 
@@ -51,8 +64,17 @@ class LogsController(
         return ResponseEntity.ok(mapCreatedLog.fromInternal(createdLog))
     }
 
-    override fun logsUserIdGet(userId: UUID, lastId: UUID?, size: Int?): ResponseEntity<LogsListView> {
-        val logsListDto = logsService.getUserLogs(userId, lastId, size)
+    override fun logsUserIdGet(
+        userId: UUID,
+        lastId: UUID?,
+        size: Int?,
+        logTypes: List<LogTypeEnum>?,
+        approvalStatuses: List<ApprovalStatusEnum>?
+    ): ResponseEntity<LogsListView> {
+        val logTypesInternal = logTypes?.map { logType -> mapLogType.mapToInternal(logType) }
+        val approvalStatusesInternal = approvalStatuses?.map { approvalStatus -> mapApprovalStatus.mapToInternal(approvalStatus) }
+
+        val logsListDto = logsService.getUserLogs(userId, lastId, size, logTypesInternal, approvalStatusesInternal)
         return ResponseEntity.ok(mapLogsList.fromInternal(logsListDto))
     }
 

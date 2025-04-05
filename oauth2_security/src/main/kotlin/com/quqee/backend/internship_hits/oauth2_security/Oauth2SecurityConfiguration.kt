@@ -60,6 +60,7 @@ open class Oauth2SecurityConfiguration {
             }
             .authorizeHttpRequests{ c ->
                 c.requestMatchers(*WHITE_LIST).anonymous()
+                    .requestMatchers("/logs/{logId}/approve").hasRole("ROLE_DEANERY")
                     .anyRequest().access(customAuthManager())
             }
             .oauth2ResourceServer { oauth2: OAuth2ResourceServerConfigurer<HttpSecurity?> -> oauth2.jwt(Customizer.withDefaults()) }
