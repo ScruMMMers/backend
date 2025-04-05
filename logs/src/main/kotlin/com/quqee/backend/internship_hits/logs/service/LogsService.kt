@@ -17,6 +17,7 @@ interface LogsService {
     fun createLog(createLogRequest: CreateLogRequestDto): CreatedLogDto
     fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestDto): CreatedLogDto
     fun getLogById(logId: UUID): LogDto
+    fun updateApprovalStatus(logId: UUID, isApprove: Boolean): CreatedLogDto
 }
 
 @Service
@@ -96,6 +97,14 @@ class LogsServiceImpl (
     override fun getLogById(logId: UUID): LogDto {
         return logsRepository.getLogById(logId) ?:
             throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Log with id $logId not found")
+    }
+
+    /**
+     * Аппрувнуть лог
+     */
+    override fun updateApprovalStatus(logId: UUID, isApprove: Boolean): CreatedLogDto {
+        val log = logsRepository.updateApprovalStatus(logId, isApprove)
+        return CreatedLogDto(log = log)
     }
 
     /**

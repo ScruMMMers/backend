@@ -56,6 +56,14 @@ class LogsController(
         return ResponseEntity.ok(mapLogsList.fromInternal(logsListDto))
     }
 
+    override fun logsLogIdApprovePost(
+        logId: UUID,
+        approveLogRequestView: ApproveLogRequestView
+    ): ResponseEntity<CreatedLogView> {
+        val dto = logsService.updateApprovalStatus(logId, approveLogRequestView.isApproved)
+        return ResponseEntity.ok(mapCreatedLog.fromInternal(dto))
+    }
+
     override fun logsLogIdCommentsGet(
         logId: UUID,
         isDeleted: Boolean?,

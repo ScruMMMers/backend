@@ -50,6 +50,8 @@ paths:
     $ref: './schemas/comment/UpdateCommentApi.yaml'
   /logs/{logId}/comment/{commentId}/delete:
     $ref: './schemas/comment/DeleteCommentApi.yaml'
+  /logs/{logId}/approve:
+    $ref: './schemas/logs/ApproveLogApi.yaml'
 
   /company/{companyId}:
     $ref: './schemas/company/GetCompanyApi.yaml'

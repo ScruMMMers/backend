@@ -6,7 +6,6 @@ import com.quqee.backend.internship_hits.file.repository.FileRepository
 import com.quqee.backend.internship_hits.file_storage.FileStorageService
 import com.quqee.backend.internship_hits.public_interface.common.FileDownloadLinkDto
 import com.quqee.backend.internship_hits.public_interface.common.FileDto
-import com.quqee.backend.internship_hits.public_interface.common.FileUploadResponse
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.file_storage_public.FileMetadata

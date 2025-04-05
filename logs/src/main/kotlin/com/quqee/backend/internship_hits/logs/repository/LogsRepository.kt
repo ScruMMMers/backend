@@ -6,6 +6,7 @@ import com.quqee.backend.internship_hits.logs.repository.jpa.LogsJpaRepository
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
@@ -19,6 +20,8 @@ class LogsRepository(
     private val logsJpaRepository: LogsJpaRepository,
     private val logMapper: LogMapper
 ) {
+    private val needApprove: MutableList<LogType> = mutableListOf(LogType.FINAL, LogType.PRACTICE_DIARY)
+
     /**
      * Получение логов текущего пользователя
      */
@@ -66,6 +69,7 @@ class LogsRepository(
             createdAt = now,
             editedAt = now,
             fileIds = files,
+            approvalStatus = getApprovalStatus(type)
         )
         
         val savedLog = logsJpaRepository.save(logEntity)
@@ -90,9 +94,21 @@ class LogsRepository(
             tags = tags,
             type = type,
             editedAt = OffsetDateTime.now(),
-            fileIds = files
+            fileIds = files,
+            approvalStatus = getApprovalStatus(type)
         )
         
+        val savedLog = logsJpaRepository.save(updatedLog)
+        return logMapper.toLogDto(savedLog)
+    }
+
+    fun updateApprovalStatus(logId: UUID, isApprove: Boolean): LogDto {
+        val log = logsJpaRepository.findById(logId)
+            .orElseThrow { ExceptionInApplication(ExceptionType.NOT_FOUND, "Лог с ID $logId не найден") }
+
+        val updatedLog = log.copy(
+            approvalStatus = if (isApprove) ApprovalStatus.APPROVED else ApprovalStatus.REJECTED
+        )
         val savedLog = logsJpaRepository.save(updatedLog)
         return logMapper.toLogDto(savedLog)
     }
@@ -103,5 +119,16 @@ class LogsRepository(
     fun getLogById(logId: UUID): LogDto? {
         val log = logsJpaRepository.findById(logId)
         return log.map { logMapper.toLogDto(it) }.orElse(null)
+    }
+
+    /**
+     * В зависимости от типа лога определяет нужен ли аппрув этому логу
+     */
+    private fun getApprovalStatus(logType: LogType): ApprovalStatus {
+        return if (needApprove.contains(logType)) {
+            ApprovalStatus.PENDING
+        } else{
+            ApprovalStatus.APPROVED
+        }
     }
 } 

@@ -1,5 +1,6 @@
 package com.quqee.backend.internship_hits.logs.entity
 
+import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import jakarta.persistence.*
@@ -42,7 +43,11 @@ data class LogEntity(
     @ElementCollection
     @CollectionTable(name = "log_files", joinColumns = [JoinColumn(name = "log_id")])
     @Column(name = "file_id", nullable = false)
-    var fileIds: List<UUID> = mutableListOf()
+    var fileIds: List<UUID> = mutableListOf(),
+
+    @Column(name = "approval_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    var approvalStatus: ApprovalStatus = ApprovalStatus.PENDING,
 ) {
     constructor() : this(
         UUID.randomUUID(),
@@ -51,6 +56,6 @@ data class LogEntity(
         mutableListOf(),
         LogType.DEFAULT,
         OffsetDateTime.now(),
-        OffsetDateTime.now()
+        OffsetDateTime.now(),
     )
 }

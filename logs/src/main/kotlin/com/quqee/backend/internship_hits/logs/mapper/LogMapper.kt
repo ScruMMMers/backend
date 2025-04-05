@@ -7,17 +7,12 @@ import com.quqee.backend.internship_hits.logs.service.CommentService
 import com.quqee.backend.internship_hits.logs.service.ReactionService
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
-import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
-import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
-import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
 import com.quqee.backend.internship_hits.public_interface.common.TagDto
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import org.springframework.stereotype.Component
-import java.net.URI
-import java.time.OffsetDateTime
 import java.util.*
 
 @Component
@@ -42,13 +37,13 @@ class LogMapper(
             reactions = reactionService.getLogReactions(entity.id),
             comments = getCommentsForLog(entity.id),
             author = profileService.getShortAccount(GetProfileDto(userId = entity.userId)),
-            files = entity.fileIds.map { fileService.getFileById(it) }
+            files = entity.fileIds.map { fileService.getFileById(it) },
+            approvalStatus = entity.approvalStatus,
         )
     }
     
     /**
      * Получение тегов для лога
-     * ПОКА ЗАГЛУШКА
      */
     private fun getTagsForLog(tags: List<TagEntity>): List<TagDto> {
         return tags.map { tag ->

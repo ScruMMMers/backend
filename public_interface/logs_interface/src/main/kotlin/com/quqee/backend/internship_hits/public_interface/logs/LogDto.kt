@@ -6,6 +6,7 @@ import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
 import com.quqee.backend.internship_hits.public_interface.common.TagDto
+import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import java.time.OffsetDateTime
 import java.util.UUID
 
@@ -19,5 +20,6 @@ data class LogDto(
     val reactions: List<ReactionDto>,
     val comments: List<CommentDto>,
     val author: ShortAccountDto,
-    val files: List<FileDto>
+    val files: List<FileDto>,
+    val approvalStatus: ApprovalStatus
 )

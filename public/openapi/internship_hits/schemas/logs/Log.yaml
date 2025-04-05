@@ -11,6 +11,7 @@ LogView:
     - comments
     - author
     - files
+    - approvalStatus
   properties:
     id:
       type: string
@@ -43,7 +44,8 @@ LogView:
       type: array
       items:
         $ref: '../file/FileModels.yaml#/FileView'
-
+    approvalStatus:
+      $ref: '#/ApprovalStatusEnum'
 
 LogTypeEnum:
   type: string
@@ -52,3 +54,11 @@ LogTypeEnum:
     - OFFER
     - INTERVIEW
     - FINAL
+    - PRACTICE_DIARY
+
+ApprovalStatusEnum:
+  type: string
+  enum:
+    - PENDING
+    - APPROVED
+    - REJECTED

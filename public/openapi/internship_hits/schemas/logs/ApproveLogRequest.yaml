@@ -1,0 +1,7 @@
+ApproveLogRequestView:
+  type: object
+  required:
+    - isApproved
+  properties:
+    isApproved:
+      type: boolean
