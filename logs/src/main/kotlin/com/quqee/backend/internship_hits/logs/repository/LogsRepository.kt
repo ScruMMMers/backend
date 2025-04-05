@@ -12,6 +12,7 @@ import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
@@ -73,7 +74,8 @@ class LogsRepository(
         logTypes: List<LogType>?,
         approvalStatuses: List<ApprovalStatus>?
     ): List<LogDto> {
-        val pageable = PageRequest.of(0, pageSize)
+        val sort = Sort.by(Sort.Direction.DESC, "createdAt")
+        val pageable = PageRequest.of(0, pageSize, sort)
 
         val createdBefore = lastId?.let {
             logsJpaRepository.findById(it)
