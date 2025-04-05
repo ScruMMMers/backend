@@ -58,6 +58,19 @@ class LogsController(
         return ResponseEntity.ok(mapLogsList.fromInternal(logsListDto))
     }
 
+    override fun logsAllGet(
+        lastId: UUID?,
+        size: Int?,
+        logTypes: List<LogTypeEnum>?,
+        approvalStatuses: List<ApprovalStatusEnum>?
+    ): ResponseEntity<LogsListView> {
+        val logTypesInternal = logTypes?.map { logType -> mapLogType.mapToInternal(logType) }
+        val approvalStatusesInternal = approvalStatuses?.map { approvalStatus -> mapApprovalStatus.mapToInternal(approvalStatus) }
+
+        val logsListDto = logsService.getAllLogs(lastId, size, logTypesInternal, approvalStatusesInternal)
+        return ResponseEntity.ok(mapLogsList.fromInternal(logsListDto))
+    }
+
     override fun logsPost(createLogRequestView: CreateLogRequestView): ResponseEntity<CreatedLogView> {
         val dto = mapCreateLogRequest.fromApi(createLogRequestView)
         val createdLog = logsService.createLog(dto)

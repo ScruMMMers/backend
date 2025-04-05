@@ -36,6 +36,8 @@ components:
 paths:
   /logs/me:
     $ref: './schemas/logs/GetMyLogsApi.yaml'
+  /logs/all:
+    $ref: './schemas/logs/GetAllLogsApi.yaml'
   /logs/{userId}:
     $ref: './schemas/logs/GetUserLogsApi.yaml'
   /logs:

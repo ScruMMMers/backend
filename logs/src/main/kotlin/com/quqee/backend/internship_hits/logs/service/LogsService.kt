@@ -28,6 +28,13 @@ interface LogsService {
         logTypes: List<LogType>? = null, 
         approvalStatuses: List<ApprovalStatus>? = null
     ): LogListDto
+
+    fun getAllLogs(
+        lastId: UUID?,
+        size: Int?,
+        logTypes: List<LogType>? = null,
+        approvalStatuses: List<ApprovalStatus>? = null
+    ): LogListDto
     
     fun createLog(createLogRequest: CreateLogRequestDto): CreatedLogDto
     fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestDto): CreatedLogDto
@@ -78,6 +85,26 @@ class LogsServiceImpl (
         val logs = logsRepository.getLogsByUserId(userId, lastId, pageSize, logTypes, approvalStatuses)
         val hasNext = logs.size >= pageSize
         
+        return LogListDto(
+            logs = logs,
+            page = LastIdPagination(
+                lastId = if (logs.isNotEmpty()) logs.last().id else null,
+                pageSize = pageSize,
+                hasNext = hasNext
+            )
+        )
+    }
+
+    override fun getAllLogs(
+        lastId: UUID?,
+        size: Int?,
+        logTypes: List<LogType>?,
+        approvalStatuses: List<ApprovalStatus>?
+    ): LogListDto {
+        val pageSize = size ?: DEFAULT_PAGE_SIZE
+        val logs = logsRepository.getAllLogs(lastId, pageSize, logTypes, approvalStatuses)
+        val hasNext = logs.size >= pageSize
+
         return LogListDto(
             logs = logs,
             page = LastIdPagination(

@@ -1,0 +1,38 @@
+get:
+  tags:
+    - logs
+  summary: Получить все логи
+  security:
+    - openIdConnect: []
+  parameters:
+    - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
+    - $ref: '../common/Pagination.yaml#/PaginationPageSize'
+    - name: logTypes
+      in: query
+      required: false
+      description: Фильтрация по нескольким типам логов (возможно указание нескольких значений)
+      schema:
+        type: array
+        items:
+          $ref: './Log.yaml#/LogTypeEnum'
+      style: form
+      explode: false
+    - name: approvalStatuses
+      in: query
+      required: false
+      description: Фильтрация по нескольким статусам одобрения (возможно указание нескольких значений)
+      schema:
+        type: array
+        items:
+          $ref: './Log.yaml#/ApprovalStatusEnum'
+      style: form
+      explode: false
+  responses:
+    '200':
+      description: Список логов
+      content:
+        application/json:
+          schema:
+            $ref: './LogsList.yaml#/LogsListView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу
