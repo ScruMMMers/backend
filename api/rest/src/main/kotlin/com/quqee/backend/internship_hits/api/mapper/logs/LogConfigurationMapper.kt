@@ -9,12 +9,14 @@ import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
 import com.quqee.backend.internship_hits.public_interface.common.TagDto
+import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
 class LogConfigurationMapper (
     private val mapLogType: EnumerationMapper<LogTypeEnum, LogType>,
+    private val mapApprovalStatus: EnumerationMapper<ApprovalStatusEnum, ApprovalStatus>,
 ) {
     @Bean
     fun mapLog(
@@ -34,7 +36,8 @@ class LogConfigurationMapper (
             reactions = model.reactions.map { mapReaction.fromApi(it) },
             comments = model.comments.map { mapComment.fromApi(it) },
             author = mapAccount.fromApi(model.author),
-            files = model.files.map { mapFiles.fromApi(it) }
+            files = model.files.map { mapFiles.fromApi(it) },
+            approvalStatus = mapApprovalStatus.mapToInternal(model.approvalStatus),
         )
     }
 
@@ -57,6 +60,7 @@ class LogConfigurationMapper (
             comments = model.comments.map { mapComment.fromInternal(it) },
             author = mapAccount.fromInternal(model.author),
             files = model.files.map { mapFiles.fromInternal(it) },
+            approvalStatus = mapApprovalStatus.mapToApi(model.approvalStatus),
         )
     }
 }

@@ -1,22 +1,8 @@
 package com.quqee.backend.internship_hits.logs.repository.jpa
 
 import com.quqee.backend.internship_hits.logs.entity.LogEntity
-import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.stereotype.Repository
-import java.time.OffsetDateTime
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import java.util.*
 
-@Repository
-interface LogsJpaRepository : JpaRepository<LogEntity, UUID> {
-    fun findByUserIdOrderByCreatedAtDescIdDesc(
-        userId: UUID,
-        pageable: Pageable
-    ): List<LogEntity>
-
-    fun findByUserIdAndCreatedAtLessThanOrderByCreatedAtDescIdDesc(
-        userId: UUID,
-        createdAt: OffsetDateTime,
-        pageable: Pageable
-    ): List<LogEntity>
-}
+interface LogsJpaRepository : JpaRepository<LogEntity, UUID>, JpaSpecificationExecutor<LogEntity>

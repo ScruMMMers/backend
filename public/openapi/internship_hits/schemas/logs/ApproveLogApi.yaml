@@ -1,0 +1,33 @@
+post:
+  tags:
+    - logs
+  summary: Аппрув лога от сотрудника деканата
+  security:
+    - openIdConnect: []
+  parameters:
+    - in: path
+      name: logId
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    description: Передаем сюда данные для аппрува лога
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './ApproveLogRequest.yaml#/ApproveLogRequestView'
+  responses:
+    '200':
+      description: Изменили лог
+      content:
+        application/json:
+          schema:
+            $ref: './CreatedLog.yaml#/CreatedLogView'
+    '400':
+      description: Некорректные данные
+      content:
+        application/json:
+          schema:
+            $ref: '../common/Error.yaml#/ErrorView'

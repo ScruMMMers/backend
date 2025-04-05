@@ -4,6 +4,8 @@ import com.quqee.backend.internship_hits.logs.repository.LogsRepository
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPagination
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
+import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
+import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.*
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import com.quqee.backend.internship_hits.tags_query.service.TagQueryService
@@ -12,11 +14,32 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 interface LogsService {
-    fun getMyLogs(lastId: UUID?, size: Int?): LogListDto
-    fun getUserLogs(userId: UUID, lastId: UUID?, size: Int?): LogListDto
+    fun getMyLogs(
+        lastId: UUID?, 
+        size: Int?, 
+        logTypes: List<LogType>? = null, 
+        approvalStatuses: List<ApprovalStatus>? = null
+    ): LogListDto
+    
+    fun getUserLogs(
+        userId: UUID, 
+        lastId: UUID?, 
+        size: Int?, 
+        logTypes: List<LogType>? = null, 
+        approvalStatuses: List<ApprovalStatus>? = null
+    ): LogListDto
+
+    fun getAllLogs(
+        lastId: UUID?,
+        size: Int?,
+        logTypes: List<LogType>? = null,
+        approvalStatuses: List<ApprovalStatus>? = null
+    ): LogListDto
+    
     fun createLog(createLogRequest: CreateLogRequestDto): CreatedLogDto
     fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestDto): CreatedLogDto
     fun getLogById(logId: UUID): LogDto
+    fun updateApprovalStatus(logId: UUID, isApprove: Boolean): CreatedLogDto
 }
 
 @Service
@@ -26,11 +49,16 @@ class LogsServiceImpl (
 ) : LogsService {
 
     /**
-     * Получение логов текущего пользователя
+     * Получение логов текущего пользователя с фильтрацией по типам и статусам одобрения
      */
-    override fun getMyLogs(lastId: UUID?, size: Int?): LogListDto {
+    override fun getMyLogs(
+        lastId: UUID?, 
+        size: Int?, 
+        logTypes: List<LogType>?, 
+        approvalStatuses: List<ApprovalStatus>?
+    ): LogListDto {
         val pageSize = size ?: DEFAULT_PAGE_SIZE
-        val logs = logsRepository.getLogsByCurrentUser(lastId, pageSize)
+        val logs = logsRepository.getLogsByCurrentUser(lastId, pageSize, logTypes, approvalStatuses)
         val hasNext = logs.size >= pageSize
         
         return LogListDto(
@@ -44,13 +72,39 @@ class LogsServiceImpl (
     }
 
     /**
-     * Получение логов конкретного пользователя
+     * Получение логов конкретного пользователя с фильтрацией по типам и статусам одобрения
      */
-    override fun getUserLogs(userId: UUID, lastId: UUID?, size: Int?): LogListDto {
+    override fun getUserLogs(
+        userId: UUID, 
+        lastId: UUID?, 
+        size: Int?, 
+        logTypes: List<LogType>?, 
+        approvalStatuses: List<ApprovalStatus>?
+    ): LogListDto {
         val pageSize = size ?: DEFAULT_PAGE_SIZE
-        val logs = logsRepository.getLogsByUserId(userId, lastId, pageSize)
+        val logs = logsRepository.getLogsByUserId(userId, lastId, pageSize, logTypes, approvalStatuses)
         val hasNext = logs.size >= pageSize
         
+        return LogListDto(
+            logs = logs,
+            page = LastIdPagination(
+                lastId = if (logs.isNotEmpty()) logs.last().id else null,
+                pageSize = pageSize,
+                hasNext = hasNext
+            )
+        )
+    }
+
+    override fun getAllLogs(
+        lastId: UUID?,
+        size: Int?,
+        logTypes: List<LogType>?,
+        approvalStatuses: List<ApprovalStatus>?
+    ): LogListDto {
+        val pageSize = size ?: DEFAULT_PAGE_SIZE
+        val logs = logsRepository.getAllLogs(lastId, pageSize, logTypes, approvalStatuses)
+        val hasNext = logs.size >= pageSize
+
         return LogListDto(
             logs = logs,
             page = LastIdPagination(
@@ -96,6 +150,14 @@ class LogsServiceImpl (
     override fun getLogById(logId: UUID): LogDto {
         return logsRepository.getLogById(logId) ?:
             throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Log with id $logId not found")
+    }
+
+    /**
+     * Аппрувнуть лог
+     */
+    override fun updateApprovalStatus(logId: UUID, isApprove: Boolean): CreatedLogDto {
+        val log = logsRepository.updateApprovalStatus(logId, isApprove)
+        return CreatedLogDto(log = log)
     }
 
     /**

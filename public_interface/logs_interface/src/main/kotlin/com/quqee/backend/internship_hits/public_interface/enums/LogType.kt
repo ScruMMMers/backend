@@ -4,5 +4,6 @@ enum class LogType {
     DEFAULT,
     OFFER,
     INTERVIEW,
-    FINAL
+    FINAL,
+    PRACTICE_DIARY
 }

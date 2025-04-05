@@ -1,16 +1,10 @@
 get:
   tags:
     - logs
-  summary: Получить логи пользователя
+  summary: Получить все логи
   security:
     - openIdConnect: []
   parameters:
-    - in: path
-      name: userId
-      required: true
-      schema:
-        type: string
-        format: uuid
     - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
     - $ref: '../common/Pagination.yaml#/PaginationPageSize'
     - name: logTypes
