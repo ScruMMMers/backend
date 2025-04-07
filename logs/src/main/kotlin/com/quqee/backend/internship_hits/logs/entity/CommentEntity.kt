@@ -1,6 +1,5 @@
 package com.quqee.backend.internship_hits.logs.entity
 
-import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
