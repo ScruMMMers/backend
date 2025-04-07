@@ -21,8 +21,8 @@ class CompanyPositionRepository(
     /**
      * Создание позиции в компании
      */
-    fun createCompanyPosition(createCompanyPositionDto: CreateCompanyPositionDto): CompanyPositionDto {
-        val companyEntity = companyJpaRepository.findById(createCompanyPositionDto.companyId)
+    fun createCompanyPosition(companyId :UUID, createCompanyPositionDto: CreateCompanyPositionDto): CompanyPositionDto {
+        val companyEntity = companyJpaRepository.findById(companyId)
             .orElseThrow {
                 ExceptionInApplication(
                     ExceptionType.NOT_FOUND,

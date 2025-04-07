@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 interface CompanyPositionService {
-    fun createCompanyPosition(createCompanyPositionDto: CreateCompanyPositionDto): CompanyPositionDto
+    fun createCompanyPosition(companyId :UUID, createCompanyPositionDto: CreateCompanyPositionDto): CompanyPositionDto
     fun incrementInterviewsCount(positionId: UUID): CompanyPositionDto
     fun incrementEmployedCountCount(positionId: UUID): CompanyPositionDto
 }
@@ -16,8 +16,8 @@ interface CompanyPositionService {
 class CompanyPositionServiceImpl (
     private val companyPositionRepository: CompanyPositionRepository
 ) : CompanyPositionService {
-    override fun createCompanyPosition(createCompanyPositionDto: CreateCompanyPositionDto): CompanyPositionDto {
-        return companyPositionRepository.createCompanyPosition(createCompanyPositionDto)
+    override fun createCompanyPosition(companyId :UUID, createCompanyPositionDto: CreateCompanyPositionDto): CompanyPositionDto {
+        return companyPositionRepository.createCompanyPosition(companyId, createCompanyPositionDto)
     }
 
     override fun incrementInterviewsCount(positionId: UUID): CompanyPositionDto {

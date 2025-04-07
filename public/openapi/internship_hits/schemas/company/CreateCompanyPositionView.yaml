@@ -6,6 +6,3 @@ CreateCompanyPositionView:
   properties:
     name:
       type: string
-    companyId:
-      type: string
-      format: uuid
