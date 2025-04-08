@@ -12,6 +12,7 @@ include ':cdc'
 include ':tags'
 include ':file'
 include ':tags_query'
+include ':position'
 
 include ':public_interface:common'
 include ':public_interface:profile_public'

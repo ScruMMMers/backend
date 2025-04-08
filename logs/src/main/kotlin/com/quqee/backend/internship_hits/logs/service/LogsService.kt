@@ -1,6 +1,8 @@
 package com.quqee.backend.internship_hits.logs.service
 
 import com.quqee.backend.internship_hits.logs.repository.LogsRepository
+import com.quqee.backend.internship_hits.position.entity.PositionEntity
+import com.quqee.backend.internship_hits.position.service.PositionService
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPagination
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
@@ -45,7 +47,8 @@ interface LogsService {
 @Service
 class LogsServiceImpl (
     private val logsRepository: LogsRepository,
-    private val tagQueryService: TagQueryService
+    private val tagQueryService: TagQueryService,
+    private val positionService: PositionService
 ) : LogsService {
 
     /**
@@ -122,6 +125,7 @@ class LogsServiceImpl (
         val newLog = logsRepository.createLog(
             message = createLogRequest.message,
             tags = findTagsByNames(extractTagsFromMessage(createLogRequest.message)),
+            hashtags = findPositionsByNames(extractHashtagsFromMessage(createLogRequest.message)),
             type = createLogRequest.type,
             files = createLogRequest.files ?: emptyList()
         )
@@ -137,6 +141,7 @@ class LogsServiceImpl (
             logId = logId,
             message = updateLogRequest.message,
             tags = findTagsByNames(extractTagsFromMessage(updateLogRequest.message)),
+            hashtags = findPositionsByNames(extractHashtagsFromMessage(updateLogRequest.message)),
             type = updateLogRequest.type,
             files = updateLogRequest.files ?: emptyList()
         )
@@ -174,6 +179,23 @@ class LogsServiceImpl (
     private fun findTagsByNames(tagNames: List<String>): List<TagEntity> {
         return tagNames
             .flatMap { name -> tagQueryService.getTagsEntityByNamePart(name) }
+            .distinct()
+    }
+
+    /**
+     * Извлечение хэштегов из сообщения
+     */
+    private fun extractHashtagsFromMessage(message: String): List<String> {
+        return message.split(" ")
+            .filter { it.startsWith("#") }
+    }
+
+    /**
+     * Поиск хэштегов по имени и возврат их сущностей
+     */
+    private fun findPositionsByNames(names: List<String>): List<PositionEntity> {
+        return names
+            .flatMap { name -> positionService.getPositionEntityByPartName(name) }
             .distinct()
     }
 } 

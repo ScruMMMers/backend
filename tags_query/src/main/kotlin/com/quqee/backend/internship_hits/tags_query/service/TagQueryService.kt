@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 interface TagQueryService {
     fun getTagsByNamePart(name: String?): TagListDto
     fun getTagsEntityByNamePart(name: String?): List<TagEntity>
+    fun mapTagEntityToDto(tagEntityList: List<TagEntity>): TagListDto
 }
 
 @Service
@@ -26,7 +27,7 @@ class TagQueryServiceImpl(
         } else {
             tagJpaRepository.findByNameContainingIgnoreCase(name)
         }
-        return tagQueryMapper.toTagListDto(tags)
+        return mapTagEntityToDto(tags)
     }
 
     /**
@@ -40,5 +41,12 @@ class TagQueryServiceImpl(
             tagJpaRepository.findByNameContainingIgnoreCase(name)
         }
         return tags
+    }
+
+    /**
+     * Маппинг сущностей тегов в список тегов
+     */
+    override fun mapTagEntityToDto(tagEntityList: List<TagEntity>): TagListDto {
+        return tagQueryMapper.toTagListDto(tagEntityList)
     }
 }

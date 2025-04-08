@@ -74,3 +74,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v9_add_approval_status.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 11
+      author: alexander_kirsanov
+      changes:
+        - sqlFile:
+            path: ddl/v10_create_positions.sql
+            relativeToChangelogFile: true

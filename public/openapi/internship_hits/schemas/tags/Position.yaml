@@ -1,0 +1,27 @@
+PositionView:
+  type: object
+  required:
+    - id
+    - name
+    - position
+  properties:
+    id:
+      type: integer
+      format: int64
+    name:
+      type: string
+    position:
+      $ref: '#/PositionEnum'
+
+PositionEnum:
+  type: string
+  enum:
+    - BACKEND
+    - FRONTEND
+    - MOBILE
+    - ML
+    - DATA_SCIENCE
+    - DEVOPS
+    - SRE
+    - ONE_S
+    - ANALYTICS

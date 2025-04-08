@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration
         "com.quqee.backend.internship_hits.tags_query",
         "com.quqee.backend.internship_hits.profile",
         "com.quqee.backend.internship_hits.file",
-        "com.quqee.backend.internship_hits.company",
+        "com.quqee.backend.internship_hits.position",
     ]
 )
 open class LogBeanConfiguration

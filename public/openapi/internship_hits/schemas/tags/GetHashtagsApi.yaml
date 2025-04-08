@@ -1,0 +1,20 @@
+get:
+  tags:
+    - tags
+  summary: Получить хэштеги (список позиций)
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - in: query
+      name: name
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Список хэштегов
+      content:
+        application/json:
+          schema:
+            $ref: './PositionList.yaml#/PositionListView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

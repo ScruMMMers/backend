@@ -1,5 +1,6 @@
 package com.quqee.backend.internship_hits.logs.entity
 
+import com.quqee.backend.internship_hits.position.entity.PositionEntity
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
@@ -30,6 +31,14 @@ data class LogEntity(
     )
     var tags: List<TagEntity> = mutableListOf(),
 
+    @ManyToMany
+    @JoinTable(
+        name = "log_positions",
+        joinColumns = [JoinColumn(name = "log_id")],
+        inverseJoinColumns = [JoinColumn(name = "position_id")]
+    )
+    var hashtags: List<PositionEntity> = mutableListOf(),
+
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     var type: LogType,
@@ -53,6 +62,7 @@ data class LogEntity(
         UUID.randomUUID(),
         UUID.randomUUID(),
         "",
+        mutableListOf(),
         mutableListOf(),
         LogType.DEFAULT,
         OffsetDateTime.now(),

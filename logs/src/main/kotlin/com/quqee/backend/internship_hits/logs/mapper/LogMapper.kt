@@ -1,17 +1,14 @@
 package com.quqee.backend.internship_hits.logs.mapper
 
-import com.quqee.backend.internship_hits.company.service.CompanyService
 import com.quqee.backend.internship_hits.file.service.FileService
 import com.quqee.backend.internship_hits.logs.entity.LogEntity
 import com.quqee.backend.internship_hits.logs.service.CommentService
 import com.quqee.backend.internship_hits.logs.service.ReactionService
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
-import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
-import com.quqee.backend.internship_hits.public_interface.common.TagDto
-import com.quqee.backend.internship_hits.tags.entity.TagEntity
+import com.quqee.backend.internship_hits.tags_query.service.TagQueryService
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -21,7 +18,7 @@ class LogMapper(
     private val profileService: ProfileService,
     private val commentService: CommentService,
     private val fileService: FileService,
-    private val companyService: CompanyService
+    private val tagQueryService: TagQueryService
 ) {
     /**
      * Преобразование сущности лога в DTO представление
@@ -30,7 +27,7 @@ class LogMapper(
         return LogDto(
             id = entity.id,
             message = entity.message,
-            tags = getTagsForLog(entity.tags),
+            tags = tagQueryService.mapTagEntityToDto(entity.tags).tags,
             type = entity.type,
             createdAt = entity.createdAt,
             editedAt = entity.editedAt,
@@ -41,20 +38,7 @@ class LogMapper(
             approvalStatus = entity.approvalStatus,
         )
     }
-    
-    /**
-     * Получение тегов для лога
-     */
-    private fun getTagsForLog(tags: List<TagEntity>): List<TagDto> {
-        return tags.map { tag ->
-            TagDto(
-                id = tag.id,
-                name = tag.name,
-                shortCompany = companyService.getShortCompany(tag.companyId) ?: ShortCompanyDto()
-            )
-        }
-    }
-    
+
     /**
      * Получение комментариев для лога
      */
