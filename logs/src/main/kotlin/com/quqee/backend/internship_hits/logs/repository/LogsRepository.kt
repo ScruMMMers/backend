@@ -5,6 +5,7 @@ import com.quqee.backend.internship_hits.logs.mapper.LogMapper
 import com.quqee.backend.internship_hits.logs.repository.jpa.LogsJpaRepository
 import com.quqee.backend.internship_hits.logs.specification.LogSpecification
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
+import com.quqee.backend.internship_hits.position.entity.PositionEntity
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
@@ -93,7 +94,13 @@ class LogsRepository(
         return logs.content.map { logMapper.toLogDto(it) }
     }
 
-    fun createLog(message: String, tags: List<TagEntity>, type: LogType, files: List<UUID>): LogDto {
+    fun createLog(
+        message: String,
+        tags: List<TagEntity>,
+        hashtags: List<PositionEntity>,
+        type: LogType,
+        files: List<UUID>
+    ): LogDto {
         val currentUserId = KeycloakUtils.getUserId()
             ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "User is null")
         val now = OffsetDateTime.now()
@@ -103,6 +110,7 @@ class LogsRepository(
             userId = currentUserId,
             message = message,
             tags = tags,
+            hashtags = hashtags,
             type = type,
             createdAt = now,
             editedAt = now,
@@ -114,7 +122,14 @@ class LogsRepository(
         return logMapper.toLogDto(savedLog)
     }
 
-    fun updateLog(logId: UUID, message: String, tags: List<TagEntity>, type: LogType, files: List<UUID>): LogDto {
+    fun updateLog(
+        logId: UUID,
+        message: String,
+        tags: List<TagEntity>,
+        hashtags: List<PositionEntity>,
+        type: LogType,
+        files: List<UUID>
+    ): LogDto {
         val currentUserId = KeycloakUtils.getUserId()
             ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "User is null")
 
@@ -128,6 +143,7 @@ class LogsRepository(
         val updatedLog = existingLog.copy(
             message = message,
             tags = tags,
+            hashtags = hashtags,
             type = type,
             editedAt = OffsetDateTime.now(),
             fileIds = files,

@@ -11,6 +11,7 @@ interface PositionService {
     fun getPositionList(): List<PositionDto>
     fun getPositionById(id: Long): PositionDto
     fun getPositionListByPartName(name: String?): List<PositionDto>
+    fun getPositionEntityByPartName(name: String?): List<PositionEntity>
 }
 
 @Service
@@ -32,6 +33,14 @@ class PositionServiceImpl(
             getPositionList()
         } else {
             positionRepository.findByPartName(name).map { it.toDto() }
+        }
+    }
+
+    override fun getPositionEntityByPartName(name: String?): List<PositionEntity> {
+        return if (name.isNullOrBlank()) {
+            positionRepository.findAll()
+        } else {
+            positionRepository.findByPartName(name)
         }
     }
 
