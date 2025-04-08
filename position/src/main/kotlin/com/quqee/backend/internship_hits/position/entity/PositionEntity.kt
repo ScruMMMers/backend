@@ -1,23 +1,23 @@
 package com.quqee.backend.internship_hits.position.entity
 
-import com.quqee.backend.internship_hits.public_interface.common.enums.PositionEnum
+import com.quqee.backend.internship_hits.public_interface.common.enums.Position
 import jakarta.persistence.*
 import java.io.Serializable
 
 @Entity
 @Table(name = "positions")
-open class PositionEntity(
+class PositionEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    open var id: Long,
+    var id: Long,
 
     @Column(name = "name", nullable = false)
-    open var name: String,
+    var name: String,
 
     @Column(name = "position", nullable = false)
-    open var position: PositionEnum
+    var position: Position
 
 ) : Serializable {
-    constructor() : this(0, "", PositionEnum.BACKEND)
+    constructor() : this(0, "", Position.BACKEND)
 }

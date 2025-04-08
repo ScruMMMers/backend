@@ -16,6 +16,7 @@ dependencies {
     implementation project(":tags")
     implementation project(":tags_query")
     implementation project(":file")
+    implementation project(":position")
 
     implementation project(":public_interface:logs_interface")
     implementation project(":public_interface:company_interface")

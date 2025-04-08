@@ -1,6 +1,6 @@
 package com.quqee.backend.internship_hits.public_interface.common.enums
 
-enum class PositionEnum {
+enum class Position {
     BACKEND,
     FRONTEND,
     MOBILE,
@@ -8,5 +8,6 @@ enum class PositionEnum {
     DATA_SCIENCE,
     DEVOPS,
     SRE,
-    ONE_S
+    ONE_S,
+    ANALYTICS
 }

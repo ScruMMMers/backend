@@ -1,0 +1,9 @@
+PositionListView:
+  type: object
+  required:
+    - positions
+  properties:
+    positions:
+      type: array
+      items:
+        $ref: './Position.yaml#/PositionView'

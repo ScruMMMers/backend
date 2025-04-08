@@ -6,7 +6,6 @@ import com.quqee.backend.internship_hits.public_interface.common.PositionDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 interface PositionService {
     fun getPositionList(): List<PositionDto>
@@ -15,8 +14,7 @@ interface PositionService {
 }
 
 @Service
-@Transactional
-open class PositionServiceImpl(
+class PositionServiceImpl(
     private val positionRepository: PositionJpaRepository
 ): PositionService {
     override fun getPositionList(): List<PositionDto> {

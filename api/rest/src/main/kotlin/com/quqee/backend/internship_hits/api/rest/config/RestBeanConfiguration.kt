@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration
         "com.quqee.backend.internship_hits.tags",
         "com.quqee.backend.internship_hits.tags_query",
         "com.quqee.backend.internship_hits.file",
+        "com.quqee.backend.internship_hits.position",
     ]
 )
 open class RestBeanConfiguration

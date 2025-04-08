@@ -2,10 +2,8 @@ package com.quqee.backend.internship_hits.api.mapper
 
 import com.quqee.backend.internship_hits.mapper.EnumerationMapper
 import com.quqee.backend.internship_hits.mapper.makeEnumerationMapper
-import com.quqee.backend.internship_hits.model.rest.ApprovalStatusEnum
-import com.quqee.backend.internship_hits.model.rest.LogTypeEnum
-import com.quqee.backend.internship_hits.model.rest.NotificationTypeEnum
-import com.quqee.backend.internship_hits.model.rest.RoleEnum
+import com.quqee.backend.internship_hits.model.rest.*
+import com.quqee.backend.internship_hits.public_interface.common.enums.Position
 import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
@@ -33,5 +31,10 @@ open class EnumerationMapperConfiguration {
     @Bean
     fun mapApprovalStatus(): EnumerationMapper<ApprovalStatusEnum, ApprovalStatus> {
         return makeEnumerationMapper(ApprovalStatusEnum::class, ApprovalStatus::class)
+    }
+
+    @Bean
+    fun mapPositionName(): EnumerationMapper<PositionEnum, Position> {
+        return makeEnumerationMapper(PositionEnum::class, Position::class)
     }
 }

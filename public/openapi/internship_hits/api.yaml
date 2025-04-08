@@ -66,6 +66,8 @@ paths:
 
   /tags:
     $ref: './schemas/tags/GetTagsApi.yaml'
+  /hashtags:
+    $ref: './schemas/tags/GetHashtagsApi.yaml'
 
   /profile/me:
     $ref: './schemas/profile/GetMyProfileApi.yaml'
