@@ -1,4 +1,4 @@
-package com.quqee.backend.internship_hits
+package com.quqee.backend.internship_hits.position
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.domain.EntityScan
