@@ -16,6 +16,7 @@ class PositionEntity(
     var name: String,
 
     @Column(name = "position", nullable = false)
+    @Enumerated(EnumType.STRING)
     var position: Position
 
 ) : Serializable {
