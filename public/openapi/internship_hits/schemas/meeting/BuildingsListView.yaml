@@ -1,0 +1,9 @@
+BuildingsListView:
+  type: object
+  required:
+    - buildings
+  properties:
+    buildings:
+      type: array
+      items:
+        $ref: '../common/Building.yaml#/BuildingView'

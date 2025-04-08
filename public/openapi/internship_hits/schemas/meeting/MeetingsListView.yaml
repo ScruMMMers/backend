@@ -1,0 +1,12 @@
+MeetingsListView:
+  type: object
+  required:
+    - meetings
+    - page
+  properties:
+    meetings:
+      type: array
+      items:
+        $ref: '../common/Meeting.yaml#/MeetingView'
+    page:
+      $ref: '../common/Pagination.yaml#/LastIdPaginationView'

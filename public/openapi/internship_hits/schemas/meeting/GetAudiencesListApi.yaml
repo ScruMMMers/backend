@@ -1,0 +1,22 @@
+get:
+  tags:
+    - meeting
+  summary: Получить аудитории корпуса тгу
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - in: path
+      name: buildingId
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Аудитории корпуса тгу
+      content:
+        application/json:
+          schema:
+            $ref: './AudiencesListView.yaml#/AudiencesListView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

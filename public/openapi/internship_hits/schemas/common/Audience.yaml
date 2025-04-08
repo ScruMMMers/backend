@@ -1,0 +1,15 @@
+AudienceView:
+  type: object
+  required:
+    - id
+    - name
+    - buildingId
+  properties:
+    id:
+      type: string
+      format: uuid
+    name:
+      type: string
+    buildingId:
+      type: string
+      format: uuid

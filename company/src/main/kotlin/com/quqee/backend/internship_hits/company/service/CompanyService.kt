@@ -1,5 +1,6 @@
 package com.quqee.backend.internship_hits.company.service
 
+import com.quqee.backend.internship_hits.company.entity.CompanyEntity
 import com.quqee.backend.internship_hits.company.repository.CompanyRepository
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPagination
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
@@ -12,12 +13,14 @@ import com.quqee.backend.internship_hits.tags.service.TagService
 import org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.client.RestTemplate
 import java.time.Year
 import java.util.UUID
 
 interface CompanyService {
     fun createCompany(createCompanyDto: CreateCompanyDto): CompanyDto
     fun getCompany(companyId: UUID): CompanyDto
+    fun getRawCompany(companyId: UUID): CompanyEntity
     fun getShortCompany(companyId: UUID): ShortCompanyDto?
     fun getCompaniesList(name: String?, lastId: UUID?, size: Int?): CompaniesListDto
 }
@@ -56,6 +59,15 @@ open class CompanyServiceImpl(
     @Transactional(readOnly = true)
     override fun getCompany(companyId: UUID): CompanyDto {
         val company = companyRepository.getCompany(companyId)
+        company ?: throw ExceptionInApplication(
+            ExceptionType.NOT_FOUND,
+            "Компания не найдена по идентификатору $companyId"
+        )
+        return company
+    }
+
+    override fun getRawCompany(companyId: UUID): CompanyEntity {
+        val company = companyRepository.getRawCompany(companyId)
         company ?: throw ExceptionInApplication(
             ExceptionType.NOT_FOUND,
             "Компания не найдена по идентификатору $companyId"

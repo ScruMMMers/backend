@@ -81,3 +81,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v10_create_positions.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 12
+      author: yuriy_sitdikov
+      changes:
+        - sqlFile:
+            path: ddl/v11_create_meeting_tables.sql
+            relativeToChangelogFile: true

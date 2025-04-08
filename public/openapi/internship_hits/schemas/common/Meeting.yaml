@@ -1,0 +1,28 @@
+MeetingView:
+  type: object
+  required:
+    - id
+    - date
+    - meetingType
+    - company
+  properties:
+    id:
+      type: string
+      format: uuid
+    date:
+      type: string
+      format: date-time
+    place:
+      type: string
+    meetingType:
+      $ref: './Meeting.yaml#/MeetingTypeEnum'
+    company:
+      $ref: './ShortCompanyView.yaml#/ShortCompanyView'
+
+
+MeetingTypeEnum:
+  type: string
+  enum:
+    - ONLINE
+    - TSU
+    - OTHER

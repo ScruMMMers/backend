@@ -1,0 +1,29 @@
+get:
+  tags:
+    - meeting
+  summary: Получить встречи
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - in: query
+      name: companyId
+      required: false
+      schema:
+        type: string
+        format: uuid
+    - in: query
+      name: upcoming
+      required: false
+      schema:
+        type: boolean
+    - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
+    - $ref: '../common/Pagination.yaml#/PaginationPageSize'
+  responses:
+    '200':
+      description: Встречи
+      content:
+        application/json:
+          schema:
+            $ref: './MeetingsListView.yaml#/MeetingsListView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу
