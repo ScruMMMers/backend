@@ -21,7 +21,7 @@ class TagServiceImpl(
     override fun createTag(name: String, companyId: UUID): UUID {
         val newTag = TagEntity(id = UUID.randomUUID(), name = name, companyId = companyId)
         val savedTag = tagJpaRepository.save(newTag)
-        return return savedTag.id
+        return savedTag.id
     }
 
     /**

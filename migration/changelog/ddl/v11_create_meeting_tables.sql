@@ -17,5 +17,5 @@ CREATE TABLE audience
 (
     id          UUID PRIMARY KEY,
     building_id UUID         NOT NULL,
-    name        VARCHAR(255) NOT NULL,
+    name        VARCHAR(255) NOT NULL
 );
