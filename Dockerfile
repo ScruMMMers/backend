@@ -23,6 +23,7 @@ COPY profile ./profile
 COPY file_storage ./file_storage
 COPY notification ./notification
 COPY logs ./logs
+COPY meeting ./meeting
 COPY company ./company
 COPY tags ./tags
 COPY tags_query ./tags_query

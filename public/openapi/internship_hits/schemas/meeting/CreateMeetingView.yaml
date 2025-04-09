@@ -1,0 +1,13 @@
+CreateMeetingView:
+  type: object
+  required:
+    - date
+    - meetingType
+  properties:
+    date:
+      type: string
+      format: date-time
+    place:
+      type: string
+    meetingType:
+      $ref: '../common/Meeting.yaml#/MeetingTypeEnum'

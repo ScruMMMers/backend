@@ -1,0 +1,9 @@
+AudiencesListView:
+  type: object
+  required:
+    - audiences
+  properties:
+    audiences:
+      type: array
+      items:
+        $ref: '../common/Audience.yaml#/AudienceView'

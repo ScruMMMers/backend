@@ -20,6 +20,8 @@ tags:
     description: Работа с уведомлениями
   - name: company
     description: Работа с компаниями
+  - name: meeting
+    description: Работа со встречами
   - name: reaction
     description: Работа с реакциями под логами
   - name: debug
@@ -63,6 +65,17 @@ paths:
     $ref: './schemas/company/CreateCompanyApi.yaml'
   /company/{companyId}/position:
     $ref: './schemas/company/CreateCompanyPositionApi.yaml'
+
+  /meetings/company/{companyId}:
+    $ref: './schemas/meeting/CreateMeetingApi.yaml'
+  /meetings/company/{companyId}/nearest:
+    $ref: './schemas/meeting/GetNearestMeetingApi.yaml'
+  /meetings:
+    $ref: './schemas/meeting/GetMeetingsListApi.yaml'
+  /buildings:
+    $ref: './schemas/meeting/GetBuildingsListApi.yaml'
+  /buildings/{buildingId}/audiences:
+    $ref: './schemas/meeting/GetAudiencesListApi.yaml'
 
   /tags:
     $ref: './schemas/tags/GetTagsApi.yaml'
