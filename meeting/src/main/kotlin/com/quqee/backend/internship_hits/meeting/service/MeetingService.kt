@@ -67,7 +67,13 @@ open class MeetingServiceImpl(
 
     override fun getMeetings(companyId: UUID?, upcoming: Boolean?, lastId: UUID?, size: Int?): MeetingsListDto {
         val pageSize = size ?: PagedListHolder.DEFAULT_PAGE_SIZE
-        val pageable = PageRequest.of(0, pageSize, Sort.by("createdAt").descending())
+        val sort =
+            if (upcoming == false) Sort.by("date").descending() else Sort.by("date").ascending()
+        val pageable = PageRequest.of(
+            0,
+            pageSize,
+            sort
+        )
 
         var lastMeeting: MeetingEntity? = null
         if (lastId != null) {
