@@ -5,6 +5,10 @@ import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
 import com.quqee.backend.internship_hits.mapper.makeFromApiMapper
 import com.quqee.backend.internship_hits.mapper.makeToApiMapper
 import com.quqee.backend.internship_hits.model.rest.CompanyPositionView
+import com.quqee.backend.internship_hits.model.rest.PositionView
+import com.quqee.backend.internship_hits.model.rest.ShortAccountView
+import com.quqee.backend.internship_hits.public_interface.common.PositionDto
+import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.company_position.CompanyPositionDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -13,26 +17,26 @@ import org.springframework.context.annotation.Configuration
 class CompanyPositionConfigurationMapper {
 
     @Bean
-    fun mapCompanyPosition(): FromApiToInternalMapper<CompanyPositionView, CompanyPositionDto> =
+    fun mapCompanyPosition(
+        positionMapper: FromApiToInternalMapper<PositionView, PositionDto>,
+    ): FromApiToInternalMapper<CompanyPositionView, CompanyPositionDto> =
         makeFromApiMapper { model ->
             CompanyPositionDto(
-                positionId = model.positionId,
-                companyId = model.positionId,
-                name = model.name,
-                employedCount = model.employedCount,
-                interviewsCount = model.interviewsCount
+                id = model.id,
+                companyId = model.companyId,
+                position = positionMapper.fromApi(model.position)
             )
         }
 
     @Bean
-    fun mapCompanyPositionToApi(): FromInternalToApiMapper<CompanyPositionView, CompanyPositionDto> =
+    fun mapCompanyPositionToApi(
+        positionMapper: FromInternalToApiMapper<PositionView, PositionDto>,
+    ): FromInternalToApiMapper<CompanyPositionView, CompanyPositionDto> =
         makeToApiMapper { model ->
             CompanyPositionView(
-                positionId = model.positionId,
+                id = model.id,
                 companyId = model.companyId,
-                name = model.name,
-                employedCount = model.employedCount,
-                interviewsCount = model.interviewsCount
+                position = positionMapper.fromInternal(model.position)
             )
         }
 

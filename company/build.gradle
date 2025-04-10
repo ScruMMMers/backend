@@ -6,5 +6,6 @@ dependencies {
     implementation project(':tags')
     implementation project(':profile')
     implementation project(':file')
+    implementation project(':position')
     implementation libs.spring.boot.starter.data.jpa
 }

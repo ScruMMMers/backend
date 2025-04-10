@@ -1,11 +1,13 @@
 package com.quqee.backend.internship_hits.company.mapper
 
 import com.quqee.backend.internship_hits.company.entity.CompanyPositionEntity
+import com.quqee.backend.internship_hits.position.service.PositionService
 import com.quqee.backend.internship_hits.public_interface.company_position.CompanyPositionDto
 import org.springframework.stereotype.Component
 
 @Component
 class CompanyPositionMapper(
+    private val positionService: PositionService
 ) {
 
     /**
@@ -13,11 +15,9 @@ class CompanyPositionMapper(
      */
     fun toCompanyPositionDto(entity: CompanyPositionEntity): CompanyPositionDto {
         return CompanyPositionDto(
-            positionId = entity.positionId,
+            id = entity.id,
             companyId = entity.company.companyId,
-            name = entity.name,
-            employedCount = entity.employedCount,
-            interviewsCount = entity.interviewsCount
+            position = positionService.getPositionById(entity.positionId)
         )
     }
 

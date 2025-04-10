@@ -21,8 +21,8 @@ class CompanyPositionRepository(
     /**
      * Создание позиции в компании
      */
-    fun createCompanyPosition(createCompanyPositionDto: CreateCompanyPositionDto): CompanyPositionDto {
-        val companyEntity = companyJpaRepository.findById(createCompanyPositionDto.companyId)
+    fun createCompanyPosition(companyId: UUID, createCompanyPositionDto: CreateCompanyPositionDto): CompanyPositionDto {
+        val companyEntity = companyJpaRepository.findById(companyId)
             .orElseThrow {
                 ExceptionInApplication(
                     ExceptionType.NOT_FOUND,
@@ -31,48 +31,12 @@ class CompanyPositionRepository(
             }
 
         val companyPositionEntity = CompanyPositionEntity(
-            positionId = UUID.randomUUID(),
+            id = UUID.randomUUID(),
             company = companyEntity,
-            name = createCompanyPositionDto.name,
-            employedCount = 0,
-            interviewsCount = 0
+            positionId = createCompanyPositionDto.positionId
         )
 
         return mapper.toCompanyPositionDto(companyPositionJpaRepository.save(companyPositionEntity))
-    }
-
-    /**
-     * Увеличить счетчик интервью
-     */
-    fun incrementInterviewsCount(positionId: UUID): CompanyPositionDto {
-        val positionEntity = companyPositionJpaRepository.findById(positionId)
-            .orElseThrow {
-                ExceptionInApplication(
-                    ExceptionType.NOT_FOUND,
-                    "Позиция в компании не найдена с идентификатором $positionId"
-                )
-            }
-
-        positionEntity.interviewsCount++
-
-        return mapper.toCompanyPositionDto(companyPositionJpaRepository.save(positionEntity))
-    }
-
-    /**
-     * Увеличить счетчик принятых на стажировку
-     */
-    fun incrementEmployedCount(positionId: UUID): CompanyPositionDto {
-        val positionEntity = companyPositionJpaRepository.findById(positionId)
-            .orElseThrow {
-                ExceptionInApplication(
-                    ExceptionType.NOT_FOUND,
-                    "Позиция в компании не найдена с идентификатором $positionId"
-                )
-            }
-
-        positionEntity.employedCount++
-
-        return mapper.toCompanyPositionDto(companyPositionJpaRepository.save(positionEntity))
     }
 
 }

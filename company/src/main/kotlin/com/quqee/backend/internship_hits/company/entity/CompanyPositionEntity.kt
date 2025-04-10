@@ -13,27 +13,19 @@ data class CompanyPositionEntity(
 
     @Id
     @Column(name = "id", nullable = false)
-    var positionId: UUID,
+    var id: UUID,
 
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     var company: CompanyEntity,
 
-    @Column(name = "name", nullable = false)
-    var name: String,
+    @Column(name = "position_id", nullable = false)
+    var positionId: Long,
 
-    @Column(name = "employed_count", nullable = false)
-    var employedCount: Int,
-
-    @Column(name = "interviews_count", nullable = false)
-    var interviewsCount: Int
-
-) {
+    ) {
     constructor() : this(
         UUID.randomUUID(),
         CompanyEntity(),
-        "",
-        0,
-        0
+        0L
     )
 }

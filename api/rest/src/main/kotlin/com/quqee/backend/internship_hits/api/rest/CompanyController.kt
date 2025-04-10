@@ -47,7 +47,7 @@ class CompanyController(
 
         return ResponseEntity.ok(
             mapCompanyPosition.fromInternal(
-                companyPositionService.createCompanyPosition(createCompanyPositionDto)
+                companyPositionService.createCompanyPosition(companyId, createCompanyPositionDto)
             )
         )
     }

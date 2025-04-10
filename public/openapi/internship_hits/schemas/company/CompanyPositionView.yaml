@@ -1,21 +1,15 @@
 CompanyPositionView:
   type: object
   required:
-    - positionId
+    - id
     - companyId
-    - name
-    - employedCount
-    - interviewsCount
+    - position
   properties:
-    positionId:
+    id:
       type: string
       format: uuid
     companyId:
       type: string
       format: uuid
-    name:
-      type: string
-    employedCount:
-      type: integer
-    interviewsCount:
-      type: integer
+    position:
+      $ref: '../common/Position.yaml#/PositionView'
