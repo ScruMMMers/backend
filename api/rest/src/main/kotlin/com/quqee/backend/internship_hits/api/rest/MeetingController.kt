@@ -23,12 +23,12 @@ class MeetingController(
     private val mapMeetingsListToApi: FromInternalToApiMapper<MeetingsListView, MeetingsListDto>,
 ) : MeetingApiDelegate {
 
-    override fun buildingsBuildingIdAudiencesGet(buildingId: UUID, name: String?): ResponseEntity<AudiencesListView> {
-        return ResponseEntity.ok(mapAudiencesListToApi.fromInternal(audienceService.getAudiences(buildingId, name)))
+    override fun buildingsBuildingIdAudiencesGet(buildingId: UUID, search: String?): ResponseEntity<AudiencesListView> {
+        return ResponseEntity.ok(mapAudiencesListToApi.fromInternal(audienceService.getAudiences(buildingId, search)))
     }
 
-    override fun buildingsGet(name: String?): ResponseEntity<BuildingsListView> {
-        return ResponseEntity.ok(mapBuildingsListToApi.fromInternal(buildingService.getBuildings(name)))
+    override fun buildingsGet(search: String?): ResponseEntity<BuildingsListView> {
+        return ResponseEntity.ok(mapBuildingsListToApi.fromInternal(buildingService.getBuildings(search)))
     }
 
 
