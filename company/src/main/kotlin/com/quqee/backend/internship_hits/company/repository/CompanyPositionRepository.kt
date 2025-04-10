@@ -30,6 +30,17 @@ class CompanyPositionRepository(
                 )
             }
 
+        if (companyPositionJpaRepository.findFirstByCompanyAndPositionId(
+                companyEntity,
+                createCompanyPositionDto.positionId
+            ).isPresent
+        ) {
+            throw ExceptionInApplication(
+                ExceptionType.BAD_REQUEST,
+                "В компании уже есть позиция с таким стеком"
+            )
+        }
+
         val companyPositionEntity = CompanyPositionEntity(
             id = UUID.randomUUID(),
             company = companyEntity,
