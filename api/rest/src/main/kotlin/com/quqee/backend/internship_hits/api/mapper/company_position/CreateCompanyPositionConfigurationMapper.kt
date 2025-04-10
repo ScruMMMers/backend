@@ -14,8 +14,7 @@ class CreateCompanyPositionConfigurationMapper {
     fun mapCreateCompanyPosition(): FromApiToInternalMapper<CreateCompanyPositionView, CreateCompanyPositionDto> =
         makeFromApiMapper { model ->
             CreateCompanyPositionDto(
-                name = model.name,
-                companyId = model.companyId
+                positionId = model.positionId
             )
         }
 

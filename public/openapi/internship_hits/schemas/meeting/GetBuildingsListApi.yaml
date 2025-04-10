@@ -4,6 +4,12 @@ get:
   summary: Получить корпусы тгу
   security:
     - openIdConnect: [ ]
+  parameters:
+    - in: query
+      name: search
+      required: false
+      schema:
+        type: string
   responses:
     '200':
       description: Корпусы тгу

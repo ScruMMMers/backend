@@ -2,11 +2,13 @@ package com.quqee.backend.internship_hits.meeting.service
 
 import com.quqee.backend.internship_hits.meeting.mapper.BuildingMapper
 import com.quqee.backend.internship_hits.meeting.repository.BuildingRepository
+import com.quqee.backend.internship_hits.meeting.specification.BuildingSpecification
 import com.quqee.backend.internship_hits.public_interface.common.BuildingsListDto
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 
 interface BuildingService {
-    fun getBuildings(): BuildingsListDto
+    fun getBuildings(name: String?): BuildingsListDto
 
 }
 
@@ -16,8 +18,9 @@ open class BuildingServiceImpl(
     private val buildingMapper: BuildingMapper,
 ) : BuildingService {
 
-    override fun getBuildings(): BuildingsListDto {
-        return BuildingsListDto(buildingRepository.findAll().map { buildingMapper.mapToDto(it) })
+    override fun getBuildings(name: String?): BuildingsListDto {
+        val spec = Specification.where(BuildingSpecification.byName(name))
+        return BuildingsListDto(buildingRepository.findAll(spec).map { buildingMapper.mapToDto(it) })
     }
 
 }

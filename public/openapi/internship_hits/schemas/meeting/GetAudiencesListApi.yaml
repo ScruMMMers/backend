@@ -11,6 +11,11 @@ get:
       schema:
         type: string
         format: uuid
+    - in: query
+      name: search
+      required: false
+      schema:
+        type: string
   responses:
     '200':
       description: Аудитории корпуса тгу

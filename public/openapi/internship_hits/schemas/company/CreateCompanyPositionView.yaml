@@ -1,11 +1,7 @@
 CreateCompanyPositionView:
   type: object
   required:
-    - name
-    - companyId
+    - positionId
   properties:
-    name:
-      type: string
-    companyId:
-      type: string
-      format: uuid
+    positionId:
+      type: long

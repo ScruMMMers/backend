@@ -6,4 +6,4 @@ PositionListView:
     positions:
       type: array
       items:
-        $ref: './Position.yaml#/PositionView'
+        $ref: '../common/Position.yaml#/PositionView'
