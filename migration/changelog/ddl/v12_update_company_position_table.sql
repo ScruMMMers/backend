@@ -2,12 +2,12 @@ CREATE TABLE company_position_new
 (
     id          UUID PRIMARY KEY,
     company_id  UUID   NOT NULL,
-    position_id BIGINT NOT NULL DEFAULT 1,
+    position_id BIGINT NOT NULL,
     FOREIGN KEY (company_id) REFERENCES company (id)
 );
 
 INSERT INTO company_position_new (id, company_id, position_id)
-SELECT position_id,
+SELECT id,
        company_id,
        1
 FROM company_position;
