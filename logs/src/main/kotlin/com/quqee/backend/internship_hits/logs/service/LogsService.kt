@@ -171,6 +171,7 @@ class LogsServiceImpl (
     private fun extractTagsFromMessage(message: String): List<String> {
         return message.split(" ")
             .filter { it.startsWith("@") }
+            .map { it.removePrefix("@") }
     }
 
     /**
@@ -188,6 +189,7 @@ class LogsServiceImpl (
     private fun extractHashtagsFromMessage(message: String): List<String> {
         return message.split(" ")
             .filter { it.startsWith("#") }
+            .map { it.removePrefix("#") }
     }
 
     /**
