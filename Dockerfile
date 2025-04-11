@@ -25,6 +25,7 @@ COPY notification ./notification
 COPY logs ./logs
 COPY meeting ./meeting
 COPY company ./company
+COPY statistic ./statistic
 COPY tags ./tags
 COPY tags_query ./tags_query
 COPY position ./position
