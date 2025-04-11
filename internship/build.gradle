@@ -1,0 +1,6 @@
+dependencies {
+    implementation project(':public_interface:common')
+    implementation project(':profile')
+    implementation project(':company')
+    implementation libs.spring.boot.starter.data.jpa
+}

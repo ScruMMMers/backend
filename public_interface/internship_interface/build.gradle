@@ -1,0 +1,4 @@
+dependencies {
+    implementation project(":public_interface:common")
+    implementation project(':oauth2_security')
+}

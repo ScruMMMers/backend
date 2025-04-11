@@ -29,6 +29,7 @@ COPY tags ./tags
 COPY tags_query ./tags_query
 COPY position ./position
 COPY file ./file
+COPY internship ./internship
 COPY oauth2_security ./oauth2_security
 COPY websocket_common ./websocket_common
 RUN gradle --no-daemon --project-dir core build -x test
