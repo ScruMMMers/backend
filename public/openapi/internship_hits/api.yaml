@@ -28,6 +28,8 @@ tags:
     description: Ручки для отладки
   - name: file
     description: Работа с файлами
+  - name: statistic
+    description: Получение статистики
 
 components:
   securitySchemes:
@@ -112,3 +114,6 @@ paths:
     $ref: './schemas/file/DeleteFileApi.yaml'
   /files/{fileId}/download-link:
     $ref: './schemas/file/GetFileLinkApi.yaml'
+
+  /statistic/company/{companyId}:
+    $ref: './schemas/statistic/GetFullCompanyStatisticApi.yaml'

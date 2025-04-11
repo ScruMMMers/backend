@@ -18,8 +18,10 @@ dependencies {
     implementation project(":file")
     implementation project(":position")
     implementation project(":meeting")
+    implementation project(":statistic")
 
     implementation project(":public_interface:logs_interface")
+    implementation project(":public_interface:statistic_interface")
     implementation project(":public_interface:company_interface")
     implementation project(":public_interface:meeting_interface")
     implementation project(":public_interface:common")

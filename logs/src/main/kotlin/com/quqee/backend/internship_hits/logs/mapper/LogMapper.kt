@@ -4,6 +4,8 @@ import com.quqee.backend.internship_hits.file.service.FileService
 import com.quqee.backend.internship_hits.logs.entity.LogEntity
 import com.quqee.backend.internship_hits.logs.service.CommentService
 import com.quqee.backend.internship_hits.logs.service.ReactionService
+import com.quqee.backend.internship_hits.position.mapper.PositionMapper
+import com.quqee.backend.internship_hits.position.service.PositionService
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
@@ -18,7 +20,8 @@ class LogMapper(
     private val profileService: ProfileService,
     private val commentService: CommentService,
     private val fileService: FileService,
-    private val tagQueryService: TagQueryService
+    private val tagQueryService: TagQueryService,
+    private val positionMapper: PositionMapper
 ) {
     /**
      * Преобразование сущности лога в DTO представление
@@ -28,6 +31,7 @@ class LogMapper(
             id = entity.id,
             message = entity.message,
             tags = tagQueryService.mapTagEntityToDto(entity.tags).tags,
+            hashtags = entity.hashtags.map { positionMapper.toDto(it) },
             type = entity.type,
             createdAt = entity.createdAt,
             editedAt = entity.editedAt,

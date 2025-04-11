@@ -2,13 +2,10 @@ package com.quqee.backend.internship_hits.api.mapper.logs
 
 import com.quqee.backend.internship_hits.mapper.*
 import com.quqee.backend.internship_hits.model.rest.*
-import com.quqee.backend.internship_hits.public_interface.common.CommentDto
-import com.quqee.backend.internship_hits.public_interface.common.FileDto
-import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
+import com.quqee.backend.internship_hits.public_interface.common.*
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
-import com.quqee.backend.internship_hits.public_interface.common.TagDto
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -25,11 +22,13 @@ class LogConfigurationMapper (
         mapComment: FromApiToInternalMapper<CommentView, CommentDto>,
         mapAccount: FromApiToInternalMapper<ShortAccountView, ShortAccountDto>,
         mapFiles: FromApiToInternalMapper<FileView, FileDto>,
+        mapPosition: FromApiToInternalMapper<PositionView, PositionDto>
     ): FromApiToInternalMapper<LogView, LogDto> = makeFromApiMapper { model ->
         LogDto(
             id = model.id,
             message = model.message,
             tags = model.tags.map { mapTag.fromApi(it) },
+            hashtags = model.hashtags.map { mapPosition.fromApi(it) },
             type = mapLogType.mapToInternal(model.type),
             createdAt = model.createdAt,
             editedAt = model.editedAt,
@@ -48,11 +47,13 @@ class LogConfigurationMapper (
         mapComment: FromInternalToApiMapper<CommentView, CommentDto>,
         mapAccount: FromInternalToApiMapper<ShortAccountView, ShortAccountDto>,
         mapFiles: FromInternalToApiMapper<FileView, FileDto>,
+        mapPosition: FromInternalToApiMapper<PositionView, PositionDto>
     ): FromInternalToApiMapper<LogView, LogDto> = makeToApiMapper { model ->
         LogView(
             id = model.id,
             message = model.message,
             tags = model.tags.map { mapTag.fromInternal(it) },
+            hashtags = model.hashtags.map { mapPosition.fromInternal(it) },
             type = mapLogType.mapToApi(model.type),
             createdAt = model.createdAt,
             editedAt = model.editedAt,

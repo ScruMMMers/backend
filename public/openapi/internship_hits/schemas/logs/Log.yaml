@@ -4,6 +4,7 @@ LogView:
     - id
     - message
     - tags
+    - hashtags
     - type
     - createdAt
     - editedAt
@@ -22,6 +23,10 @@ LogView:
       type: array
       items:
         $ref: '../tags/Tag.yaml#/TagView'
+    hashtags:
+      type: array
+      items:
+        $ref: '../common/Position.yaml#/PositionView'
     type:
       $ref: '#/LogTypeEnum'
     createdAt:
