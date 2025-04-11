@@ -1,0 +1,9 @@
+FullCompanyStatisticListView:
+  type: object
+  required:
+    - fullCompanyStatistic
+  properties:
+    statistic:
+      type: array
+      items:
+        $ref: './FullCompanyStatisticView.yaml#/FullCompanyStatisticView'

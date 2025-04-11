@@ -3,6 +3,7 @@ package com.quqee.backend.internship_hits.logs.service
 import com.quqee.backend.internship_hits.logs.repository.LogsRepository
 import com.quqee.backend.internship_hits.position.entity.PositionEntity
 import com.quqee.backend.internship_hits.position.service.PositionService
+import com.quqee.backend.internship_hits.public_interface.common.CompanyStatisticsProjection
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPagination
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
@@ -42,6 +43,7 @@ interface LogsService {
     fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestDto): CreatedLogDto
     fun getLogById(logId: UUID): LogDto
     fun updateApprovalStatus(logId: UUID, isApprove: Boolean): CreatedLogDto
+    fun getLogsForStatistic(companyId: UUID): List<CompanyStatisticsProjection>
 }
 
 @Service
@@ -163,6 +165,10 @@ class LogsServiceImpl (
     override fun updateApprovalStatus(logId: UUID, isApprove: Boolean): CreatedLogDto {
         val log = logsRepository.updateApprovalStatus(logId, isApprove)
         return CreatedLogDto(log = log)
+    }
+
+    override fun getLogsForStatistic(companyId: UUID): List<CompanyStatisticsProjection> {
+        return logsRepository.getLogsForStatistic(companyId)
     }
 
     /**

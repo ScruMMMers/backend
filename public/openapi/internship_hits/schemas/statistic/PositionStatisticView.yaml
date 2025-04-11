@@ -1,0 +1,11 @@
+PositionStatisticView:
+  type: object
+  required:
+    - position
+    - value
+  properties:
+    position:
+      type: string
+    value:
+      type: integer
+      format: int64

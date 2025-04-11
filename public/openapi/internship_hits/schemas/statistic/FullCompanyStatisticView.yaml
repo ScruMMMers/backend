@@ -1,0 +1,12 @@
+FullCompanyStatisticView:
+  type: object
+  required:
+    - title
+    - data
+  properties:
+    title:
+      type: string
+    data:
+      type: array
+      items:
+        $ref: './PositionStatisticView.yaml#/PositionStatisticView'

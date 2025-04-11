@@ -6,6 +6,7 @@ import com.quqee.backend.internship_hits.logs.repository.jpa.LogsJpaRepository
 import com.quqee.backend.internship_hits.logs.specification.LogSpecification
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.position.entity.PositionEntity
+import com.quqee.backend.internship_hits.public_interface.common.CompanyStatisticsProjection
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
@@ -168,6 +169,10 @@ class LogsRepository(
     fun getLogById(logId: UUID): LogDto? {
         val log = logsJpaRepository.findById(logId)
         return log.map { logMapper.toLogDto(it) }.orElse(null)
+    }
+
+    fun getLogsForStatistic(companyId: UUID): List<CompanyStatisticsProjection> {
+        return logsJpaRepository.getStatisticByCompany(companyId)
     }
 
     private fun getApprovalStatus(logType: LogType): ApprovalStatus {

@@ -5,6 +5,7 @@ import com.quqee.backend.internship_hits.public_interface.common.enums.Exception
 import com.quqee.backend.internship_hits.public_interface.file_storage_public.GetLinkForFileDto
 import com.quqee.backend.internship_hits.public_interface.file_storage_public.LinkForFileDto
 import com.quqee.backend.internship_hits.public_interface.file_storage_public.UploadFileDto
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import software.amazon.awssdk.core.sync.RequestBody
@@ -22,6 +23,9 @@ class FileStorageService(
     private val s3Client: S3Client,
     private val s3Presigner: S3Presigner,
 ) {
+
+    private val log = LoggerFactory.getLogger(this::class.java)
+
     fun getFileLink(dto: GetLinkForFileDto): LinkForFileDto {
         try {
             val headObjectRequest = HeadObjectRequest.builder()
@@ -30,7 +34,8 @@ class FileStorageService(
                 .build()
             s3Client.headObject(headObjectRequest)
         } catch (e: Exception) {
-            throw ExceptionInApplication(ExceptionType.FATAL)
+            log.error("Ошибка при получении ссылки на файл")
+            return LinkForFileDto("https://avatars.mds.yandex.net/i?id=391859fa5e7ecc62359e839f5b143e35_l-7755287-images-thumbs&n=13")
         }
 
         val objectRequest = GetObjectRequest.builder()
