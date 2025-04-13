@@ -1,4 +1,4 @@
 dependencies {
     implementation project(":public_interface:common")
-    implementation project(':oauth2_security')
+    implementation project(":public_interface:profile_public")
 }
