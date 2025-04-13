@@ -95,3 +95,17 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v12_update_company_position_table.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 14
+      author: gordey_dovydenko
+      changes:
+        - sqlFile:
+            path: ddl/initial_students_schema.sql
+            relativeToChangelogFile: true
+  - changeSet:
+      id: 15
+      author: gordey_dovydenko
+      changes:
+        - sqlFile:
+            path: ddl/initial_invite_link_schema.sql
+            relativeToChangelogFile: true
