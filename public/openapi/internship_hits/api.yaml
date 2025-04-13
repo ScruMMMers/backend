@@ -30,6 +30,8 @@ tags:
     description: Работа с файлами
   - name: statistic
     description: Получение статистики
+  - name: students
+    description: Студенты
 
 components:
   securitySchemes:
@@ -117,3 +119,16 @@ paths:
 
   /statistic/company/{companyId}:
     $ref: './schemas/statistic/GetFullCompanyStatisticApi.yaml'
+
+  /students/list:
+    $ref: './schemas/students/GetStudentsListApi.yaml'
+  /students/registration:
+    $ref: './schemas/students/PostStudentsRegistrationApi.yaml'
+  /students/registration/link:
+    $ref: './schemas/students/PostStudentsRegistrationLinkApi.yaml'
+  /students/deanery/edit:
+    $ref: './schemas/students/PostStudentsDeaneryEditApi.yaml'
+  /students/{userId}/move-academic:
+    $ref: './schemas/students/PostStudentsMoveAcademicApi.yaml'
+  /students/{userId}/remove-academic:
+    $ref: './schemas/students/PostStudentsRemoveAcademicApi.yaml'

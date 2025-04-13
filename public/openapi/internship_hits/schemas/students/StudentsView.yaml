@@ -1,0 +1,100 @@
+GetStudentsListResponseView:
+  type: object
+  required:
+    - students
+    - page
+  properties:
+    students:
+      $ref: '#/StudentView'
+    page:
+      $ref: '../common/Pagination.yaml#/LastIdPaginationView'
+
+GetStudentInviteLinkRequestView:
+  type: object
+  properties:
+    course:
+      type: integer
+
+GetStudentInviteLinkResponseView:
+  type: object
+  properties:
+    link:
+      $ref: '../file/FileModels.yaml#/FileView'
+
+CreateStudentView:
+  type: object
+  required:
+    - firstName
+    - lastName
+    - email
+    - password
+    - username
+    - inviteLinkId
+  properties:
+    course:
+      type: string
+    group:
+      type: string
+    firstName:
+      type: string
+    lastName:
+      type: string
+    middleName:
+      type: string
+    photoId:
+      type: string
+    email:
+      type: string
+    password:
+      type: string
+    username:
+      type: string
+    inviteLinkId:
+      type: string
+
+DeaneryEditStudentRequestView:
+  type: object
+  required:
+    - course
+    - group
+    - fullName
+    - username
+    - email
+  properties:
+    course:
+      type: integer
+    group:
+      type: string
+    fullName:
+      type: string
+    photoId:
+      type: string
+    username:
+      type: string
+    email:
+      type: string
+    companyId:
+      type: string
+      format: uuid
+
+StudentView:
+  type: object
+  required:
+    - userId
+    - group
+    - course
+    - fullName
+  properties:
+    userId:
+      type: string
+      format: uuid
+    group:
+      type: string
+    course:
+      type: string
+    fullName:
+      type: string
+    photo:
+      $ref: '../file/FileModels.yaml#/FileView'
+    company:
+      $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'

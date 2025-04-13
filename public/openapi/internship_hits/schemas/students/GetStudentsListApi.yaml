@@ -1,0 +1,32 @@
+get:
+  tags:
+    - students
+  summary: Получить список студентов
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
+    - $ref: '../common/Pagination.yaml#/PaginationPageSize'
+    - in: query
+      name: course
+      schema:
+        type: integer
+    - in: query
+      name: group
+      schema:
+        type: string
+    - in: query
+      name: orderBy
+      schema:
+        type: string
+        enum:
+          - DEFAULT
+  responses:
+    '200':
+      description: Список студентов
+      content:
+        application/json:
+          schema:
+            $ref: './StudentsView.yaml#/GetStudentsListResponseView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

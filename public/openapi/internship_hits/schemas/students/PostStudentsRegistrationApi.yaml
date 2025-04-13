@@ -1,0 +1,22 @@
+post:
+  tags:
+    - students
+  summary: Регистрация пользователя
+  security:
+    - openIdConnect: [ ]
+  requestBody:
+    description: Передаем сюда данные для регистрации
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './StudentsView.yaml#/CreateStudentView'
+  responses:
+    '200':
+      description: Вьюшка студента
+      content:
+        application/json:
+          schema:
+            $ref: './StudentsView.yaml#/StudentView'
+    '400':
+      description: Что-то пошло не так

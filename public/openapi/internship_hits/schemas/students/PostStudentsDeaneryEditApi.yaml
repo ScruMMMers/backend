@@ -1,0 +1,22 @@
+post:
+  tags:
+    - students
+  summary: Изменение пользователя от лица деканата
+  security:
+    - openIdConnect: [ ]
+  requestBody:
+    description: Передаем сюда данные для изменения
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './StudentsView.yaml#/DeaneryEditStudentRequestView'
+  responses:
+    '200':
+      description: Вьюшка студента
+      content:
+        application/json:
+          schema:
+            $ref: './StudentsView.yaml#/StudentView'
+    '400':
+      description: Что-то пошло не так

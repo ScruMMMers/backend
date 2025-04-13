@@ -1,7 +1,7 @@
 package com.quqee.backend.internship_hits.notification.entity
 
 import com.quqee.backend.internship_hits.notification.public.Public
-import com.quqee.backend.internship_hits.public_interface.common.exception.NotificationId
+import com.quqee.backend.internship_hits.public_interface.common.NotificationId
 import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationChannel
 import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationType
 import java.time.OffsetDateTime
