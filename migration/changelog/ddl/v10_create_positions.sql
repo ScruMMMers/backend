@@ -1,5 +1,5 @@
 CREATE TABLE positions (
-      id SERIAL PRIMARY KEY,
+      id BIGSERIAL PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
       position VARCHAR(50) NOT NULL
 );

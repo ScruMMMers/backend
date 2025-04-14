@@ -28,7 +28,10 @@ dependencies {
 
     implementation project(":public_interface:common")
     implementation project(":public_interface:profile_public")
+    implementation project(":public_interface:students_public")
+    implementation project(":public_interface:logs_interface")
     implementation project(":profile")
+    implementation project(":company")
 
     implementation libs.email.api
     implementation libs.jackson.module.kotlin
@@ -93,7 +96,7 @@ tasks.register("tc-start") {
 
         def localChangelogPath = "${rootDir}/migration/changelog"
         def containerChangelogPath = "/liquibase/changelog"
-        def liquibaseContainer = new GenericContainer("liquibase/liquibase:4.28")
+        def liquibaseContainer = new GenericContainer("liquibase/liquibase:latest")
                 .withNetwork(network)
                 .withFileSystemBind(localChangelogPath, containerChangelogPath)
                 .withCommand("update",
