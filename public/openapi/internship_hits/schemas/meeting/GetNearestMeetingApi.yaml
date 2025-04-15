@@ -20,3 +20,5 @@ get:
             $ref: '../common/Meeting.yaml#/MeetingView'
     '403':
       description: Недостаточно прав для доступа к ресурсу
+    '404':
+      description: Ближайших встреч пока нет

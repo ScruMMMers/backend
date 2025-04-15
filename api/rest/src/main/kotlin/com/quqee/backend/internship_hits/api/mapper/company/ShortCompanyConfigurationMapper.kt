@@ -19,7 +19,7 @@ class ShortCompanyConfigurationMapper {
             name = model.name,
             avatarUrl = model.avatarUrl,
             primaryColor = ColorEnum.fromHex(model.primaryColor),
-            createdAt = model.createdAt
+            sinceYear = model.sinceYear
         )
     }
 
@@ -30,7 +30,7 @@ class ShortCompanyConfigurationMapper {
             name = model.name,
             avatarUrl = model.avatarUrl,
             primaryColor = model.primaryColor.hexColor,
-            createdAt = model.createdAt
+            sinceYear = model.sinceYear
         )
     }
 }
