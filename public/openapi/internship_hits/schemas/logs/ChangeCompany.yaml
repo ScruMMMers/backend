@@ -1,0 +1,12 @@
+ChangeCompanyView:
+  type: object
+  required:
+    - companyId
+    - positionId
+  properties:
+    companyId:
+      type: string
+      format: uuid
+    positionId:
+      type: integer
+      format: int64

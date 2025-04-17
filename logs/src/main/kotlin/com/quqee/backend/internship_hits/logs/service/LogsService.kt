@@ -43,6 +43,7 @@ interface LogsService {
     fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestDto): CreatedLogDto
     fun getLogById(logId: UUID): LogDto
     fun updateApprovalStatus(logId: UUID, isApprove: Boolean): CreatedLogDto
+    fun changeCompanyLog(changeCompanyRequest: ChangeCompanyDto): CreatedLogDto
     fun getLogsForStatistic(companyId: UUID): List<CompanyStatisticsProjection>
 }
 
@@ -167,6 +168,25 @@ class LogsServiceImpl (
         return CreatedLogDto(log = log)
     }
 
+    /**
+     * Получить статистику по логам
+     */
+    override fun changeCompanyLog(changeCompanyRequest: ChangeCompanyDto): CreatedLogDto {
+        val tag = tagQueryService.getTagByCompanyId(changeCompanyRequest.companyId)
+        val hashtag = positionService.getPositionEntityById(changeCompanyRequest.positionId)
+        val companyChangeLog = logsRepository.createLog(
+            message = "Сменил(а) компанию на @${tag.name} на позицию #${hashtag.name}",
+            tags = listOf(tag),
+            hashtags = listOf(hashtag),
+            type = LogType.COMPANY_CHANGE,
+            files = emptyList()
+        )
+        return CreatedLogDto(log = companyChangeLog)
+    }
+
+    /**
+     * Получить статистику по логам
+     */
     override fun getLogsForStatistic(companyId: UUID): List<CompanyStatisticsProjection> {
         return logsRepository.getLogsForStatistic(companyId)
     }

@@ -1,15 +1,19 @@
 package com.quqee.backend.internship_hits.tags_query.service
 
+import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.tags.TagListDto
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import com.quqee.backend.internship_hits.tags.repository.TagJpaRepository
 import com.quqee.backend.internship_hits.tags_query.mapper.TagQueryMapper
 import org.springframework.stereotype.Service
+import java.util.*
 
 interface TagQueryService {
     fun getTagsByNamePart(name: String?): TagListDto
     fun getTagsEntityByNamePart(name: String?): List<TagEntity>
     fun mapTagEntityToDto(tagEntityList: List<TagEntity>): TagListDto
+    fun getTagByCompanyId(companyId: UUID): TagEntity
 }
 
 @Service
@@ -48,5 +52,14 @@ class TagQueryServiceImpl(
      */
     override fun mapTagEntityToDto(tagEntityList: List<TagEntity>): TagListDto {
         return tagQueryMapper.toTagListDto(tagEntityList)
+    }
+
+    /**
+     * Получение тега по ID компании
+     */
+    override fun getTagByCompanyId(companyId: UUID): TagEntity {
+        val tag = tagJpaRepository.findByCompanyId(companyId)
+            ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Компания с ID $companyId не найдена")
+        return tag
     }
 }

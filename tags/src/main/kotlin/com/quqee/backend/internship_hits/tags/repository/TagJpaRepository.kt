@@ -8,4 +8,5 @@ import java.util.UUID
 @Repository
 interface TagJpaRepository : JpaRepository<TagEntity, UUID> {
     fun findByNameContainingIgnoreCase(name: String): List<TagEntity>
+    fun findByCompanyId(companyId: UUID): TagEntity?
 }
