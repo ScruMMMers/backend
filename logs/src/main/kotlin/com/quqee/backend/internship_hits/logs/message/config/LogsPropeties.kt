@@ -1,4 +1,4 @@
-package com.quqee.backend.internship_hits.logs.message.properties
+package com.quqee.backend.internship_hits.logs.message.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
