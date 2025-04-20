@@ -55,8 +55,7 @@ class LogsServiceImpl (
     private val logsRepository: LogsRepository,
     private val tagQueryService: TagQueryService,
     private val positionService: PositionService,
-    private val newInternshipSender: KafkaSender<NewInternshipDto>,
-    private val newLogSender: KafkaSender<NewLogDto>,
+    private val kafkaSender: KafkaSender<Any>,
 ) : LogsService {
 
     /**
@@ -138,7 +137,7 @@ class LogsServiceImpl (
             files = createLogRequest.files ?: emptyList()
         )
 
-        newLogSender.send(
+        kafkaSender.send(
             NewLogDto(
                 userId = newLog.author.userId,
                 logType = newLog.type
@@ -194,7 +193,7 @@ class LogsServiceImpl (
             files = emptyList()
         )
 
-        newInternshipSender.send(
+        kafkaSender.send(
             NewInternshipDto(
                 userId = companyChangeLog.author.userId,
                 companyId = tag.companyId,
