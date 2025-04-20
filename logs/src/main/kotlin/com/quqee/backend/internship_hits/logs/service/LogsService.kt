@@ -1,5 +1,6 @@
 package com.quqee.backend.internship_hits.logs.service
 
+import com.quqee.backend.internship_hits.logs.message.KafkaSender
 import com.quqee.backend.internship_hits.logs.repository.LogsRepository
 import com.quqee.backend.internship_hits.position.entity.PositionEntity
 import com.quqee.backend.internship_hits.position.service.PositionService
@@ -10,6 +11,8 @@ import com.quqee.backend.internship_hits.public_interface.common.exception.Excep
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.*
+import com.quqee.backend.internship_hits.public_interface.message.logs.NewInternshipDto
+import com.quqee.backend.internship_hits.public_interface.message.logs.NewLogDto
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import com.quqee.backend.internship_hits.tags_query.service.TagQueryService
 import org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE
@@ -51,7 +54,9 @@ interface LogsService {
 class LogsServiceImpl (
     private val logsRepository: LogsRepository,
     private val tagQueryService: TagQueryService,
-    private val positionService: PositionService
+    private val positionService: PositionService,
+    private val newInternshipSender: KafkaSender<NewInternshipDto>,
+    private val newLogSender: KafkaSender<NewLogDto>,
 ) : LogsService {
 
     /**
@@ -132,7 +137,14 @@ class LogsServiceImpl (
             type = createLogRequest.type,
             files = createLogRequest.files ?: emptyList()
         )
-        
+
+        newLogSender.send(
+            NewLogDto(
+                userId = newLog.author.userId,
+                logType = newLog.type
+            )
+        )
+
         return CreatedLogDto(log = newLog)
     }
 
@@ -181,6 +193,15 @@ class LogsServiceImpl (
             type = LogType.COMPANY_CHANGE,
             files = emptyList()
         )
+
+        newInternshipSender.send(
+            NewInternshipDto(
+                userId = companyChangeLog.author.userId,
+                companyId = tag.companyId,
+                positionId = hashtag.id
+            )
+        )
+
         return CreatedLogDto(log = companyChangeLog)
     }
 
