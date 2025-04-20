@@ -25,7 +25,11 @@ class LogsRepository(
     private val logsJpaRepository: LogsJpaRepository,
     private val logMapper: LogMapper
 ) {
-    private val needApprove: MutableList<LogType> = mutableListOf(LogType.FINAL, LogType.PRACTICE_DIARY)
+    private val needApprove: MutableList<LogType> = mutableListOf(
+        LogType.FINAL,
+        LogType.PRACTICE_DIARY,
+        LogType.COMPANY_CHANGE
+    )
 
     fun getLogsByCurrentUser(
         lastId: UUID?,

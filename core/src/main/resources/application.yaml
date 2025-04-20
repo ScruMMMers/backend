@@ -35,7 +35,7 @@ spring:
               - profile
 
   kafka:
-    bootstrap-servers: localhost:9094
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER:localhost:9094}
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
@@ -72,6 +72,13 @@ keycloak:
     client-secret: ${SERVER_APP_KEYCLOAK_SECRET}
 
 exporter:
+  logs:
+    internship:
+      source-topic: "raw.public.logs"
+      group-id: "exporter-logs-internship"
+    new:
+      source-topic: "raw.public.logs_new"
+      group-id: "exporter-logs-new"
   cdc:
     log_reactions:
       source-topic: "raw.public.log_reactions"
