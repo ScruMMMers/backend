@@ -137,12 +137,12 @@ class LogsServiceImpl (
             files = createLogRequest.files ?: emptyList()
         )
 
-        kafkaSender.send(
-            NewLogDto(
-                userId = newLog.author.userId,
-                logType = newLog.type
-            )
-        )
+//        kafkaSender.send(
+//            NewLogDto(
+//                userId = newLog.author.userId,
+//                logType = newLog.type
+//            )
+//        )
 
         return CreatedLogDto(log = newLog)
     }
@@ -193,13 +193,13 @@ class LogsServiceImpl (
             files = emptyList()
         )
 
-        kafkaSender.send(
-            NewInternshipDto(
-                userId = companyChangeLog.author.userId,
-                companyId = tag.companyId,
-                positionId = hashtag.id
-            )
-        )
+//        kafkaSender.send(
+//            NewInternshipDto(
+//                userId = companyChangeLog.author.userId,
+//                companyId = tag.companyId,
+//                positionId = hashtag.id
+//            )
+//        )
 
         return CreatedLogDto(log = companyChangeLog)
     }
