@@ -47,6 +47,7 @@ class CommentServiceImpl(
         val spec = Specification
             .where(CommentSpecification.createdBefore(lastComment?.createdAt))
             .and(CommentSpecification.logIdEquals(logId))
+            .and(CommentSpecification.replyToIsNull())
 
         val comments = commentJpaRepository.findAll(spec, pageable).content.map {
             commentMapper.toCommentDto(
@@ -68,7 +69,8 @@ class CommentServiceImpl(
 
     override fun getCommentReplies(commentId: UUID): List<CommentWithoutRepliesDto> {
         val spec = Specification.where(CommentSpecification.replyIdEquals(commentId))
-        val comments = commentJpaRepository.findAll(spec).map { commentMapper.toCommentWithoutRepliesDto(it) }
+        val sort = Sort.by("createdAt").ascending()
+        val comments = commentJpaRepository.findAll(spec, sort).map { commentMapper.toCommentWithoutRepliesDto(it) }
         return comments
     }
 
