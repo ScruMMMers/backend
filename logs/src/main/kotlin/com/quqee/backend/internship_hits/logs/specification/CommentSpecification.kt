@@ -9,13 +9,13 @@ object CommentSpecification {
 
     fun logIdEquals(logId: UUID): Specification<CommentEntity> {
         return Specification { root, _, criteriaBuilder ->
-            criteriaBuilder.equal(root.get<Boolean>("logId"), logId)
+            criteriaBuilder.equal(root.get<UUID>("logId"), logId)
         }
     }
 
     fun replyIdEquals(commentId: UUID): Specification<CommentEntity> {
         return Specification { root, _, criteriaBuilder ->
-            criteriaBuilder.equal(root.get<Boolean>("replyTo"), commentId)
+            criteriaBuilder.equal(root.get<UUID>("replyTo"), commentId)
         }
     }
 
@@ -26,6 +26,12 @@ object CommentSpecification {
             }
         } else {
             null
+        }
+    }
+
+    fun replyToIsNull(): Specification<CommentEntity> {
+        return Specification { root, _, criteriaBuilder ->
+            criteriaBuilder.isNull(root.get<UUID>("replyTo"))
         }
     }
 }
