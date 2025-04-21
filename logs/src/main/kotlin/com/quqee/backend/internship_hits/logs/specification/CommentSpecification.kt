@@ -15,7 +15,7 @@ object CommentSpecification {
 
     fun replyIdEquals(commentId: UUID): Specification<CommentEntity> {
         return Specification { root, _, criteriaBuilder ->
-            criteriaBuilder.equal(root.get<Boolean>("replyId"), commentId)
+            criteriaBuilder.equal(root.get<Boolean>("replyTo"), commentId)
         }
     }
 
