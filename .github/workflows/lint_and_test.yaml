@@ -10,6 +10,7 @@ env:
   AWS_REGION: ru-central1
   SERVER_APP_KEYCLOAK_SECRET: ${{ secrets.SERVER_APP_KEYCLOAK_SECRET }}
   SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+  KAFKA_BOOTSTRAP_SERVER: ${{ secrets.KAFKA_BOOTSTRAP_SERVER }}
 
 jobs:
   lint:
