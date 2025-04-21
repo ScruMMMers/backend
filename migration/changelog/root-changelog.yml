@@ -95,3 +95,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v12_update_company_position_table.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 14
+      author: yuriy_sitdikov
+      changes:
+        - sqlFile:
+            path: ddl/v13_update_comment_table.sql
+            relativeToChangelogFile: true
