@@ -215,9 +215,8 @@ class LogsServiceImpl (
      * Извлечение тегов из сообщения
      */
     private fun extractTagsFromMessage(message: String): List<String> {
-        return message.split(" ")
-            .filter { it.startsWith("@") }
-            .map { it.removePrefix("@") }
+        val regex = Regex("@(\\w+)")
+        return regex.findAll(message).map { it.groupValues[1] }.toList()
     }
 
     /**
@@ -233,9 +232,8 @@ class LogsServiceImpl (
      * Извлечение хэштегов из сообщения
      */
     private fun extractHashtagsFromMessage(message: String): List<String> {
-        return message.split(" ")
-            .filter { it.startsWith("#") }
-            .map { it.removePrefix("#") }
+        val regex = Regex("#(\\w+)")
+        return regex.findAll(message).map { it.groupValues[1] }.toList()
     }
 
     /**
