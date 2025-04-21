@@ -12,7 +12,8 @@ class CreateCommentConfigurationMapper {
     @Bean
     fun mapCreateComment(): FromApiToInternalMapper<CreateCommentView, CreateCommentDto> = makeFromApiMapper { model ->
         CreateCommentDto(
-            message = model.message
+            message = model.message,
+            replyTo = model.replyTo
         )
     }
 }

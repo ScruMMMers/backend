@@ -98,7 +98,6 @@ class LogsController(
 
     override fun logsLogIdCommentsGet(
         logId: UUID,
-        isDeleted: Boolean?,
         lastId: UUID?,
         size: Int?
     ): ResponseEntity<CommentsListView> {
@@ -106,7 +105,6 @@ class LogsController(
             mapCommentList.fromInternal(
                 commentService.getCommentsList(
                     logId,
-                    isDeleted,
                     lastId,
                     size
                 )

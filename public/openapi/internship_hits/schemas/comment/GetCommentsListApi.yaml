@@ -11,11 +11,6 @@ get:
       schema:
         type: string
         format: uuid
-    - in: query
-      name: isDeleted
-      required: false
-      schema:
-        type: boolean
     - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
     - $ref: '../common/Pagination.yaml#/PaginationPageSize'
   responses:
