@@ -9,6 +9,7 @@ import com.quqee.backend.internship_hits.public_interface.comment.CommentsListDt
 import com.quqee.backend.internship_hits.public_interface.comment.CreateCommentDto
 import com.quqee.backend.internship_hits.public_interface.comment.UpdateCommentDto
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
+import com.quqee.backend.internship_hits.public_interface.common.CommentWithoutRepliesDto
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPagination
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
@@ -18,11 +19,11 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
-import java.util.NoSuchElementException
-import java.util.UUID
+import java.util.*
 
 interface CommentService {
-    fun getCommentsList(logId: UUID, isDeleted: Boolean?, lastId: UUID?, size: Int?): CommentsListDto
+    fun getCommentsList(logId: UUID, lastId: UUID?, size: Int?): CommentsListDto
+    fun getCommentReplies(commentId: UUID): List<CommentWithoutRepliesDto>
     fun createComment(logID: UUID, createCommentDto: CreateCommentDto): CommentDto
     fun updateComment(logID: UUID, commentId: UUID, updateCommentDto: UpdateCommentDto): CommentDto
     fun deleteComment(logID: UUID, commentId: UUID): CommentDto
@@ -33,7 +34,7 @@ class CommentServiceImpl(
     private val commentJpaRepository: CommentJpaRepository,
     private val commentMapper: CommentMapper
 ) : CommentService {
-    override fun getCommentsList(logId: UUID, isDeleted: Boolean?, lastId: UUID?, size: Int?): CommentsListDto {
+    override fun getCommentsList(logId: UUID, lastId: UUID?, size: Int?): CommentsListDto {
         val pageSize = size ?: DEFAULT_PAGE_SIZE
         val pageable = PageRequest.of(0, pageSize, Sort.by("createdAt").descending())
 
@@ -43,14 +44,16 @@ class CommentServiceImpl(
                 ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Комментарий с ID $lastId не найден")
         }
 
-        val spec = Specification.where(CommentSpecification.isDeletedEquals(isDeleted ?: false))
-            .and(
-                CommentSpecification.createdBefore(
-                    lastComment?.createdAt
-                )
-            )
+        val spec = Specification
+            .where(CommentSpecification.createdBefore(lastComment?.createdAt))
+            .and(CommentSpecification.logIdEquals(logId))
 
-        val comments = commentJpaRepository.findAll(spec, pageable).content.map { commentMapper.toCommentDto(it) }
+        val comments = commentJpaRepository.findAll(spec, pageable).content.map {
+            commentMapper.toCommentDto(
+                it,
+                getCommentReplies(it.id)
+            )
+        }
         val hasNext = comments.size >= pageSize
 
         return CommentsListDto(
@@ -63,15 +66,38 @@ class CommentServiceImpl(
         )
     }
 
+    override fun getCommentReplies(commentId: UUID): List<CommentWithoutRepliesDto> {
+        val spec = Specification.where(CommentSpecification.replyIdEquals(commentId))
+        val comments = commentJpaRepository.findAll(spec).map { commentMapper.toCommentWithoutRepliesDto(it) }
+        return comments
+    }
+
     override fun createComment(logID: UUID, createCommentDto: CreateCommentDto): CommentDto {
         val myId = getCurrentUser()
 
         checkMessageEmpty(createCommentDto.message)
 
+        createCommentDto.replyTo?.let {
+            val parentComment = commentJpaRepository.findById(it).orElseThrow {
+                ExceptionInApplication(ExceptionType.NOT_FOUND, "Комментарий с идентификатором $it не найден")
+            }
+
+            if (parentComment.replyTo != null) {
+                throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Нельзя ответить на комментарий ответа")
+            }
+
+            if (parentComment.logId != logID) {
+                throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Комментарий относится к другому логу")
+            }
+        }
+
+        val savedComment = commentJpaRepository.save(
+            commentMapper.toCommentEntity(createCommentDto, myId, logID)
+        )
+
         return commentMapper.toCommentDto(
-            commentJpaRepository.save(
-                commentMapper.toCommentEntity(createCommentDto, myId, logID)
-            )
+            savedComment,
+            getCommentReplies(savedComment.id)
         )
     }
 
@@ -93,7 +119,8 @@ class CommentServiceImpl(
         return commentMapper.toCommentDto(
             commentJpaRepository.save(
                 comment
-            )
+            ),
+            getCommentReplies(commentId)
         )
     }
 
@@ -112,7 +139,8 @@ class CommentServiceImpl(
         return commentMapper.toCommentDto(
             commentJpaRepository.save(
                 comment
-            )
+            ),
+            getCommentReplies(commentId)
         )
     }
 

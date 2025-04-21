@@ -1,10 +1,9 @@
-CommentView:
+CommentWithoutRepliesView:
   type: object
   required:
     - id
     - author
     - message
-    - replies
     - logId
     - createdAt
     - isDeleted
@@ -16,10 +15,9 @@ CommentView:
       $ref: './Account.yaml#/ShortAccountView'
     message:
       type: string
-    replies:
-      type: array
-      items:
-        $ref: '../common/CommentWithoutReplies.yaml#/CommentWithoutRepliesView'
+    replyTo:
+      type: string
+      format: uuid
     logId:
       type: string
       format: uuid

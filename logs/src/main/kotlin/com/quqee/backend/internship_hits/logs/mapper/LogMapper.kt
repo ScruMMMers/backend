@@ -5,7 +5,6 @@ import com.quqee.backend.internship_hits.logs.entity.LogEntity
 import com.quqee.backend.internship_hits.logs.service.CommentService
 import com.quqee.backend.internship_hits.logs.service.ReactionService
 import com.quqee.backend.internship_hits.position.mapper.PositionMapper
-import com.quqee.backend.internship_hits.position.service.PositionService
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
@@ -49,7 +48,6 @@ class LogMapper(
     private fun getCommentsForLog(logId: UUID): List<CommentDto> {
         return commentService.getCommentsList(
             logId = logId,
-            isDeleted = null,
             lastId = null,
             size = null
         ).comments

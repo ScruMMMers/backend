@@ -20,8 +20,11 @@ data class CommentEntity(
     @Column(name = "message", nullable = false)
     var message: String,
 
-    @Column(name = "reply_to", nullable = false)
-    val replyTo: UUID,
+    @Column(name = "reply_to", nullable = true)
+    val replyTo: UUID?,
+
+    @Column(name = "log_id", nullable = false)
+    val logId: UUID,
 
     @Column(name = "created_at", nullable = false)
     val createdAt: OffsetDateTime,
@@ -37,6 +40,7 @@ data class CommentEntity(
         UUID.randomUUID(),
         UUID.randomUUID(),
         "",
+        UUID.randomUUID(),
         UUID.randomUUID(),
         OffsetDateTime.now(),
         OffsetDateTime.now(),
