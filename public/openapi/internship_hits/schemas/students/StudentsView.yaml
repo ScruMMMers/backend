@@ -5,7 +5,9 @@ GetStudentsListResponseView:
     - page
   properties:
     students:
-      $ref: '#/StudentView'
+      type: array
+      items:
+        $ref: '#/StudentView'
     page:
       $ref: '../common/Pagination.yaml#/LastIdPaginationView'
 
@@ -30,9 +32,11 @@ CreateStudentView:
     - password
     - username
     - inviteLinkId
+    - course
+    - group
   properties:
     course:
-      type: string
+      type: integer
     group:
       type: string
     firstName:
@@ -98,3 +102,22 @@ StudentView:
       $ref: '../file/FileModels.yaml#/FileView'
     company:
       $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
+    logs:
+      type: array
+      items:
+        $ref: '#/StudentShortLogView'
+
+StudentShortLogView:
+  type: object
+  required:
+    - id
+    - type
+    - approvalStatus
+  properties:
+    id:
+      type: string
+      format: uuid
+    type:
+      $ref: '../logs/Log.yaml#/LogTypeEnum'
+    approvalStatus:
+      $ref: '../logs/Log.yaml#/ApprovalStatusEnum'

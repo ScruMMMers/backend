@@ -12,6 +12,7 @@ class StudentEntityMapper : RecordMapper<StudentsRecord, StudentEntity> {
             group = record[STUDENTS.STUDENT_GROUP]!!,
             isOnAcademicLeave = record[STUDENTS.IS_ON_ACADEMIC_LEAVE]!!,
             companyId = record[STUDENTS.COMPANY_ID],
+            logs = emptySet(),
         )
     }
 }

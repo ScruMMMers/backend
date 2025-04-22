@@ -1,19 +1,30 @@
 package com.quqee.backend.internship_hits.api.rest
 
-import com.quqee.backend.internship_hits.model.rest.CreateStudentView
-import com.quqee.backend.internship_hits.model.rest.DeaneryEditStudentRequestView
-import com.quqee.backend.internship_hits.model.rest.GetStudentInviteLinkRequestView
-import com.quqee.backend.internship_hits.model.rest.GetStudentInviteLinkResponseView
-import com.quqee.backend.internship_hits.model.rest.GetStudentsListResponseView
-import com.quqee.backend.internship_hits.model.rest.StudentView
+import com.quqee.backend.internship_hits.mapper.EnumerationMapper
+import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
+import com.quqee.backend.internship_hits.model.rest.*
+import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationRequest
+import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationResponse
+import com.quqee.backend.internship_hits.public_interface.common.enums.Position
+import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
+import com.quqee.backend.internship_hits.public_interface.enums.LogType
+import com.quqee.backend.internship_hits.public_interface.students_public.CreateStudentDto
+import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListDto
+import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListFilterParamDto
+import com.quqee.backend.internship_hits.public_interface.students_public.StudentDto
 import com.quqee.backend.internship_hits.students.StudentsService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
-import java.util.UUID
+import java.util.*
 
 @Component
 class StudentController(
     private val studentsService: StudentsService,
+    private val logTypeMapper: EnumerationMapper<LogTypeEnum, LogType>,
+    private val approvalStatusMapper: EnumerationMapper<ApprovalStatusEnum, ApprovalStatus>,
+    private val positionNameMapper: EnumerationMapper<PositionEnum, Position>,
+    private val lastIdPaginationResponseMapper: FromInternalToApiMapper<LastIdPaginationView, LastIdPaginationResponse<*, UUID>>,
+    private val studentViewMapper: FromInternalToApiMapper<StudentView, StudentDto>
 ) : StudentsApiDelegate {
     override fun studentsDeaneryEditPost(deaneryEditStudentRequestView: DeaneryEditStudentRequestView): ResponseEntity<StudentView> {
         return super.studentsDeaneryEditPost(deaneryEditStudentRequestView)
@@ -22,11 +33,35 @@ class StudentController(
     override fun studentsListGet(
         lastId: UUID?,
         size: Int?,
-        course: Int?,
-        group: String?,
+        course: List<Int>?,
+        group: List<String>?,
+        logType: List<LogTypeEnum>?,
+        logApprovalStatus: List<ApprovalStatusEnum>?,
+        positionType: List<PositionEnum>?,
+        positionName: List<String>?,
         orderBy: String?
     ): ResponseEntity<GetStudentsListResponseView> {
-        return super.studentsListGet(lastId, size, course, group, orderBy)
+        val dto = GetStudentsListDto(
+            pagination = LastIdPaginationRequest(
+                lastId = lastId,
+                pageSize = size,
+            ),
+            filter = GetStudentsListFilterParamDto(
+                course = course?.toSet(),
+                group = group?.toSet(),
+                logType = logType?.map { logTypeMapper.mapToInternal(it) }?.toSet(),
+                logApprovalStatus = logApprovalStatus?.map { approvalStatusMapper.mapToInternal(it) }?.toSet(),
+                positionType = positionType?.map { positionNameMapper.mapToInternal(it) }?.toSet(),
+                positionName = positionName?.toSet()
+            ),
+        )
+        val students = studentsService.getStudentsList(dto)
+        return ResponseEntity.ok(
+            GetStudentsListResponseView(
+                students = students.responseCollection.map { studentViewMapper.fromInternal(it) },
+                page = lastIdPaginationResponseMapper.fromInternal(students)
+            )
+        )
     }
 
     override fun studentsRegistrationLinkPost(getStudentInviteLinkRequestView: GetStudentInviteLinkRequestView): ResponseEntity<GetStudentInviteLinkResponseView> {
@@ -34,7 +69,19 @@ class StudentController(
     }
 
     override fun studentsRegistrationPost(createStudentView: CreateStudentView): ResponseEntity<StudentView> {
-        return super.studentsRegistrationPost(createStudentView)
+        val dto = CreateStudentDto(
+            username = createStudentView.username,
+            email = createStudentView.email,
+            firstName = createStudentView.firstName,
+            lastName = createStudentView.lastName,
+            password = createStudentView.password,
+            course = createStudentView.course,
+            group = createStudentView.group,
+            middleName = createStudentView.middleName,
+            photoId = createStudentView.photoId,
+        )
+        val student = studentsService.createStudent(dto)
+        return ResponseEntity.ok(studentViewMapper.fromInternal(student))
     }
 
     override fun studentsUserIdMoveAcademicPost(userId: UUID): ResponseEntity<StudentView> {

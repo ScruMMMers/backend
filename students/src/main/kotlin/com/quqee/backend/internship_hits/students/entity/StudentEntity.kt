@@ -10,7 +10,14 @@ data class StudentEntity(
     val group: String,
     val isOnAcademicLeave: Boolean,
     val companyId: UUID?,
+    val logs: Set<StudentLog>,
 ) {
+    data class StudentLog(
+        val id: UUID,
+        val type: String,
+        val status: String,
+    )
+
     companion object {
         val FIELDS = listOf(
             STUDENTS.USER_ID,

@@ -3,6 +3,7 @@ package com.quqee.backend.internship_hits.profile
 import com.quqee.backend.internship_hits.file_storage.FileStorageService
 import com.quqee.backend.internship_hits.profile.client.RoleClient
 import com.quqee.backend.internship_hits.profile.client.UserClient
+import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
@@ -11,6 +12,7 @@ import com.quqee.backend.internship_hits.public_interface.profile_public.Profile
 import com.quqee.backend.internship_hits.public_interface.profile_public.ProfileForHeader
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class ProfileService(
@@ -18,6 +20,13 @@ class ProfileService(
     private val roleClient: RoleClient,
     private val fileStorageService: FileStorageService,
 ) {
+    fun createProfile(dto: CreateUserDto): UUID {
+        val userId = userClient.registerUser(dto)
+        dto.roles.forEach { role ->
+            roleClient.assignRole(userId, role)
+        }
+        return userId
+    }
 
     fun getShortAccount(dto: GetProfileDto): ShortAccountDto {
         val profile = getProfile(dto)
@@ -36,7 +45,7 @@ class ProfileService(
         val profile = getProfile(dto)
         return ProfileForHeader(
             fullName = profile.fullName,
-            // мб эти буквы вообще на клиенте рендерить чем сервер этим загружать
+            // мб эти буквы вообще на клиенте рендерить
             avatarUrl = profile.avatarUrl ?: FALLBACK_PROFILE_IMAGE_URL
         )
     }

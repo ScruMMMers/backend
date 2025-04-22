@@ -39,7 +39,6 @@ class StudentsRepository(
                 .fetch()
         }
             .groupBy { it[STUDENTS.USER_ID]!! }
-            .mapValues { it.value.first() }
             .values
             .map(::studentMapper)
     }
@@ -72,13 +71,21 @@ class StudentsRepository(
             .fetchOne(STUDENT_RECORD_MAPPER)!!
     }
 
-    private fun studentMapper(record: Record): StudentEntity {
+    private fun studentMapper(records: Collection<Record>): StudentEntity {
+        val studentRecord = records.first()
         return StudentEntity(
-            userId = record[STUDENTS.USER_ID]!!,
-            course = record[STUDENTS.STUDENT_COURSE]!!,
-            group = record[STUDENTS.STUDENT_GROUP]!!,
-            isOnAcademicLeave = record[STUDENTS.IS_ON_ACADEMIC_LEAVE]!!,
-            companyId = record[STUDENTS.COMPANY_ID],
+            userId = studentRecord[STUDENTS.USER_ID]!!,
+            course = studentRecord[STUDENTS.STUDENT_COURSE]!!,
+            group = studentRecord[STUDENTS.STUDENT_GROUP]!!,
+            isOnAcademicLeave = studentRecord[STUDENTS.IS_ON_ACADEMIC_LEAVE]!!,
+            companyId = studentRecord[STUDENTS.COMPANY_ID],
+            logs = records.map { record ->
+                StudentEntity.StudentLog(
+                    id = record[LOGS.ID]!!,
+                    type = record[LOGS.TYPE]!!,
+                    status = record[LOGS.APPROVAL_STATUS]!!
+                )
+            }.toSet(),
         )
     }
 
