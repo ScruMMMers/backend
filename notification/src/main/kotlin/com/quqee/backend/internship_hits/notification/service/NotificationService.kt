@@ -8,7 +8,7 @@ import com.quqee.backend.internship_hits.notification.repository.NotificationRep
 import com.quqee.backend.internship_hits.notification.service.channel.ChannelHandler
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationRequest
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationResponse
-import com.quqee.backend.internship_hits.public_interface.common.exception.NotificationId
+import com.quqee.backend.internship_hits.public_interface.common.NotificationId
 import com.quqee.backend.internship_hits.public_interface.notification_public.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Clock
 import java.time.OffsetDateTime
-import java.util.*
 
 @Service
 class NotificationService(

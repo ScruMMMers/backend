@@ -1,0 +1,22 @@
+post:
+  tags:
+    - students
+  summary: Создание пригласительной ссылки
+  security:
+    - openIdConnect: [ ]
+  requestBody:
+    description: Передаем сюда данные для создания пригласительной ссылки
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './StudentsView.yaml#/GetStudentInviteLinkRequestView'
+  responses:
+    '200':
+      description: Вьюшка ссылки
+      content:
+        application/json:
+          schema:
+            $ref: './StudentsView.yaml#/GetStudentInviteLinkResponseView'
+    '400':
+      description: Что-то пошло не так

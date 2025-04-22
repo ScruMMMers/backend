@@ -21,7 +21,7 @@ class UserClient(
     @Value("\${keycloak.internship.realm}") private val realm: String,
     private val keycloak: Keycloak,
 ) {
-    fun registerUser(dto: CreateUserDto): String {
+    fun registerUser(dto: CreateUserDto): UUID {
         val passwordCred = CredentialRepresentation()
         passwordCred.isTemporary = false
         passwordCred.type = CredentialRepresentation.PASSWORD
@@ -35,6 +35,10 @@ class UserClient(
         userRepresentation.isEmailVerified = false
         userRepresentation.isEnabled = true
         userRepresentation.credentials = listOf(passwordCred)
+        userRepresentation.attributes = mapOf(
+            "middleName" to listOf(dto.middleName),
+            "photoId" to listOf(dto.photoId),
+        )
 
         val usersResource = getUsersResource()
 
@@ -43,7 +47,7 @@ class UserClient(
                 log.error("Error creating user: {}", response.entity)
                 throw ExceptionInApplication(ExceptionType.FATAL)
             }
-            return CreatedResponseUtil.getCreatedId(response)
+            return UUID.fromString(CreatedResponseUtil.getCreatedId(response))
         }
     }
 
@@ -72,17 +76,19 @@ class UserClient(
     private fun userRepresentationToEntity(resource: UserResource): UserEntity {
         val userRepresentation = resource.toRepresentation()
         return UserEntity(
-            UUID.fromString(userRepresentation.id),
-            userRepresentation.username,
-            userRepresentation.email,
-            userRepresentation.firstName,
-            userRepresentation.lastName,
-            resource.roles()
+            userId = UUID.fromString(userRepresentation.id),
+            username = userRepresentation.username,
+            email = userRepresentation.email,
+            firstName = userRepresentation.firstName,
+            lastName = userRepresentation.lastName,
+            roles = resource.roles()
                 .realmLevel()
                 .listAll()
                 .filter { it.name.startsWith("ROLE_") }
                 .map { UserRole.fromKeycloakRole(it.name) }
-                .toSet()
+                .toSet(),
+            middleName = userRepresentation.attributes["middleName"]?.toString(),
+            photoId = userRepresentation.attributes["photoId"]?.toString(),
         )
     }
 

@@ -1,0 +1,23 @@
+post:
+  tags:
+    - students
+  summary: Перемещаем студента в академ
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      description: UUID пользователя
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Вьюшка студента
+      content:
+        application/json:
+          schema:
+            $ref: './StudentsView.yaml#/StudentView'
+    '400':
+      description: Что-то пошло не так

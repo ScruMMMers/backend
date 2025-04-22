@@ -7,7 +7,7 @@ import com.quqee.backend.internship_hits.notification.entity.mapper.Notification
 import com.quqee.backend.internship_hits.notification.public.tables.references.NOTIFICATION
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationRequest
 import com.quqee.backend.internship_hits.public_interface.common.SortingStrategy
-import com.quqee.backend.internship_hits.public_interface.common.exception.NotificationId
+import com.quqee.backend.internship_hits.public_interface.common.NotificationId
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.JSONB

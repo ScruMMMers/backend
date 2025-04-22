@@ -97,8 +97,23 @@ databaseChangeLog:
             relativeToChangelogFile: true
   - changeSet:
       id: 14
+      author: gordey_dovydenko
+      changes:
+        - sqlFile:
+            path: ddl/initial_students_schema.sql
+            relativeToChangelogFile: true
+  - changeSet:
+      id: 15
+      author: gordey_dovydenko
+      changes:
+        - sqlFile:
+            path: ddl/initial_invite_link_schema.sql
+            relativeToChangelogFile: true
+  - changeSet:
+      id: 16
       author: yuriy_sitdikov
       changes:
         - sqlFile:
             path: ddl/v13_update_comment_table.sql
             relativeToChangelogFile: true
+

@@ -10,4 +10,6 @@ data class UserEntity(
     val firstName: String,
     val lastName: String,
     val roles: Set<UserRole>,
+    val middleName: String?,
+    val photoId: String?,
 )

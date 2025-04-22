@@ -7,6 +7,7 @@ import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
 import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
+import com.quqee.backend.internship_hits.public_interface.logs.ShortLogInfo
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -62,6 +63,15 @@ class LogConfigurationMapper (
             author = mapAccount.fromInternal(model.author),
             files = model.files.map { mapFiles.fromInternal(it) },
             approvalStatus = mapApprovalStatus.mapToApi(model.approvalStatus),
+        )
+    }
+
+    @Bean
+    fun mapStudentShortLogToApi(): FromInternalToApiMapper<StudentShortLogView, ShortLogInfo> = makeToApiMapper { model ->
+        StudentShortLogView(
+            id = model.id,
+            type = mapLogType.mapToApi(model.type),
+            approvalStatus = mapApprovalStatus.mapToApi(model.status),
         )
     }
 }
