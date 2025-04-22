@@ -109,3 +109,11 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/initial_invite_link_schema.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 16
+      author: yuriy_sitdikov
+      changes:
+        - sqlFile:
+            path: ddl/v13_update_comment_table.sql
+            relativeToChangelogFile: true
+

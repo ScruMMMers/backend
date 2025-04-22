@@ -14,7 +14,6 @@ import com.quqee.backend.internship_hits.public_interface.profile_public.GetProf
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import java.net.URI
-import java.time.OffsetDateTime
 import java.util.*
 
 @Component
@@ -54,7 +53,7 @@ class ProfileController(
                         name = "Яндекс",
                         avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"),
                         primaryColor = ColorEnum.NAVY.hexColor,
-                        createdAt = OffsetDateTime.now()
+                        sinceYear = "2000"
                     )
                 )
             )

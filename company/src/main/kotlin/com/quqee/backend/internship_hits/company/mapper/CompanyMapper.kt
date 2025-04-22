@@ -42,7 +42,7 @@ class CompanyMapper(
             name = entity.name,
             avatarUrl = URI.create(fileService.getFileLink(entity.avatarId).downloadUrl),
             primaryColor = ColorEnum.fromHex(entity.primaryColor),
-            createdAt = entity.createdAt
+            sinceYear = entity.sinceYear
         )
     }
 

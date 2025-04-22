@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service
 interface PositionService {
     fun getPositionList(): List<PositionDto>
     fun getPositionById(id: Long): PositionDto
+    fun getPositionEntityById(id: Long): PositionEntity
     fun getPositionListByPartName(name: String?): List<PositionDto>
     fun getPositionEntityByPartName(name: String?): List<PositionEntity>
 }
@@ -25,8 +26,12 @@ class PositionServiceImpl(
     }
 
     override fun getPositionById(id: Long): PositionDto {
-        return positionMapper.toDto(positionRepository.findById(id)
-            .orElseThrow { ExceptionInApplication(ExceptionType.NOT_FOUND, "Вакансия с '${id}' не найдена") })
+        return positionMapper.toDto(getPositionEntityById(id))
+    }
+
+    override fun getPositionEntityById(id: Long): PositionEntity {
+        return positionRepository.findById(id)
+            .orElseThrow { ExceptionInApplication(ExceptionType.NOT_FOUND, "Вакансия с '${id}' не найдена") }
     }
 
     override fun getPositionListByPartName(name: String?): List<PositionDto> {

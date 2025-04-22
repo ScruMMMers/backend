@@ -10,6 +10,7 @@ spring-kafka = "3.3.0"
 jackson = "2.18.2"
 keycloack = "26.1.3"
 awssdk = "2.31.5"
+apache-text = "1.10.0"
 
 [plugins]
 spring-plugin = { id = "org.springframework.boot", version.ref = "spring-boot" }
@@ -78,3 +79,6 @@ amazon-apache-client = { module = "software.amazon.awssdk:apache-client", versio
 
 #email
 email-api = { module = "org.springframework.boot:spring-boot-starter-mail", version.ref = "spring-boot" }
+
+#LevenshteinDistance
+apache-text = { module = "org.apache.commons:commons-text", version.ref = "apache-text"}

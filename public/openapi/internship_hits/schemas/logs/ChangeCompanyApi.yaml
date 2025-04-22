@@ -1,0 +1,26 @@
+post:
+  tags:
+    - logs
+  summary: Смена компании студентом 3-4 курса
+  security:
+    - openIdConnect: []
+  requestBody:
+    description: Передаем сюда данные для смены компании
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './ChangeCompany.yaml#/ChangeCompanyView'
+  responses:
+    '200':
+      description: Сменили компанию
+      content:
+        application/json:
+          schema:
+            $ref: './CreatedLog.yaml#/CreatedLogView'
+    '400':
+      description: Некорректные данные
+      content:
+        application/json:
+          schema:
+            $ref: '../common/Error.yaml#/ErrorView'

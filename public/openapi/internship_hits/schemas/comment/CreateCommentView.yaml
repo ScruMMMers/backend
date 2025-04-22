@@ -5,3 +5,6 @@ CreateCommentView:
   properties:
     message:
       type: string
+    replyTo:
+      type: string
+      format: uuid

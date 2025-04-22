@@ -12,10 +12,7 @@ import com.quqee.backend.internship_hits.public_interface.comment.UpdateCommentD
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
-import com.quqee.backend.internship_hits.public_interface.logs.CreateLogRequestDto
-import com.quqee.backend.internship_hits.public_interface.logs.CreatedLogDto
-import com.quqee.backend.internship_hits.public_interface.logs.LogListDto
-import com.quqee.backend.internship_hits.public_interface.logs.UpdateLogRequestDto
+import com.quqee.backend.internship_hits.public_interface.logs.*
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import java.util.*
@@ -101,7 +98,6 @@ class LogsController(
 
     override fun logsLogIdCommentsGet(
         logId: UUID,
-        isDeleted: Boolean?,
         lastId: UUID?,
         size: Int?
     ): ResponseEntity<CommentsListView> {
@@ -109,7 +105,6 @@ class LogsController(
             mapCommentList.fromInternal(
                 commentService.getCommentsList(
                     logId,
-                    isDeleted,
                     lastId,
                     size
                 )
@@ -144,5 +139,12 @@ class LogsController(
         commentId: UUID
     ): ResponseEntity<CommentView> {
         return ResponseEntity.ok(mapComment.fromInternal(commentService.deleteComment(logId, commentId)))
+    }
+
+    override fun logsChangeCompanyPost(changeCompanyView: ChangeCompanyView): ResponseEntity<CreatedLogView> {
+        val createdLogDto = logsService.changeCompanyLog(
+            ChangeCompanyDto(companyId = changeCompanyView.companyId, positionId = changeCompanyView.positionId)
+        )
+        return ResponseEntity.ok(mapCreatedLog.fromInternal(createdLogDto))
     }
 }
