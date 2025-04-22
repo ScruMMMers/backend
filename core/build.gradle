@@ -19,4 +19,5 @@ dependencies {
     implementation project(":file_storage")
     implementation project(":notification")
     implementation project(":cdc")
+    implementation project(":students")
 }
