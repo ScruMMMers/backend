@@ -33,7 +33,7 @@ COPY file ./file
 COPY oauth2_security ./oauth2_security
 COPY websocket_common ./websocket_common
 COPY students ./students
-RUN gradle --no-daemon --project-dir core build -x test
+RUN gradle --no-daemon --project-dir core build -x test -Dorg.gradle.jvmargs=-Xmx4096m
 
 FROM amazoncorretto:21-alpine
 WORKDIR /app
