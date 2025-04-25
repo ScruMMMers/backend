@@ -3,7 +3,7 @@ PossibleReactionListView:
   required:
     - reactions
   properties:
-    logs:
+    reactions:
       type: array
       items:
         $ref: './PossibleReaction.yaml#/PossibleReactionView'
