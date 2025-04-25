@@ -1,0 +1,10 @@
+dependencies {
+    implementation rootProject
+
+    implementation project(':public_interface:common')
+    implementation project(':public_interface:students_public')
+    implementation project(':public_interface:notification_public')
+    implementation project(':public_interface:announcement_interface')
+    implementation project(':students')
+    implementation project(':notification')
+}

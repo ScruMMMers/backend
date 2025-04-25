@@ -20,6 +20,7 @@ dependencies {
     implementation project(":meeting")
     implementation project(":statistic")
     implementation project(":students")
+    implementation project(":announcement")
 
     implementation project(":public_interface:logs_interface")
     implementation project(":public_interface:statistic_interface")
@@ -28,6 +29,7 @@ dependencies {
     implementation project(":public_interface:common")
     implementation project(":public_interface:profile_public")
     implementation project(":public_interface:students_public")
+    implementation project(":public_interface:announcement_interface")
     implementation project(":notification")
     implementation project(":public_interface:notification_public")
     implementation project(":oauth2_security")

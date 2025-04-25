@@ -1,0 +1,23 @@
+post:
+  tags:
+    - announcement
+  summary: Отправить уведомления пользователям в зависимости от фильтра
+  security:
+    - openIdConnect: [ ]
+  description: Отправить уведомления пользователям в зависимости от фильтра
+  requestBody:
+    description: Передаем сюда данные для отправки уведомления
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './CreateAnnouncementByFilter.yaml#/CreateAnnouncementByFilterView'
+  responses:
+    '200':
+      description: Успешная отправка
+    '400':
+      description: Некорректный запрос
+    '404':
+      description: Данные не найдены
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

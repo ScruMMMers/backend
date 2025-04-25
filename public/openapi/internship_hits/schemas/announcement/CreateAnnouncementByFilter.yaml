@@ -1,0 +1,10 @@
+CreateAnnouncementByFilterView:
+  type: object
+  required:
+    - data
+    - filter
+  properties:
+    data:
+      $ref: './AnnouncementData.yaml#/AnnouncementDataView'
+    filter:
+      $ref: './GetStudentsListFilterParam.yaml#/GetStudentsListFilterParamView'
