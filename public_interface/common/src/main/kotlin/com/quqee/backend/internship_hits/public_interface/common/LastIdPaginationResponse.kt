@@ -8,5 +8,5 @@ data class LastIdPaginationResponse<T : IHaveId<Id>, Id>(
     val actualPageSize: Int = collection.size
     val hasNextPage: Boolean = actualPageSize > requestedPageSize
     val responseCollection: Collection<T> = collection.take(pagination.size)
-    val lastId: Id = responseCollection.last().id
+    val lastId: Id? = responseCollection.lastOrNull()?.id
 }
