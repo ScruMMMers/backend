@@ -13,6 +13,7 @@ import org.jooq.DSLContext
 import org.jooq.JSONB
 import org.jooq.SortField
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 class NotificationRepository(
@@ -22,6 +23,7 @@ class NotificationRepository(
         dsl.batch(
             notifications.map {
                 dsl.insertInto(NOTIFICATION)
+                    .set(NOTIFICATION.ID, UUID.randomUUID())
                     .set(NOTIFICATION.TITLE, it.title)
                     .set(NOTIFICATION.MESSAGE, it.message)
                     .set(NOTIFICATION.CREATED_AT, it.createdAt)

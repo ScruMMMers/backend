@@ -1,0 +1,27 @@
+GetStudentsListFilterParamView:
+  type: object
+  properties:
+    course:
+      type: array
+      items:
+        type: integer
+    group:
+      type: array
+      items:
+        type: string
+    logType:
+      type: array
+      items:
+        $ref: '../logs/Log.yaml#/LogTypeEnum'
+    logApprovalStatus:
+      type: array
+      items:
+        $ref: '../logs/Log.yaml#/ApprovalStatusEnum'
+    positionType:
+      type: array
+      items:
+        $ref: '../common/Position.yaml#/PositionEnum'
+    positionName:
+      type: array
+      items:
+        type: string

@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(":public_interface:common")
+    implementation project(":public_interface:notification_public")
+    implementation project(":public_interface:students_public")
+}
