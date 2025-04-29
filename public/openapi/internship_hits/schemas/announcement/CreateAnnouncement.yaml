@@ -1,0 +1,13 @@
+CreateAnnouncementView:
+  type: object
+  required:
+    - data
+    - userIds
+  properties:
+    data:
+      $ref: './AnnouncementData.yaml#/AnnouncementDataView'
+    userIds:
+      type: array
+      items:
+        type: string
+        format: uuid

@@ -32,6 +32,8 @@ tags:
     description: Получение статистики
   - name: students
     description: Студенты
+  - name: announcement
+    description: Объявления
 
 components:
   securitySchemes:
@@ -97,6 +99,11 @@ paths:
     $ref: './schemas/notifications/GetLastNotificationsApi.yaml'
   /notifications:
     $ref: './schemas/notifications/GetNotificationsApi.yaml'
+
+  /announcement:
+    $ref: './schemas/announcement/PostAnnouncementApi.yaml'
+  /announcement/filter:
+    $ref: './schemas/announcement/PostAnnouncementByFilterApi.yaml'
 
   /reactions/{logId}:
     $ref: './schemas/reactions/GetLogReactionsApi.yaml'

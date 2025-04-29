@@ -9,6 +9,7 @@ import com.quqee.backend.internship_hits.notification.service.channel.ChannelHan
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationRequest
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationResponse
 import com.quqee.backend.internship_hits.public_interface.common.NotificationId
+import com.quqee.backend.internship_hits.public_interface.common.SortingStrategy
 import com.quqee.backend.internship_hits.public_interface.notification_public.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -61,7 +62,8 @@ class NotificationService(
     fun getLastNotification(dto: GetUserLastNotificationDto): NotificationDto? {
         val notifications = notificationRepository.getNotifications(
             LastIdPaginationRequest(
-                pageSize = 1
+                pageSize = 1,
+                sorting = SortingStrategy.CREATED_AT_DESC
             ),
             NotificationFilterParams(
                 userId = dto.userId,

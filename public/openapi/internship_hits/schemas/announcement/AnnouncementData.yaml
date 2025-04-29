@@ -1,0 +1,13 @@
+AnnouncementDataView:
+  type: object
+  required:
+    - title
+    - text
+  properties:
+    title:
+      type: string
+    text:
+      type: string
+    pollId:
+      type: string
+      format: uuid

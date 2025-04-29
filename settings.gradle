@@ -16,6 +16,7 @@ include ':position'
 include ':meeting'
 include ':statistic'
 include ':students'
+include ':announcement'
 
 include ':document'
 
@@ -28,6 +29,7 @@ include ':public_interface:company_interface'
 include ':public_interface:meeting_interface'
 include ':public_interface:statistic_interface'
 include ':public_interface:students_public'
+include ':public_interface:announcement_interface'
 
 include ':api:rest'
 include ':api:websocket'
