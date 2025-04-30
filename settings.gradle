@@ -17,6 +17,7 @@ include ':meeting'
 include ':statistic'
 include ':students'
 include ':announcement'
+include ':locker'
 
 include ':public_interface:common'
 include ':public_interface:profile_public'

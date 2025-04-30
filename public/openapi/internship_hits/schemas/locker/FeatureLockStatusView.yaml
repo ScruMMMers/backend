@@ -1,0 +1,16 @@
+FeatureLockStatusView:
+  type: object
+  required:
+    - featureName
+    - isLocked
+  properties:
+    featureName:
+      $ref: '#/FeatureToLockEnum'
+    isLocked:
+      type: boolean
+
+FeatureToLockEnum:
+  type: string
+  enum:
+    - SUBMITTING_PRACTICE_DIARY
+    - CHANGING_INTERNSHIP_LOCATION

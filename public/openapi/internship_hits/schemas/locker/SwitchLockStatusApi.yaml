@@ -1,0 +1,25 @@
+put:
+  tags:
+    - locker
+  summary: Сменить блокировку у фичи
+  security:
+    - openIdConnect: []
+  parameters:
+    - in: path
+      name: featureName
+      required: true
+      schema:
+        $ref: './FeatureLockStatusView.yaml#/FeatureToLockEnum'
+  responses:
+    '200':
+      description: Сменили блокировку
+      content:
+        application/json:
+          schema:
+            $ref: './FeatureLockStatusView.yaml#/FeatureLockStatusView'
+    '400':
+      description: Некорректные данные
+      content:
+        application/json:
+          schema:
+            $ref: '../common/Error.yaml#/ErrorView'

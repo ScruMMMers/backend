@@ -116,4 +116,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v13_update_comment_table.sql
             relativeToChangelogFile: true
-
+  - changeSet:
+      id: 17
+      author: yuriy_sitdikov
+      changes:
+        - sqlFile:
+            path: ddl/v14_create_feature_locker_table.sql
+            relativeToChangelogFile: true
