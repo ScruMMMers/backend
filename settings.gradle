@@ -17,6 +17,7 @@ include ':meeting'
 include ':statistic'
 include ':students'
 include ':announcement'
+include ':locker'
 
 include ':document'
 

@@ -34,6 +34,8 @@ tags:
     description: Студенты
   - name: announcement
     description: Объявления
+  - name: locker
+    description: Работа с блокировками фич
   - name: document
     description: Документы
 
@@ -144,5 +146,9 @@ paths:
   /students/{userId}/remove-academic:
     $ref: './schemas/students/PostStudentsRemoveAcademicApi.yaml'
 
+  /locker/{featureName}/switch:
+    $ref: './schemas/locker/SwitchLockStatusApi.yaml'
+  /locker/{featureName}/get:
+    $ref: './schemas/locker/GetLockStatusApi.yaml'
   /documents/internship/current:
     $ref: './schemas/document/GetCurrentStudentPracticeApi.yaml'
