@@ -1,7 +1,7 @@
 CREATE TABLE feature_locker
 (
     id           uuid    not null PRIMARY KEY,
-    feature_name VARCHAR(255) PRIMARY KEY,
+    feature_name VARCHAR(255) UNIQUE,
     is_locked    BOOLEAN NOT NULL
 );
 
