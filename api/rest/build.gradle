@@ -21,6 +21,7 @@ dependencies {
     implementation project(":statistic")
     implementation project(":students")
     implementation project(":announcement")
+    implementation project(":marks")
     implementation project(":document")
 
     implementation project(":public_interface:logs_interface")
@@ -33,6 +34,7 @@ dependencies {
     implementation project(":public_interface:announcement_interface")
     implementation project(":notification")
     implementation project(":public_interface:notification_public")
+    implementation project(":public_interface:mark_interface")
     implementation project(":oauth2_security")
     implementation project(":mapper")
 
