@@ -40,7 +40,7 @@ class FeatureLockerServiceImpl(
     }
 
     private fun findFeatureLockStatus(featureToLockEnum: FeatureToLockEnum): FeatureLockerEntity {
-        return featureLockerRepository.findById(featureToLockEnum).orElseThrow {
+        return featureLockerRepository.findByFeatureName(featureToLockEnum).orElseThrow {
             ExceptionInApplication(
                 ExceptionType.NOT_FOUND,
                 "Не найдена фича с именем " + featureToLockEnum.name
