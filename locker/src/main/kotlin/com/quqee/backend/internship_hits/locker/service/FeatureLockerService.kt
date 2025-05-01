@@ -32,11 +32,11 @@ class FeatureLockerServiceImpl(
     override fun switchFeatureLockStatus(featureToLockEnum: FeatureToLockEnum): FeatureLockStatusDto {
         val entity = findFeatureLockStatus(featureToLockEnum)
 
-        entity.isLocked = !entity.isLocked
+        val newEntity = entity.copy(isLocked = !entity.isLocked)
 
-        featureLockerRepository.save(entity)
+        featureLockerRepository.save(newEntity)
 
-        return mapper.toDto(entity)
+        return mapper.toDto(newEntity)
     }
 
     private fun findFeatureLockStatus(featureToLockEnum: FeatureToLockEnum): FeatureLockerEntity {
