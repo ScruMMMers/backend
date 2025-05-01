@@ -36,6 +36,8 @@ tags:
     description: Объявления
   - name: locker
     description: Работа с блокировками фич
+  - name: document
+    description: Документы
 
 components:
   securitySchemes:
@@ -148,3 +150,5 @@ paths:
     $ref: './schemas/locker/SwitchLockStatusApi.yaml'
   /locker/{featureName}/get:
     $ref: './schemas/locker/GetLockStatusApi.yaml'
+  /documents/internship/current:
+    $ref: './schemas/document/GetCurrentStudentPracticeApi.yaml'

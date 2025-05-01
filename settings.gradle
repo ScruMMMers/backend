@@ -19,6 +19,8 @@ include ':students'
 include ':announcement'
 include ':locker'
 
+include ':document'
+
 include ':public_interface:common'
 include ':public_interface:profile_public'
 include ':public_interface:file_storage_public'
@@ -29,6 +31,7 @@ include ':public_interface:meeting_interface'
 include ':public_interface:statistic_interface'
 include ':public_interface:students_public'
 include ':public_interface:announcement_interface'
+include ':public_interface:document_interface'
 
 include ':api:rest'
 include ':api:websocket'
