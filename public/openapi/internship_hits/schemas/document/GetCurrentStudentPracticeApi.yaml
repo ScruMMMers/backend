@@ -1,0 +1,28 @@
+get:
+  tags:
+    - document
+  summary: Скачать Excel-отчёт по практике студентов
+  operationId: documentsInternshipCurrentGet
+  security:
+    - openIdConnect: []
+  responses:
+    '200':
+      description: Excel-файл с отчётом по практике
+      headers:
+        Content-Disposition:
+          schema:
+            type: string
+          example: "attachment; filename=internship_report_2023-05-15.xlsx"
+      content:
+        application/octet-stream:
+          schema:
+            type: string
+            format: binary
+        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+          schema:
+            type: string
+            format: binary
+    '403':
+      description: Недостаточно прав для доступа к ресурсу
+    '500':
+      description: Ошибка при генерации отчёта

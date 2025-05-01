@@ -1,6 +1,8 @@
 dependencies {
     implementation project(':students')
+    implementation project(':logs')
     implementation project(':public_interface:logs_interface')
+    implementation project(':public_interface:students_public')
     implementation project(':public_interface:common')
 
     implementation libs.apache.poi

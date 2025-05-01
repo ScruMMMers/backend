@@ -30,6 +30,7 @@ include ':public_interface:meeting_interface'
 include ':public_interface:statistic_interface'
 include ':public_interface:students_public'
 include ':public_interface:announcement_interface'
+include ':public_interface:document_interface'
 
 include ':api:rest'
 include ':api:websocket'
