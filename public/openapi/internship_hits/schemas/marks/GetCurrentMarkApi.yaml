@@ -1,0 +1,15 @@
+get:
+  tags:
+    - marks
+  summary: Получить свою оценку за данный семестр
+  security:
+    - openIdConnect: []
+  responses:
+    '200':
+      description: Оценка за данный семестр
+      content:
+        application/json:
+          schema:
+            $ref: './Mark.yaml#/MarkView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

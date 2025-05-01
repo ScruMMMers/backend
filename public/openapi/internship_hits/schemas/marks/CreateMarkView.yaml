@@ -1,0 +1,9 @@
+CreateMarkView:
+  type: object
+  required:
+    - mark
+  properties:
+    mark:
+      type: integer
+    semester:
+      type: integer

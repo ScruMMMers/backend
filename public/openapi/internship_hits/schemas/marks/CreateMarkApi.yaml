@@ -1,0 +1,29 @@
+post:
+  tags:
+    - marks
+  summary: Поставить оценку студенту за конкретный семестр
+  security:
+    - openIdConnect: []
+  parameters:
+    - in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    description: Тело создания оценки
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './CreateMarkView.yaml#/CreateMarkView'
+  responses:
+    '200':
+      description: Выставленная оценка
+      content:
+        application/json:
+          schema:
+            $ref: './Mark.yaml#/MarkView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

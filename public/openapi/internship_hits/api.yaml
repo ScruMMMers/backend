@@ -36,6 +36,8 @@ tags:
     description: Объявления
   - name: document
     description: Документы
+  - name: marks
+    description: Работа с оценками студента
 
 components:
   securitySchemes:
@@ -146,3 +148,10 @@ paths:
 
   /documents/internship/current:
     $ref: './schemas/document/GetCurrentStudentPracticeApi.yaml'
+
+  /marks/{userId}/create:
+    $ref: './schemas/marks/CreateMarkApi.yaml'
+  /marks/my/all:
+    $ref: './schemas/marks/GetAllMarksApi.yaml'
+  /marks/my/current:
+    $ref: './schemas/marks/GetCurrentMarkApi.yaml'

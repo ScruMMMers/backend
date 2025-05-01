@@ -4,6 +4,7 @@ import com.quqee.backend.internship_hits.marks.entity.MarkEntity
 import com.quqee.backend.internship_hits.marks.mapper.MarkMapper
 import com.quqee.backend.internship_hits.marks.repository.MarkRepository
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
+import com.quqee.backend.internship_hits.public_interface.common.UserId
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.mark.CreateMarkDto
@@ -15,7 +16,7 @@ import java.util.*
 
 interface MarkService {
 
-    fun createMark(createMarkDto: CreateMarkDto): MarkDto
+    fun createMark(userId: UserId, createMarkDto: CreateMarkDto): MarkDto
 
     fun getMyMarks(): List<MarkDto>
 
@@ -29,12 +30,12 @@ class MarkServiceImpl(
     private val studentsService: StudentsService,
     private val repository: MarkRepository,
 ) : MarkService {
-    override fun createMark(createMarkDto: CreateMarkDto): MarkDto {
-        val student = studentsService.getStudent(createMarkDto.userId)
+    override fun createMark(userId: UserId, createMarkDto: CreateMarkDto): MarkDto {
+        val student = studentsService.getStudent(userId)
 
         val semester = createMarkDto.semester ?: getCurrentSemester(student.course)
 
-        val existingMark = repository.findByUserIdAndSemester(createMarkDto.userId, semester).orElse(null)
+        val existingMark = repository.findByUserIdAndSemester(userId, semester).orElse(null)
 
         if (existingMark != null) {
             existingMark.mark = createMarkDto.mark
@@ -45,7 +46,7 @@ class MarkServiceImpl(
         } else {
             val mark = MarkEntity(
                 UUID.randomUUID(),
-                createMarkDto.userId,
+                userId,
                 createMarkDto.mark,
                 OffsetDateTime.now(),
                 semester
