@@ -25,10 +25,23 @@ class StudentsRepository(
         filter: StudentsFilterParams,
     ): Collection<StudentEntity> {
         return if (pagination.lastId != null) {
+
+            //Костыль, чтоб не падал запрос
+            val lastStudent = dsl.select(STUDENTS.CREATED_AT)
+                .from(STUDENTS)
+                .where(STUDENTS.USER_ID.eq(pagination.lastId))
+                .fetchOne()
+
+            if (lastStudent == null) {
+                return emptyList()
+            }
+
+            val lastCreatedAt = lastStudent.get(STUDENTS.CREATED_AT)
+
             dsl.selectStudentForList()
                 .where(filter.toCondition())
+                .and(STUDENTS.CREATED_AT.gt(lastCreatedAt))
                 .orderBy(pagination.sorting.toOrderBy())
-                .seek(pagination.lastId)
                 .limit(pagination.sizeForSelect)
                 .fetch()
         } else {

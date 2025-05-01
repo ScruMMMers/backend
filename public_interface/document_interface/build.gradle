@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(":public_interface:common")
+    implementation project(":public_interface:logs_interface")
+    implementation project(":public_interface:profile_public")
+}

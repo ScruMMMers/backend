@@ -21,6 +21,7 @@ dependencies {
     implementation project(":statistic")
     implementation project(":students")
     implementation project(":announcement")
+    implementation project(":document")
 
     implementation project(":public_interface:logs_interface")
     implementation project(":public_interface:statistic_interface")

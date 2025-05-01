@@ -34,6 +34,8 @@ tags:
     description: Студенты
   - name: announcement
     description: Объявления
+  - name: document
+    description: Документы
 
 components:
   securitySchemes:
@@ -141,3 +143,6 @@ paths:
     $ref: './schemas/students/PostStudentsMoveAcademicApi.yaml'
   /students/{userId}/remove-academic:
     $ref: './schemas/students/PostStudentsRemoveAcademicApi.yaml'
+
+  /documents/internship/current:
+    $ref: './schemas/document/GetCurrentStudentPracticeApi.yaml'
