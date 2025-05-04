@@ -55,11 +55,13 @@ LogView:
 LogTypeEnum:
   type: string
   enum:
+    - MESSAGE
     - DEFAULT
     - OFFER
     - INTERVIEW
     - FINAL
     - PRACTICE_DIARY
+    - COMPANY_CHANGE
 
 ApprovalStatusEnum:
   type: string

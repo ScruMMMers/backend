@@ -24,6 +24,7 @@ COPY file_storage ./file_storage
 COPY notification ./notification
 COPY logs ./logs
 COPY marks ./marks
+COPY locker ./locker
 COPY meeting ./meeting
 COPY company ./company
 COPY statistic ./statistic
@@ -35,6 +36,7 @@ COPY oauth2_security ./oauth2_security
 COPY websocket_common ./websocket_common
 COPY students ./students
 COPY announcement ./announcement
+COPY document ./document
 RUN gradle --no-daemon --project-dir core build -x test -Dorg.gradle.jvmargs=-Xmx4096m
 
 FROM amazoncorretto:21-alpine

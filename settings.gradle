@@ -18,6 +18,7 @@ include ':statistic'
 include ':marks'
 include ':students'
 include ':announcement'
+include ':locker'
 
 include ':document'
 
