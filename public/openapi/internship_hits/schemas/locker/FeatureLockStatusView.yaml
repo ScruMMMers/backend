@@ -14,3 +14,13 @@ FeatureToLockEnum:
   enum:
     - SUBMITTING_PRACTICE_DIARY
     - CHANGING_INTERNSHIP_LOCATION
+
+FeatureLockStatusListView:
+  type: object
+  required:
+    - featureStatusList
+  properties:
+    featureStatusList:
+      type: array
+      items:
+        $ref: './FeatureLockStatusView.yaml#/FeatureLockStatusView'

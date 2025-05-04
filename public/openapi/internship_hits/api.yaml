@@ -148,7 +148,8 @@ paths:
 
   /locker/{featureName}/switch:
     $ref: './schemas/locker/SwitchLockStatusApi.yaml'
-  /locker/{featureName}/get:
+  /locker/features:
     $ref: './schemas/locker/GetLockStatusApi.yaml'
+
   /documents/internship/current:
     $ref: './schemas/document/GetCurrentStudentPracticeApi.yaml'

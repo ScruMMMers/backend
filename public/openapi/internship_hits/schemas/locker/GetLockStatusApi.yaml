@@ -4,19 +4,13 @@ get:
   summary: Получить статус блокировки фичи
   security:
     - openIdConnect: []
-  parameters:
-    - in: path
-      name: featureName
-      required: true
-      schema:
-        $ref: './FeatureLockStatusView.yaml#/FeatureToLockEnum'
   responses:
     '200':
       description: Статус блокировки
       content:
         application/json:
           schema:
-            $ref: './FeatureLockStatusView.yaml#/FeatureLockStatusView'
+            $ref: './FeatureLockStatusView.yaml#/FeatureLockStatusListView'
     '400':
       description: Некорректные данные
       content:
