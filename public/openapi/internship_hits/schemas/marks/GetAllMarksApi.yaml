@@ -1,0 +1,15 @@
+get:
+  tags:
+    - marks
+  summary: Получить все свои оценки за практику
+  security:
+    - openIdConnect: []
+  responses:
+    '200':
+      description: Мои оценки
+      content:
+        application/json:
+          schema:
+            $ref: './MarkListView.yaml#/MarkListView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

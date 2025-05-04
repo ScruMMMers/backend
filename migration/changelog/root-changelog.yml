@@ -123,3 +123,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v14_create_feature_locker_table.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 18
+      author: yuriy_sitdikov
+      changes:
+        - sqlFile:
+            path: ddl/v15_create_rate_table.sql
+            relativeToChangelogFile: true

@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration
         "com.quqee.backend.internship_hits.announcement",
         "com.quqee.backend.internship_hits.locker",
         "com.quqee.backend.internship_hits.document",
+        "com.quqee.backend.internship_hits.marks",
     ]
 )
 open class RestBeanConfiguration

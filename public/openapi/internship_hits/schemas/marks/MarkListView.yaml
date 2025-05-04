@@ -1,0 +1,9 @@
+MarkListView:
+  type: object
+  required:
+    - marks
+  properties:
+    marks:
+      type: array
+      items:
+        $ref: './Mark.yaml#/MarkView'

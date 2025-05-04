@@ -23,6 +23,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 import com.quqee.backend.internship_hits.public_interface.students_public.CreateStudentDto as ExternalCreateStudentDto
 
 @Service
@@ -56,6 +57,11 @@ class StudentsService(
             studentDtos,
             dto.pagination
         )
+    }
+
+    fun getStudent(id: UUID): StudentDto {
+        val student = studentsRepository.getStudent(id) ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND)
+        return mapStudentToDto(student)
     }
 
     @Transactional

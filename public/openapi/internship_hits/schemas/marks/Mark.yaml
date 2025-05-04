@@ -1,0 +1,22 @@
+MarkView:
+  type: object
+  required:
+    - id
+    - userId
+    - mark
+    - date
+    - semester
+  properties:
+    id:
+      type: string
+      format: uuid
+    userId:
+      type: string
+      format: uuid
+    mark:
+      type: integer
+    date:
+      type: string
+      format: date-time
+    semester:
+      type: integer
