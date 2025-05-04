@@ -7,11 +7,12 @@ import com.quqee.backend.internship_hits.public_interface.common.FeatureLockStat
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.enums.FeatureToLockEnum
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 
 interface FeatureLockerService {
 
-    fun getFeatureLockStatus(featureToLockEnum: FeatureToLockEnum): FeatureLockStatusDto
+    fun getFeatureLockStatus(): List<FeatureLockStatusDto>
 
     fun switchFeatureLockStatus(featureToLockEnum: FeatureToLockEnum): FeatureLockStatusDto
 
@@ -23,10 +24,10 @@ class FeatureLockerServiceImpl(
     private val mapper: FeatureLockerMapper,
 ) : FeatureLockerService {
 
-    override fun getFeatureLockStatus(featureToLockEnum: FeatureToLockEnum): FeatureLockStatusDto {
-        val entity = findFeatureLockStatus(featureToLockEnum)
+    override fun getFeatureLockStatus(): List<FeatureLockStatusDto> {
+        val entities = featureLockerRepository.findAll(Sort.by("featureName").descending())
 
-        return mapper.toDto(entity)
+        return entities.map { mapper.toDto(it) }
     }
 
     override fun switchFeatureLockStatus(featureToLockEnum: FeatureToLockEnum): FeatureLockStatusDto {
