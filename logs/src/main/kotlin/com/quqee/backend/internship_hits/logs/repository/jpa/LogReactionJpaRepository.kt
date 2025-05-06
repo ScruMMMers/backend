@@ -13,5 +13,5 @@ interface LogReactionJpaRepository : JpaRepository<LogReaction, UUID> {
         userId: UUID,
         reactionId: UUID
     ): LogReaction?
-    fun deleteByLogIdAndUserId(logId: UUID, userId: UUID)
+    fun deleteByLogIdAndUserIdAndId(logId: UUID, userId: UUID, id: UUID)
 } 

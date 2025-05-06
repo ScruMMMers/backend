@@ -130,3 +130,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v15_create_rate_table.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 19
+      author: alexander_kirsanov
+      changes:
+        - sqlFile:
+            path: ddl/v16_make_edited_at_nullable.sql
+            relativeToChangelogFile: true

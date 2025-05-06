@@ -87,11 +87,7 @@ class ReactionServiceImpl(
         val currentUserId = KeycloakUtils.getUserId() ?:
             throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "UserId is null")
 
-        val logReaction = logReactionJpaRepository.findByLogIdAndUserIdAndReactionId(
-            logId, currentUserId, reactionId
-        ) ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Reaction with id $reactionId not found")
-
-        logReactionJpaRepository.delete(logReaction)
+        logReactionJpaRepository.deleteByLogIdAndUserIdAndId(logId, currentUserId, reactionId)
     }
 
     /**

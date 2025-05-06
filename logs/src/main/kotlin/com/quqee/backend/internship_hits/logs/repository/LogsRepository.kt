@@ -118,7 +118,7 @@ class LogsRepository(
             hashtags = hashtags,
             type = type,
             createdAt = now,
-            editedAt = now,
+            editedAt = null,
             fileIds = files,
             approvalStatus = getApprovalStatus(type)
         )
