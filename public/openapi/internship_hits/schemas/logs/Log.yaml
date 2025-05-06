@@ -7,7 +7,6 @@ LogView:
     - hashtags
     - type
     - createdAt
-    - editedAt
     - reactions
     - comments
     - author
