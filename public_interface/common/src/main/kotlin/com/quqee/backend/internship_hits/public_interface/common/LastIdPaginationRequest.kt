@@ -5,7 +5,7 @@ data class LastIdPaginationRequest<IdType>(
     private val pageSize: Int? = DEFAULT_PAGE_SIZE,
     val sorting: SortingStrategy = SortingStrategy.CREATED_AT_ASC,
 ) {
-    val size: Int = DEFAULT_PAGE_SIZE
+    val size: Int = pageSize ?: DEFAULT_PAGE_SIZE
     val sizeForSelect get() = size + 1
     companion object {
         private const val DEFAULT_PAGE_SIZE = 20
