@@ -100,6 +100,8 @@ paths:
     $ref: './schemas/profile/GetMyProfileApi.yaml'
   /profile/header:
     $ref: './schemas/profile/GetProfileHeaderApi.yaml'
+  /profile/roles:
+    $ref: './schemas/profile/GetMyRolesApi.yaml'
 
   /notifications/last:
     $ref: './schemas/notifications/GetLastNotificationsApi.yaml'
