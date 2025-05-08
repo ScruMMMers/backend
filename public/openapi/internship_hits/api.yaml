@@ -40,6 +40,8 @@ tags:
     description: Документы
   - name: marks
     description: Работа с оценками студента
+  - name: employees
+    description: Сотрудники
 
 components:
   securitySchemes:
@@ -172,3 +174,10 @@ paths:
     $ref: './schemas/marks/GetAllMarksApi.yaml'
   /marks/my/current:
     $ref: './schemas/marks/GetCurrentMarkApi.yaml'
+
+  /employees/list:
+    $ref: './schemas/employees/GetEmployeesListApi.yaml'
+  /employees/create:
+    $ref: './schemas/employees/PostEmployeesRegistrationApi.yaml'
+  /employees/update:
+    $ref: './schemas/employees/PostEmployeesUpdateApi.yaml'

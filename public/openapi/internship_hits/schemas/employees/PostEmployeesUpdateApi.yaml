@@ -1,0 +1,22 @@
+post:
+  tags:
+    - employees
+  summary: Обновление сотрудника
+  security:
+    - openIdConnect: [ ]
+  requestBody:
+    description: Передаем сюда данные для обновления
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './EmployeesView.yaml#/UpdateEmployeeView'
+  responses:
+    '200':
+      description: Вьюшка сотруднрика
+      content:
+        application/json:
+          schema:
+            $ref: './EmployeesView.yaml#/EmployeeView'
+    '400':
+      description: Что-то пошло не так

@@ -19,6 +19,7 @@ import java.time.Clock
         "com.quqee.backend.internship_hits.cdc",
         "com.quqee.backend.internship_hits.websocket_common",
         "com.quqee.backend.internship_hits.students",
+        "com.quqee.backend.internship_hits.employees",
     ]
 )
 open class BeanConfiguration {

@@ -144,3 +144,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v17_update_company_agent_nullable.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 21
+      author: gordey_dovydenko
+      changes:
+        - sqlFile:
+            path: ddl/initial_employees.sql
+            relativeToChangelogFile: true

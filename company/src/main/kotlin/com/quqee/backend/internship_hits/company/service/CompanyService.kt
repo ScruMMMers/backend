@@ -21,6 +21,7 @@ interface CompanyService {
     fun createCompany(createCompanyDto: CreateCompanyDto): CompanyDto
     fun updateCompany(companyId: UUID, updateCompanyDto: UpdateCompanyDto): CompanyDto
     fun getCompany(companyId: UUID): CompanyDto
+    fun getShortCompanies(ids: List<UUID>): List<ShortCompanyDto>
     fun getRawCompany(companyId: UUID): CompanyEntity
     fun getShortCompany(companyId: UUID): ShortCompanyDto?
     fun getCompaniesList(name: String?, lastId: UUID?, size: Int?): CompaniesListDto
@@ -115,6 +116,10 @@ open class CompanyServiceImpl(
                 hasNext = hasNext
             )
         )
+    }
+
+    override fun getShortCompanies(ids: List<UUID>): List<ShortCompanyDto> {
+        return companyRepository.getCompanies(ids)
     }
 
     private fun checkYearValidation(year: String) {

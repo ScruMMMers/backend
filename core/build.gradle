@@ -20,4 +20,5 @@ dependencies {
     implementation project(":notification")
     implementation project(":cdc")
     implementation project(":students")
+    implementation project(":employees")
 }

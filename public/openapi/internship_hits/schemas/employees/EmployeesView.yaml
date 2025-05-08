@@ -1,0 +1,59 @@
+GetEmployeesListResponseView:
+  type: object
+  required:
+    - employees
+    - page
+  properties:
+    employees:
+      type: array
+      items:
+        $ref: '#/EmployeeView'
+    page:
+      $ref: '../common/Pagination.yaml#/LastIdPaginationView'
+
+EmployeeView:
+  type: object
+  required:
+    - userId
+    - fullName
+    - companies
+  properties:
+    userId:
+      type: string
+      format: uuid
+    fullName:
+      type: string
+    photo:
+      $ref: '../file/FileModels.yaml#/FileView'
+    companies:
+      type: array
+      items:
+        $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
+
+CreateEmployeeView:
+  type: object
+  required:
+    - fullName
+    - email
+  properties:
+    fullName:
+      type: string
+    avatarId:
+      type: string
+      format: uuid
+    email:
+      type: string
+
+UpdateEmployeeView:
+  type: object
+  required:
+    - fullName
+    - email
+  properties:
+    fullName:
+      type: string
+    avatarId:
+      type: string
+      format: uuid
+    email:
+      type: string

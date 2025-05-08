@@ -1,0 +1,22 @@
+post:
+  tags:
+    - employees
+  summary: Создание сотрудника
+  security:
+    - openIdConnect: [ ]
+  requestBody:
+    description: Передаем сюда данные для создания
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './EmployeesView.yaml#/CreateEmployeeView'
+  responses:
+    '200':
+      description: Вьюшка сотрудника
+      content:
+        application/json:
+          schema:
+            $ref: './EmployeesView.yaml#/EmployeeView'
+    '400':
+      description: Что-то пошло не так

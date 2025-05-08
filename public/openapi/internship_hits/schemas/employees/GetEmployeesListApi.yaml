@@ -1,0 +1,32 @@
+get:
+  tags:
+    - employees
+  summary: Получить список сотрудников
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
+    - $ref: '../common/Pagination.yaml#/PaginationPageSize'
+    - in: query
+      name: companyIds
+      schema:
+        type: array
+        items:
+          type: string
+          format: uuid
+    - in: query
+      name: userIds
+      schema:
+        type: array
+        items:
+          type: string
+          format: uuid
+  responses:
+    '200':
+      description: Список сотрудников
+      content:
+        application/json:
+          schema:
+            $ref: './EmployeesView.yaml#/GetEmployeesListResponseView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

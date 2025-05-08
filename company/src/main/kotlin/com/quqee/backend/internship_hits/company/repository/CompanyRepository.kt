@@ -9,11 +9,11 @@ import com.quqee.backend.internship_hits.public_interface.common.enums.Exception
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
-import com.quqee.backend.internship_hits.public_interface.company.UpdateCompanyDto
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
+import java.net.URI
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -51,6 +51,10 @@ class CompanyRepository(
         val company = companyJpaRepository.findById(companyId).orElse(null)
         company ?: return null
         return mapper.toCompanyDto(company)
+    }
+
+    fun getCompanies(ids: List<UUID>): List<ShortCompanyDto> {
+        return companyJpaRepository.findByIds(ids).map(mapper::toShortCompanyDto)
     }
 
     /**

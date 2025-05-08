@@ -19,7 +19,7 @@ include ':marks'
 include ':students'
 include ':announcement'
 include ':locker'
-
+include ':employees'
 include ':document'
 
 include ':public_interface:common'
@@ -34,6 +34,7 @@ include ':public_interface:students_public'
 include ':public_interface:announcement_interface'
 include ':public_interface:mark_interface'
 include ':public_interface:document_interface'
+include ':public_interface:employees_public'
 
 include ':api:rest'
 include ':api:websocket'
