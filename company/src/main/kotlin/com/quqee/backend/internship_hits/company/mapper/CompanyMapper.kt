@@ -23,7 +23,7 @@ class CompanyMapper(
         return CompanyDto(
             companyId = entity.companyId,
             name = entity.name,
-            agent = profileService.getShortAccount(GetProfileDto(entity.agent)),
+            agent = entity.agent?.let {  profileService.getShortAccount(GetProfileDto(it)) },
             avatarUrl = URI.create(fileService.getFileLink(entity.avatarId).downloadUrl),
             sinceYear = entity.sinceYear,
             description = entity.description,

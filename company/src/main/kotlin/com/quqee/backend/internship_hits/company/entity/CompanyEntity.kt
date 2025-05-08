@@ -1,7 +1,6 @@
 package com.quqee.backend.internship_hits.company.entity
 
 import jakarta.persistence.*
-import java.net.URI
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -23,8 +22,8 @@ data class CompanyEntity(
     @Column(name = "avatar_id", nullable = false)
     var avatarId: UUID,
 
-    @Column(name = "agent", nullable = false)
-    var agent: UUID,
+    @Column(name = "agent", nullable = true)
+    var agent: UUID?,
 
     @Column(name = "since_year", nullable = false)
     var sinceYear: String,

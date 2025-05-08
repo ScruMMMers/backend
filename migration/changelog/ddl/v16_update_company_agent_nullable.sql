@@ -1,0 +1,2 @@
+ALTER TABLE company
+    ALTER COLUMN agent DROP NOT NULL;

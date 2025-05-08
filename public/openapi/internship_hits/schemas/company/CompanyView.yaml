@@ -3,7 +3,6 @@ CompanyView:
   required:
     - companyId
     - name
-    - agent
     - avatarUrl
     - sinceYear
     - description

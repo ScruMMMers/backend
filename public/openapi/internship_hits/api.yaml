@@ -73,6 +73,8 @@ paths:
 
   /company/{companyId}:
     $ref: './schemas/company/GetCompanyApi.yaml'
+  /company/{companyId}/update:
+    $ref: './schemas/company/UpdateCompanyApi.yaml'
   /company/list:
     $ref: './schemas/company/GetCompaniesListApi.yaml'
   /company:

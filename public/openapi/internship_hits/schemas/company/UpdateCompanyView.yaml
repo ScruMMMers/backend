@@ -1,11 +1,6 @@
-CreateCompanyView:
+UpdateCompanyView:
   type: object
   required:
-    - name
-    - sinceYear
-    - avatarId
-    - description
-    - primaryColor
   properties:
     name:
       type: string

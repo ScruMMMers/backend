@@ -137,3 +137,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v16_make_edited_at_nullable.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 20
+      author: yuriy_sitdikov
+      changes:
+        - sqlFile:
+            path: ddl/v17_update_company_agent_nullable.sql
+            relativeToChangelogFile: true
