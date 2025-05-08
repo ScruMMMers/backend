@@ -96,7 +96,8 @@ class StudentsRepository(
                 StudentEntity.StudentLog(
                     id = record[LOGS.ID]!!,
                     type = record[LOGS.TYPE]!!,
-                    status = record[LOGS.APPROVAL_STATUS]!!
+                    status = record[LOGS.APPROVAL_STATUS]!!,
+                    createdAt = record[LOGS.CREATED_AT]!!
                 )
             }.toSet(),
         )

@@ -131,6 +131,7 @@ class StudentsService(
                     id = log.id,
                     status = ApprovalStatus.valueOf(log.status),
                     type = LogType.valueOf(log.type),
+                    createdAt = log.createdAt,
                 )
             }.toSet()
         )

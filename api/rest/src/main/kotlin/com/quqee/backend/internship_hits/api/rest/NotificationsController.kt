@@ -9,10 +9,7 @@ import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginatio
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationResponse
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
-import com.quqee.backend.internship_hits.public_interface.notification_public.GetUserLastNotificationDto
-import com.quqee.backend.internship_hits.public_interface.notification_public.GetUserNotificationsDto
-import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationDto
-import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationType
+import com.quqee.backend.internship_hits.public_interface.notification_public.*
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import java.util.*
@@ -61,6 +58,19 @@ class NotificationsController(
         return ResponseEntity.ok(
             GetLastNotificationsResponseView(
                 notification = notification?.let { notificationMapper.fromInternal(it) }
+            )
+        )
+    }
+
+    override fun notificationsReadPost(readNotificationView: ReadNotificationView): ResponseEntity<Unit> {
+        val userId = KeycloakUtils.getUserId()
+            ?: throw ExceptionInApplication(ExceptionType.FORBIDDEN)
+        return ResponseEntity.ok(
+            notificationService.markReadNotifications(
+                ReadNotificationsDto(
+                    userId = userId,
+                    notificationIds = readNotificationView.notificationIds,
+                )
             )
         )
     }

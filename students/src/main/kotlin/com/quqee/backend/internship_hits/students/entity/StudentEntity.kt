@@ -2,6 +2,7 @@ package com.quqee.backend.internship_hits.students.entity
 
 import com.quqee.backend.internship_hits.notification.public.tables.references.STUDENTS
 import com.quqee.backend.internship_hits.public_interface.common.UserId
+import java.time.OffsetDateTime
 import java.util.*
 
 data class StudentEntity(
@@ -16,6 +17,7 @@ data class StudentEntity(
         val id: UUID,
         val type: String,
         val status: String,
+        val createdAt: OffsetDateTime,
     )
 
     companion object {

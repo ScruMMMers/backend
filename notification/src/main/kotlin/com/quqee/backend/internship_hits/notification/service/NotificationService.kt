@@ -124,6 +124,16 @@ class NotificationService(
         }
     }
 
+    fun markReadNotifications(dto: ReadNotificationsDto) {
+        val userNotificationIds = notificationRepository.getUserNotificationIds(dto.userId, dto.notificationIds)
+
+        val validNotificationIds = dto.notificationIds.filter { it in userNotificationIds }
+
+        if (validNotificationIds.isNotEmpty()) {
+            notificationRepository.markNotificationsAsRead(validNotificationIds)
+        }
+    }
+
     private fun mapNotificationToDto(notification: NotificationEntity): NotificationDto {
         return NotificationDto(
             id = notification.id,
