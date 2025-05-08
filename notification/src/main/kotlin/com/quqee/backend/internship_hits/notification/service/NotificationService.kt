@@ -51,7 +51,7 @@ class NotificationService(
     fun getNotificationsForHeader(dto: GetNotificationForHeaderDto): List<ShortNotificationDto> {
         return notificationRepository.getNotifications(
             LastIdPaginationRequest(
-                pageSize = Int.MAX_VALUE,
+                pageSize = Int.MAX_VALUE - 1,
             ),
             NotificationFilterParams(
                 userId = dto.user
