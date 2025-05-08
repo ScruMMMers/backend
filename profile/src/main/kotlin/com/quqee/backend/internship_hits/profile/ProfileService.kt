@@ -7,6 +7,7 @@ import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.ProfileDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.ProfileForHeader
@@ -48,6 +49,12 @@ class ProfileService(
             // мб эти буквы вообще на клиенте рендерить
             avatarUrl = profile.avatarUrl ?: FALLBACK_PROFILE_IMAGE_URL
         )
+    }
+
+    fun getUserRoles(dto: GetProfileDto): Set<UserRole> {
+        val user = userClient.getUser(dto.userId) ?:
+            throw ExceptionInApplication(ExceptionType.NOT_FOUND)
+        return user.roles
     }
 
     private fun getProfile(dto: GetProfileDto): ProfileDto {

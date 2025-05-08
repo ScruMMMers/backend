@@ -1,0 +1,7 @@
+GetMyRolesView:
+  type: object
+  properties:
+    roles:
+      type: array
+      items:
+        $ref: '../common/Account.yaml#/RoleEnum'

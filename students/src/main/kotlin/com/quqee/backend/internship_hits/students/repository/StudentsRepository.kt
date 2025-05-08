@@ -133,8 +133,8 @@ class StudentsRepository(
 
     private fun SortingStrategy.toOrderBy(): List<SortField<*>> {
         return when (this) {
-            SortingStrategy.CREATED_AT_ASC -> listOf(STUDENTS.CREATED_AT.asc(), STUDENTS.USER_ID.asc())
-            SortingStrategy.CREATED_AT_DESC -> listOf(STUDENTS.CREATED_AT.desc(), STUDENTS.USER_ID.asc())
+            SortingStrategy.CREATED_AT_ASC -> listOf(STUDENTS.CREATED_AT.asc())
+            SortingStrategy.CREATED_AT_DESC -> listOf(STUDENTS.CREATED_AT.desc())
         }
     }
 

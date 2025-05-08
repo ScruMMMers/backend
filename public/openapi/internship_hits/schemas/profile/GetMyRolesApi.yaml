@@ -1,0 +1,15 @@
+get:
+  tags:
+    - profile
+  summary: Получить свои роли
+  security:
+    - openIdConnect: []
+  responses:
+    '200':
+      description: Роли пользователя
+      content:
+        application/json:
+          schema:
+            $ref: './GetMyRolesResponse.yaml#/GetMyRolesView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу
