@@ -1,0 +1,29 @@
+put:
+  tags:
+    - company
+  summary: Обновить сущность компании
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - in: path
+      name: companyId
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    description: Передаем сюда данные для изменения компании
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './UpdateCompanyView.yaml#/UpdateCompanyView'
+  responses:
+    '200':
+      description: Компания
+      content:
+        application/json:
+          schema:
+            $ref: './CompanyView.yaml#/CompanyView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

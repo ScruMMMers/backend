@@ -6,19 +6,20 @@ import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginatio
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
-import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CompaniesListDto
+import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
+import com.quqee.backend.internship_hits.public_interface.company.UpdateCompanyDto
 import com.quqee.backend.internship_hits.tags.service.TagService
 import org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.client.RestTemplate
 import java.time.Year
-import java.util.UUID
+import java.util.*
 
 interface CompanyService {
     fun createCompany(createCompanyDto: CreateCompanyDto): CompanyDto
+    fun updateCompany(companyId: UUID, updateCompanyDto: UpdateCompanyDto): CompanyDto
     fun getCompany(companyId: UUID): CompanyDto
     fun getRawCompany(companyId: UUID): CompanyEntity
     fun getShortCompany(companyId: UUID): ShortCompanyDto?
@@ -49,6 +50,23 @@ open class CompanyServiceImpl(
         val company = companyRepository.createCompany(createCompanyDto)
 
         tagService.createTag(company.name, company.companyId)
+
+        return company
+    }
+
+    @Transactional
+    override fun updateCompany(companyId: UUID, updateCompanyDto: UpdateCompanyDto): CompanyDto {
+        updateCompanyDto.sinceYear?.let { checkYearValidation(updateCompanyDto.sinceYear!!) }
+
+        val existingCompany: CompanyEntity = companyRepository.findCompanyById(companyId)
+            ?: throw ExceptionInApplication(
+                ExceptionType.NOT_FOUND,
+                "Компания с идентификатором $companyId не найдена"
+            )
+
+        val company = companyRepository.updateCompany(existingCompany, updateCompanyDto)
+
+        tagService.updateTagByCompanyId(companyId, company.name)
 
         return company
     }

@@ -25,7 +25,7 @@ class CompanyConfigurationMapper {
         CompanyDto(
             companyId = model.companyId,
             name = model.name,
-            agent = accountMapper.fromApi(model.agent),
+            agent = model.agent?.let { accountMapper.fromApi(it) },
             avatarUrl = model.avatarUrl,
             sinceYear = model.sinceYear,
             description = model.description,
@@ -43,7 +43,7 @@ class CompanyConfigurationMapper {
         CompanyView(
             companyId = model.companyId,
             name = model.name,
-            agent = accountMapper.fromInternal(model.agent),
+            agent = model.agent?.let { accountMapper.fromInternal(it) },
             avatarUrl = model.avatarUrl,
             sinceYear = model.sinceYear,
             description = model.description,

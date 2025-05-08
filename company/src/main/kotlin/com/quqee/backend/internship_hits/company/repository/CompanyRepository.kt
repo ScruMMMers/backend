@@ -4,17 +4,16 @@ import com.quqee.backend.internship_hits.company.entity.CompanyEntity
 import com.quqee.backend.internship_hits.company.mapper.CompanyMapper
 import com.quqee.backend.internship_hits.company.repository.jpa.CompanyJpaRepository
 import com.quqee.backend.internship_hits.company.specification.CompanySpecification
-import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
+import com.quqee.backend.internship_hits.public_interface.company.UpdateCompanyDto
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
-import java.net.URI
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -28,16 +27,11 @@ class CompanyRepository(
      * Создание компании
      */
     fun createCompany(createCompanyDto: CreateCompanyDto): CompanyDto {
-        // TODO пока нет получения списка пользователей, агент будет всегда тот кто создает компанию
-        val agent = KeycloakUtils.getUserId()
-        agent ?: throw ExceptionInApplication(ExceptionType.FORBIDDEN, "Ошибка получения идентификатора")
-
-        // TODO Валидация файла (проверка на картинку)?
         val companyEntity = CompanyEntity(
             companyId = UUID.randomUUID(),
             name = createCompanyDto.name,
             avatarId = createCompanyDto.avatarId,
-            agent = agent,
+            agent = createCompanyDto.agentId,
             sinceYear = createCompanyDto.sinceYear,
             description = createCompanyDto.description,
             primaryColor = createCompanyDto.primaryColor.hexColor,
@@ -83,6 +77,23 @@ class CompanyRepository(
         val company = companyJpaRepository.findByName(name).orElse(null)
         company ?: return null
         return mapper.toCompanyDto(company)
+    }
+
+    fun findCompanyById(companyId: UUID): CompanyEntity? {
+        return companyJpaRepository.findById(companyId).orElse(null)
+    }
+
+    fun updateCompany(existingCompany: CompanyEntity, updateCompanyDto: UpdateCompanyDto): CompanyDto {
+        val updatedCompany = existingCompany.copy(
+            name = updateCompanyDto.name ?: existingCompany.name,
+            sinceYear = updateCompanyDto.sinceYear ?: existingCompany.sinceYear,
+            avatarId = updateCompanyDto.avatarId ?: existingCompany.avatarId,
+            agent = updateCompanyDto.agentId ?: existingCompany.agent,
+            description = updateCompanyDto.description ?: existingCompany.description,
+            primaryColor = updateCompanyDto.primaryColor?.toString() ?: existingCompany.primaryColor,
+        )
+
+        return mapper.toCompanyDto(companyJpaRepository.save(updatedCompany))
     }
 
     /**

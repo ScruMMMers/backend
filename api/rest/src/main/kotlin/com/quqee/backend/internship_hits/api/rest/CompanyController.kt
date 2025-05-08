@@ -8,6 +8,7 @@ import com.quqee.backend.internship_hits.model.rest.*
 import com.quqee.backend.internship_hits.public_interface.company.CompaniesListDto
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
+import com.quqee.backend.internship_hits.public_interface.company.UpdateCompanyDto
 import com.quqee.backend.internship_hits.public_interface.company_position.CompanyPositionDto
 import com.quqee.backend.internship_hits.public_interface.company_position.CreateCompanyPositionDto
 import org.springframework.http.ResponseEntity
@@ -22,7 +23,8 @@ class CompanyController(
     private val mapCompanyPosition: FromInternalToApiMapper<CompanyPositionView, CompanyPositionDto>,
     private val mapCompaniesList: FromInternalToApiMapper<CompaniesListView, CompaniesListDto>,
     private val mapCreateCompany: FromApiToInternalMapper<CreateCompanyView, CreateCompanyDto>,
-    private val mapCreateCompanyPosition: FromApiToInternalMapper<CreateCompanyPositionView, CreateCompanyPositionDto>
+    private val mapCreateCompanyPosition: FromApiToInternalMapper<CreateCompanyPositionView, CreateCompanyPositionDto>,
+    private val mapUpdateCompanyPosition: FromApiToInternalMapper<UpdateCompanyView, UpdateCompanyDto>,
 ) : CompanyApiDelegate {
 
     override fun companyCompanyIdGet(companyId: UUID): ResponseEntity<CompanyView> {
@@ -48,6 +50,19 @@ class CompanyController(
         return ResponseEntity.ok(
             mapCompanyPosition.fromInternal(
                 companyPositionService.createCompanyPosition(companyId, createCompanyPositionDto)
+            )
+        )
+    }
+
+    override fun companyCompanyIdUpdatePut(
+        companyId: UUID,
+        updateCompanyView: UpdateCompanyView
+    ): ResponseEntity<CompanyView> {
+        val updateCompanyDto = mapUpdateCompanyPosition.fromApi(updateCompanyView)
+
+        return ResponseEntity.ok(
+            mapCompany.fromInternal(
+                companyService.updateCompany(companyId, updateCompanyDto)
             )
         )
     }
