@@ -13,6 +13,8 @@ dependencies {
     implementation project(':public_interface:profile_public')
     implementation project(':file_storage')
     implementation project(':public_interface:file_storage_public')
+
     implementation libs.keycloak.core
     implementation libs.keycloak.admin.client
+    implementation libs.kotlin.coroutines.core
 }

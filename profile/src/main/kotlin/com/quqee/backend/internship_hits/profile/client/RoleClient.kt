@@ -12,18 +12,20 @@ class RoleClient(
     @Value("\${keycloak.internship.realm}") private val realm: String,
     private val keycloak: Keycloak,
 ) {
-    fun assignRole(userId: UUID, role: UserRole) {
+    fun assignRole(userId: UUID, roles: Set<UserRole>) {
         val userResource = keycloak.realm(realm).users().get(userId.toString())
         val rolesResource: RolesResource = getRolesResource()
-        val representation = rolesResource[role.keycloakRole].toRepresentation()
-        userResource.roles().realmLevel().add(listOf(representation))
+        val representations = rolesResource.list()
+            .filter { it.name in roles.map { it.keycloakRole } }
+        userResource.roles().realmLevel().add(representations)
     }
 
-    fun removeRole(userId: UUID, role: UserRole) {
+    fun removeRole(userId: UUID, roles: Set<UserRole>) {
         val userResource = keycloak.realm(realm).users().get(userId.toString())
         val rolesResource: RolesResource = getRolesResource()
-        val representation = rolesResource[role.keycloakRole].toRepresentation()
-        userResource.roles().realmLevel().remove(listOf(representation))
+        val representations = rolesResource.list()
+            .filter { it.name in roles.map { it.keycloakRole } }
+        userResource.roles().realmLevel().remove(representations)
     }
 
     private fun getRolesResource(): RolesResource {

@@ -5,12 +5,16 @@ import com.quqee.backend.internship_hits.profile.client.RoleClient
 import com.quqee.backend.internship_hits.profile.client.UserClient
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
+import com.quqee.backend.internship_hits.public_interface.common.UserId
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.ProfileDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.ProfileForHeader
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -24,7 +28,7 @@ class ProfileService(
     fun createProfile(dto: CreateUserDto): UUID {
         val userId = userClient.registerUser(dto)
         dto.roles.forEach { role ->
-            roleClient.assignRole(userId, role)
+            roleClient.assignRole(userId, setOf(role))
         }
         return userId
     }
@@ -55,6 +59,28 @@ class ProfileService(
         val user = userClient.getUser(dto.userId) ?:
             throw ExceptionInApplication(ExceptionType.NOT_FOUND)
         return user.roles
+    }
+
+    fun addRoles(userIds: Set<UserId>, roles: Set<UserRole>) {
+        runBlocking {
+            val deferred = userIds.map { id ->
+                async {
+                    roleClient.assignRole(id, roles)
+                }
+            }
+            deferred.awaitAll()
+        }
+    }
+
+    fun removeRoles(userIds: Set<UserId>, roles: Set<UserRole>) {
+        runBlocking {
+            val deferred = userIds.map { id ->
+                async {
+                    roleClient.removeRole(id, roles)
+                }
+            }
+            deferred.awaitAll()
+        }
     }
 
     private fun getProfile(dto: GetProfileDto): ProfileDto {

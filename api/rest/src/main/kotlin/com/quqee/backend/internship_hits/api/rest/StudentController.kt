@@ -1,6 +1,7 @@
 package com.quqee.backend.internship_hits.api.rest
 
 import com.quqee.backend.internship_hits.mapper.EnumerationMapper
+import com.quqee.backend.internship_hits.mapper.FromApiToInternalMapper
 import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
 import com.quqee.backend.internship_hits.model.rest.*
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationRequest
@@ -11,6 +12,7 @@ import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.students_public.CreateStudentDto
 import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListDto
 import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListFilterParamDto
+import com.quqee.backend.internship_hits.public_interface.students_public.MoveToCourseDto
 import com.quqee.backend.internship_hits.public_interface.students_public.StudentDto
 import com.quqee.backend.internship_hits.students.StudentsService
 import org.springframework.http.ResponseEntity
@@ -24,7 +26,10 @@ class StudentController(
     private val approvalStatusMapper: EnumerationMapper<ApprovalStatusEnum, ApprovalStatus>,
     private val positionNameMapper: EnumerationMapper<PositionEnum, Position>,
     private val lastIdPaginationResponseMapper: FromInternalToApiMapper<LastIdPaginationView, LastIdPaginationResponse<*, UUID>>,
-    private val studentViewMapper: FromInternalToApiMapper<StudentView, StudentDto>
+    private val studentViewMapper: FromInternalToApiMapper<StudentView, StudentDto>,
+    private val moveByCourseMapper: FromApiToInternalMapper<MoveStudentsViewByCourse, MoveToCourseDto>,
+    private val moveByUserMapper: FromApiToInternalMapper<MoveStudentsViewByUser, MoveToCourseDto>,
+
 ) : StudentsApiDelegate {
     override fun studentsDeaneryEditPost(deaneryEditStudentRequestView: DeaneryEditStudentRequestView): ResponseEntity<StudentView> {
         return super.studentsDeaneryEditPost(deaneryEditStudentRequestView)
@@ -85,10 +90,26 @@ class StudentController(
     }
 
     override fun studentsUserIdMoveAcademicPost(userId: UUID): ResponseEntity<StudentView> {
-        return super.studentsUserIdMoveAcademicPost(userId)
+        studentsService.moveStudentToAcademic(userId)
+        return ResponseEntity.ok().build()
     }
 
     override fun studentsUserIdRemoveAcademicPost(userId: UUID): ResponseEntity<StudentView> {
-        return super.studentsUserIdRemoveAcademicPost(userId)
+        studentsService.removeStudentFromAcademic(userId)
+        return ResponseEntity.ok().build()
+    }
+
+    override fun studentsDeaneryMoveCourseByCoursePost(moveStudentsViewByCourse: MoveStudentsViewByCourse): ResponseEntity<Unit> {
+        val dto = moveByCourseMapper.fromApi(moveStudentsViewByCourse)
+        studentsService.moveToCourse(dto)
+
+        return ResponseEntity.ok().build()
+    }
+
+    override fun studentsDeaneryMoveCourseByUserPost(moveStudentsViewByUser: MoveStudentsViewByUser): ResponseEntity<Unit> {
+        val dto = moveByUserMapper.fromApi(moveStudentsViewByUser)
+        studentsService.moveToCourse(dto)
+
+        return ResponseEntity.ok().build()
     }
 }

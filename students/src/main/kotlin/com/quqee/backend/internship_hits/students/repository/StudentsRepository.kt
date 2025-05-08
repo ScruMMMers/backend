@@ -57,6 +57,25 @@ class StudentsRepository(
             .fetchOne(STUDENT_RECORD_MAPPER)
     }
 
+    fun getStudentsByIds(userIds: Set<UserId>): List<StudentEntity> {
+        return dsl.selectFrom(STUDENTS)
+            .where(STUDENTS.USER_ID.`in`(userIds))
+            .fetch(STUDENT_RECORD_MAPPER)
+    }
+
+    fun getStudentsByCourse(course: Int): List<StudentEntity> {
+        return dsl.selectFrom(STUDENTS)
+            .where(STUDENTS.STUDENT_COURSE.eq(course))
+            .fetch(STUDENT_RECORD_MAPPER)
+    }
+
+    fun updateCourse(userIds: Set<UserId>, course: Int) {
+        dsl.update(STUDENTS)
+            .set(STUDENTS.STUDENT_COURSE, course)
+            .where(STUDENTS.USER_ID.`in`(userIds))
+            .execute()
+    }
+
     fun updateStudent(entity: StudentEntity): StudentEntity {
         dsl.update(STUDENTS)
             .set(STUDENTS.STUDENT_COURSE, entity.course)
