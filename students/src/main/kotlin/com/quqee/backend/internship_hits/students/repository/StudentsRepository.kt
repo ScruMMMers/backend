@@ -14,6 +14,7 @@ import org.jooq.*
 import org.springframework.stereotype.Repository
 import java.time.Clock
 import java.time.OffsetDateTime
+import java.util.*
 
 @Repository
 class StudentsRepository(
@@ -24,33 +25,27 @@ class StudentsRepository(
         pagination: LastIdPaginationRequest<UserId>,
         filter: StudentsFilterParams,
     ): Collection<StudentEntity> {
-        return if (pagination.lastId != null) {
-
-            //Костыль, чтоб не падал запрос
-            val lastStudent = dsl.select(STUDENTS.CREATED_AT)
-                .from(STUDENTS)
-                .where(STUDENTS.USER_ID.eq(pagination.lastId))
-                .fetchOne()
-
-            if (lastStudent == null) {
-                return emptyList()
-            }
-
-            val lastCreatedAt = lastStudent.get(STUDENTS.CREATED_AT)
-
-            dsl.selectStudentForList()
+        val filteredStudentIds = if (pagination.lastId != null) {
+            dsl.selectStudentIdsForList()
                 .where(filter.toCondition())
-                .and(STUDENTS.CREATED_AT.gt(lastCreatedAt))
-                .orderBy(pagination.sorting.toOrderBy())
+                .groupBy(STUDENTS.USER_ID)
+                .orderBy(STUDENTS.USER_ID.asc())
+                .seek(pagination.lastId)
                 .limit(pagination.sizeForSelect)
-                .fetch()
+                .fetchInto(UUID::class.java)
         } else {
-            dsl.selectStudentForList()
+            dsl.selectStudentIdsForList()
                 .where(filter.toCondition())
-                .orderBy(pagination.sorting.toOrderBy())
+                .groupBy(STUDENTS.USER_ID)
+                .orderBy(STUDENTS.USER_ID.asc())
                 .limit(pagination.sizeForSelect)
-                .fetch()
+                .fetchInto(UUID::class.java)
         }
+
+        return dsl.selectStudentForList()
+            .where(STUDENTS.USER_ID.`in`(filteredStudentIds))
+            .orderBy(pagination.sorting.toOrderBy())
+            .fetch()
             .groupBy { it[STUDENTS.USER_ID]!! }
             .values
             .map(::studentMapper)
@@ -103,14 +98,25 @@ class StudentsRepository(
         )
     }
 
+    private fun DSLContext.selectStudentIdsForList(): SelectOnConditionStep<Record1<UUID?>> {
+        return this.selectDistinct(STUDENTS.USER_ID)
+            .from(STUDENTS)
+            .join(LOGS)
+            .on(STUDENTS.USER_ID.eq(LOGS.USER_ID))
+            .join(LOG_POSITIONS)
+            .on(LOGS.ID.eq(LOG_POSITIONS.LOG_ID))
+            .join(POSITIONS)
+            .on(POSITIONS.ID.eq(LOG_POSITIONS.POSITION_ID))
+    }
+
     private fun DSLContext.selectStudentForList(): SelectOnConditionStep<Record> {
         return this.select(SELECTED_FIELDS_FOR_LIST)
             .from(STUDENTS)
-            .leftJoin(LOGS)
+            .join(LOGS)
             .on(STUDENTS.USER_ID.eq(LOGS.USER_ID))
-            .leftJoin(LOG_POSITIONS)
+            .join(LOG_POSITIONS)
             .on(LOGS.ID.eq(LOG_POSITIONS.LOG_ID))
-            .leftJoin(POSITIONS)
+            .join(POSITIONS)
             .on(POSITIONS.ID.eq(LOG_POSITIONS.POSITION_ID))
     }
 
@@ -127,8 +133,8 @@ class StudentsRepository(
 
     private fun SortingStrategy.toOrderBy(): List<SortField<*>> {
         return when (this) {
-            SortingStrategy.CREATED_AT_ASC -> listOf(STUDENTS.CREATED_AT.asc())
-            SortingStrategy.CREATED_AT_DESC -> listOf(STUDENTS.CREATED_AT.desc())
+            SortingStrategy.CREATED_AT_ASC -> listOf(STUDENTS.CREATED_AT.asc(), STUDENTS.USER_ID.asc())
+            SortingStrategy.CREATED_AT_DESC -> listOf(STUDENTS.CREATED_AT.desc(), STUDENTS.USER_ID.asc())
         }
     }
 
