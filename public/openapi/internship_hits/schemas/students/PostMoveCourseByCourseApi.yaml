@@ -1,0 +1,18 @@
+post:
+  tags:
+    - students
+  summary: Переместить студентов на курс по курсу
+  security:
+    - openIdConnect: [ ]
+  requestBody:
+    description: Передаем сюда данные для изменения
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './MoveStudentsView.yaml#/MoveStudentsViewByCourse'
+  responses:
+    '200':
+      description: Успешно переместили студентов
+    '400':
+      description: Что-то пошло не так

@@ -1,0 +1,24 @@
+MoveStudentsViewByCourse:
+  type: object
+  required:
+    - fromCourse
+    - toCourse
+  properties:
+    fromCourse:
+      type: integer
+    toCourse:
+      type: integer
+
+MoveStudentsViewByUser:
+  type: object
+  required:
+    - userIds
+    - toCourse
+  properties:
+    userIds:
+      type: array
+      items:
+        type: string
+        format: uuid
+    toCourse:
+      type: integer

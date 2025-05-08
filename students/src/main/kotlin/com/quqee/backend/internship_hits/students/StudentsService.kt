@@ -13,6 +13,9 @@ import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.ShortLogInfo
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
 import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListDto
+import com.quqee.backend.internship_hits.public_interface.students_public.MoveToCourseByCourseDto
+import com.quqee.backend.internship_hits.public_interface.students_public.MoveToCourseByUserDto
+import com.quqee.backend.internship_hits.public_interface.students_public.MoveToCourseDto
 import com.quqee.backend.internship_hits.public_interface.students_public.StudentDto
 import com.quqee.backend.internship_hits.students.entity.StudentEntity
 import com.quqee.backend.internship_hits.students.public_interface.CreateStudentDto
@@ -29,8 +32,8 @@ import com.quqee.backend.internship_hits.public_interface.students_public.Create
 @Service
 class StudentsService(
     private val profileService: ProfileService,
-    private val studentsRepository: StudentsRepository,
     private val companyService: CompanyService,
+    private val studentsRepository: StudentsRepository,
 ) {
     fun getStudentsList(dto: GetStudentsListDto): LastIdPaginationResponse<StudentDto, UserId> {
         val students = studentsRepository.getStudents(
@@ -114,6 +117,34 @@ class StudentsService(
         return mapStudentToDto(studentsRepository.updateStudent(updatedStudent))
     }
 
+    @Transactional
+    fun moveToCourse(dto: MoveToCourseDto) {
+        when (dto) {
+            is MoveToCourseByCourseDto -> {
+                val students = studentsRepository.getStudentsByCourse(dto.fromCourse)
+                val userIds = students.map { it.userId }.toSet()
+
+                val fromCourseRole = getRoleByCourse(dto.fromCourse)
+                val toCourseRole = getRoleByCourse(dto.toCourse)
+
+                profileService.removeRoles(userIds, fromCourseRole)
+                profileService.addRoles(userIds, toCourseRole)
+                studentsRepository.updateCourse(userIds, dto.toCourse)
+            }
+            is MoveToCourseByUserDto -> {
+                val students = studentsRepository.getStudentsByIds(dto.userIds)
+                val toCourseRole = getRoleByCourse(dto.toCourse)
+
+                students.forEach { student ->
+                    val userIds = setOf(student.userId)
+                    profileService.removeRoles(userIds, getRoleByCourse(student.course))
+                    profileService.addRoles(userIds, toCourseRole)
+                    studentsRepository.updateCourse(userIds, dto.toCourse)
+                }
+            }
+        }
+    }
+
     private fun mapStudentToDto(entity: StudentEntity): StudentDto {
         val profile = profileService.getShortAccount(
             GetProfileDto(userId = entity.userId)
@@ -142,6 +173,7 @@ class StudentsService(
             2 -> setOf(UserRole.STUDENT_SECOND)
             3 -> setOf(UserRole.STUDENT_THIRD)
             4 -> setOf(UserRole.STUDENT_FOURTH)
+            5 -> setOf(UserRole.STUDENT_GRADUATE)
             else -> emptySet()
         }
     }

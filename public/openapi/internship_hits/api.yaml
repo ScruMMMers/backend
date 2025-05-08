@@ -151,6 +151,10 @@ paths:
     $ref: './schemas/students/PostStudentsMoveAcademicApi.yaml'
   /students/{userId}/remove-academic:
     $ref: './schemas/students/PostStudentsRemoveAcademicApi.yaml'
+  /students/deanery/move-course/by-course:
+    $ref: './schemas/students/PostMoveCourseByCourseApi.yaml'
+  /students/deanery/move-course/by-user:
+    $ref: './schemas/students/PostMoveCourseByUserApi.yaml'
 
   /locker/{featureName}/switch:
     $ref: './schemas/locker/SwitchLockStatusApi.yaml'
