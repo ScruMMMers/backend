@@ -5,6 +5,7 @@ dependencies {
     implementation project(':public_interface:students_public')
     implementation project(':public_interface:notification_public')
     implementation project(':public_interface:announcement_interface')
+    implementation project(':public_interface:logs_interface')
     implementation project(':students')
     implementation project(':logs')
     implementation project(':notification')

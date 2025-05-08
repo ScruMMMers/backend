@@ -105,6 +105,8 @@ paths:
     $ref: './schemas/notifications/GetLastNotificationsApi.yaml'
   /notifications:
     $ref: './schemas/notifications/GetNotificationsApi.yaml'
+  /notifications/read:
+    $ref: './schemas/notifications/PostMarkReadNotificationsApi.yaml'
 
   /announcement:
     $ref: './schemas/announcement/PostAnnouncementApi.yaml'

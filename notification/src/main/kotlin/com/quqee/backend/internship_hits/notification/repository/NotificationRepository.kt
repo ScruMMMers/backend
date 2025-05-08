@@ -8,6 +8,7 @@ import com.quqee.backend.internship_hits.notification.public.tables.references.N
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationRequest
 import com.quqee.backend.internship_hits.public_interface.common.SortingStrategy
 import com.quqee.backend.internship_hits.public_interface.common.NotificationId
+import com.quqee.backend.internship_hits.public_interface.common.UserId
 import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.JSONB
@@ -58,6 +59,23 @@ class NotificationRepository(
                 .limit(pagination.sizeForSelect)
                 .fetch(notificationMapper)
         }
+    }
+
+    fun markNotificationsAsRead(ids: List<NotificationId>) {
+        dsl.update(NOTIFICATION)
+            .set(NOTIFICATION.IS_READ, true)
+            .where(NOTIFICATION.ID.`in`(ids))
+            .execute()
+    }
+
+    fun getUserNotificationIds(userId: UserId, ids: List<NotificationId>): List<NotificationId> {
+        return dsl.select(NOTIFICATION.ID)
+            .from(NOTIFICATION)
+            .where(
+                NOTIFICATION.ID.`in`(ids)
+                    .and(NOTIFICATION.RECEIVER_ID.eq(userId))
+            )
+            .fetchInto(UUID::class.java)
     }
 
     private fun NotificationFilterParams.toConditions(): List<Condition> {

@@ -51,6 +51,17 @@ NotificationView:
       type: string
       format: uuid
 
+ReadNotificationView:
+  type: object
+  required:
+    - notificationIds
+  properties:
+    notificationIds:
+      type: array
+      items:
+        type: string
+        format: uuid
+
 NotificationTypeEnum:
   type: string
   enum:

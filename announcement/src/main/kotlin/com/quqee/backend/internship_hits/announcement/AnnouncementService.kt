@@ -15,6 +15,7 @@ import java.util.concurrent.Semaphore
 interface AnnouncementService {
     fun sendAnnouncementByUserId(dto: CreateAnnouncementDto)
     fun sendAnnouncementByFilter(dto: CreateAnnouncementByFilterDto)
+    fun sendSystemAnnouncementByUserId(dto: CreateAnnouncementDto)
 }
 
 @Service
@@ -31,6 +32,22 @@ class AnnouncementServiceImpl(
                 message = dto.data.text,
                 userId = userId,
                 type = NotificationType.DEANERY,
+                channels = setOf(NotificationChannel.PUSH, NotificationChannel.EMAIL),
+                pollId = dto.data.pollId
+            )
+        }
+
+        announcementBatchDispatcher.sendBatchAsync(notificationDtos)
+    }
+
+
+    override fun sendSystemAnnouncementByUserId(dto: CreateAnnouncementDto) {
+        val notificationDtos = dto.userIds.map { userId ->
+            CreateNotificationDto(
+                title = dto.data.title,
+                message = dto.data.text,
+                userId = userId,
+                type = NotificationType.SYSTEM,
                 channels = setOf(NotificationChannel.PUSH, NotificationChannel.EMAIL),
                 pollId = dto.data.pollId
             )

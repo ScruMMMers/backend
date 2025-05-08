@@ -1,0 +1,22 @@
+post:
+  tags:
+    - notifications
+  summary: Прочитать уведомления
+  security:
+    - openIdConnect: []
+  requestBody:
+    description: Передаем сюда данные для прочтения уведомлений
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './Notification.yaml#/ReadNotificationView'
+  responses:
+    '200':
+      description: Прочитали уведомления
+    '400':
+      description: Некорректные данные
+      content:
+        application/json:
+          schema:
+            $ref: '../common/Error.yaml#/ErrorView'
