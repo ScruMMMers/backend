@@ -23,6 +23,8 @@ COPY profile ./profile
 COPY file_storage ./file_storage
 COPY notification ./notification
 COPY logs ./logs
+COPY marks ./marks
+COPY locker ./locker
 COPY meeting ./meeting
 COPY company ./company
 COPY statistic ./statistic

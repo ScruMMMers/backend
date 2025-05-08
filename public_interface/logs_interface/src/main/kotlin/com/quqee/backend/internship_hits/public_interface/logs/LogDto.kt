@@ -14,7 +14,7 @@ data class LogDto(
     val hashtags: List<PositionDto>,
     val type: LogType,
     val createdAt: OffsetDateTime,
-    val editedAt: OffsetDateTime,
+    val editedAt: OffsetDateTime?,
     val reactions: List<ReactionDto>,
     val comments: List<CommentDto>,
     val author: ShortAccountDto,

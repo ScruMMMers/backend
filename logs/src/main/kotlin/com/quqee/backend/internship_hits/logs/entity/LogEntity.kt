@@ -46,8 +46,8 @@ data class LogEntity(
     @Column(name = "created_at", nullable = false)
     var createdAt: OffsetDateTime,
 
-    @Column(name = "edited_at", nullable = false)
-    var editedAt: OffsetDateTime,
+    @Column(name = "edited_at")
+    var editedAt: OffsetDateTime?,
 
     @ElementCollection
     @CollectionTable(name = "log_files", joinColumns = [JoinColumn(name = "log_id")])

@@ -1,0 +1,2 @@
+ALTER TABLE logs
+    ALTER COLUMN edited_at DROP NOT NULL;

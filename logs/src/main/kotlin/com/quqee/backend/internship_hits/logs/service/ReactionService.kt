@@ -12,6 +12,7 @@ import com.quqee.backend.internship_hits.public_interface.profile_public.GetProf
 import com.quqee.backend.internship_hits.public_interface.reaction.PossibleReactionDto
 import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 interface ReactionService {
@@ -22,7 +23,7 @@ interface ReactionService {
 }
 
 @Service
-class ReactionServiceImpl(
+open class ReactionServiceImpl(
     private val logReactionJpaRepository: LogReactionJpaRepository,
     private val reactionJpaRepository: ReactionJpaRepository,
     private val logJpaRepository: LogsJpaRepository,
@@ -83,15 +84,12 @@ class ReactionServiceImpl(
     /**
      * Удаление реакции от лога
      */
+    @Transactional
     override fun removeReactionFromLog(logId: UUID, reactionId: UUID) {
         val currentUserId = KeycloakUtils.getUserId() ?:
             throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "UserId is null")
 
-        val logReaction = logReactionJpaRepository.findByLogIdAndUserIdAndReactionId(
-            logId, currentUserId, reactionId
-        ) ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Reaction with id $reactionId not found")
-
-        logReactionJpaRepository.delete(logReaction)
+        logReactionJpaRepository.deleteByLogIdAndUserIdAndId(logId, currentUserId, reactionId)
     }
 
     /**

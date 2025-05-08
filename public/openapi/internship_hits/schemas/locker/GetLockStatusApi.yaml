@@ -1,0 +1,19 @@
+get:
+  tags:
+    - locker
+  summary: Получить статус блокировки фичи
+  security:
+    - openIdConnect: []
+  responses:
+    '200':
+      description: Статус блокировки
+      content:
+        application/json:
+          schema:
+            $ref: './FeatureLockStatusView.yaml#/FeatureLockStatusListView'
+    '400':
+      description: Некорректные данные
+      content:
+        application/json:
+          schema:
+            $ref: '../common/Error.yaml#/ErrorView'
