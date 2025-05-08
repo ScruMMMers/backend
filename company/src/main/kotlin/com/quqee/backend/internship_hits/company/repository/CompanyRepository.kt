@@ -9,6 +9,7 @@ import com.quqee.backend.internship_hits.public_interface.common.enums.Exception
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
+import com.quqee.backend.internship_hits.public_interface.company.UpdateCompanyDto
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
