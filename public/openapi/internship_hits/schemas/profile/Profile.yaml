@@ -24,3 +24,5 @@ ProfileView:
       description: Группа
     shortCompany:
       $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
+    mark:
+      $ref: '../marks/Mark.yaml#/MarkView'

@@ -2,6 +2,7 @@ package com.quqee.backend.internship_hits.api.rest
 
 import com.quqee.backend.internship_hits.mapper.EnumerationMapper
 import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
+import com.quqee.backend.internship_hits.marks.service.MarkService
 import com.quqee.backend.internship_hits.model.rest.*
 import com.quqee.backend.internship_hits.notification.service.NotificationService
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
@@ -10,6 +11,7 @@ import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
+import com.quqee.backend.internship_hits.public_interface.mark.MarkDto
 import com.quqee.backend.internship_hits.public_interface.notification_public.GetNotificationForHeaderDto
 import com.quqee.backend.internship_hits.public_interface.notification_public.ShortNotificationDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
@@ -23,9 +25,11 @@ class ProfileController(
     private val profileService: ProfileService,
     private val notificationService: NotificationService,
     private val studentsService: StudentsService,
+    private val markService: MarkService,
     private val shortNotificationMapper: FromInternalToApiMapper<ShortNotificationView, ShortNotificationDto>,
     private val shortCompanyMapper: FromInternalToApiMapper<ShortCompanyView, ShortCompanyDto>,
-    private val userRoleMapper: EnumerationMapper<RoleEnum, UserRole>
+    private val userRoleMapper: EnumerationMapper<RoleEnum, UserRole>,
+    private val mapMarkToApi: FromInternalToApiMapper<MarkView, MarkDto>,
 ) : ProfileApiDelegate {
     override fun profileHeaderGet(): ResponseEntity<GetProfileHeaderResponseView> {
         val userId = KeycloakUtils.getUserId()
@@ -49,6 +53,9 @@ class ProfileController(
         val student = try {
             studentsService.getStudent(userId)
         } catch (ignore: Exception) {null}
+        val mark = try {
+            markService.getMyCurrentMark()
+        } catch (ignore: Exception) {null}
 
         return ResponseEntity.ok(
             GetMyProfileResponseView(
@@ -59,6 +66,7 @@ class ProfileController(
                     course = student?.course?.toString(),
                     group = student?.group,
                     shortCompany = student?.company?.let { shortCompanyMapper.fromInternal(it) },
+                    mark = mark?.let { mapMarkToApi.fromInternal(it) }
                 )
             )
         )
