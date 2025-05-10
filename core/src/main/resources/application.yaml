@@ -86,3 +86,6 @@ exporter:
     notification:
       source-topic: "raw.public.notification"
       group-id: "exporter-notification"
+
+client:
+  uri: https://internship.staziss-tech.ru

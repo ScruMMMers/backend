@@ -75,3 +75,11 @@ sourceSets {
 tasks.named("compileKotlin") {
     dependsOn("openApiGenerate")
 }
+
+tasks.register('cleanGenerated', Delete) {
+    delete "$buildDir/generated"
+}
+
+tasks.named("openApiGenerate") {
+    dependsOn cleanGenerated
+}
