@@ -8,6 +8,7 @@ import com.quqee.backend.internship_hits.employees.entity.EmployeesFilterParams
 import com.quqee.backend.internship_hits.employees.repository.EmployeesRepository
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
+import com.quqee.backend.internship_hits.profile.dto.UpdateUserDto
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationResponse
 import com.quqee.backend.internship_hits.public_interface.common.UserId
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
@@ -81,7 +82,7 @@ class EmployeesService(
             ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "User not found")
         val currentCompanyIds = employee.companies.map { it.companyId }
         val newCompanies = dto.companyIds.filter { it !in currentCompanyIds }
-        val removedCompanies =  dto.companyIds.filter { it in currentCompanyIds }
+        val removedCompanies =  currentCompanyIds.filter { it !in dto.companyIds }
 
         employeesRepository.addCompaniesUser(
             UpdateEmployeeDto(
@@ -95,6 +96,20 @@ class EmployeesService(
                 removedCompanies
             )
         )
+
+        val user = profileService.getUser(dto.userId)
+        val firstName = dto.fullName.split(" ")[1]
+        val lastName = dto.fullName.split(" ")[0]
+        val middleName = dto.fullName.split(" ").getOrNull(2)
+        val updateProfileDto = user.toUpdateDto(
+            email = dto.email,
+            firstName = firstName,
+            lastName = lastName,
+            middleName = middleName,
+            photoId = dto.photoId,
+            roles = user.roles,
+        )
+        profileService.updateProfile(updateProfileDto)
 
         return mapEmployeeToDto(employeesRepository.getByUserId(dto.userId)!!)
     }

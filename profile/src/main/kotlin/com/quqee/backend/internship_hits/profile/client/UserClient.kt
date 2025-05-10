@@ -1,10 +1,11 @@
 package com.quqee.backend.internship_hits.profile.client
 
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
+import com.quqee.backend.internship_hits.profile.dto.UpdateUserDto
 import com.quqee.backend.internship_hits.profile.entity.UserEntity
-import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
+import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import org.keycloak.admin.client.CreatedResponseUtil
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.admin.client.resource.UserResource
@@ -49,6 +50,23 @@ class UserClient(
             }
             return UUID.fromString(CreatedResponseUtil.getCreatedId(response))
         }
+    }
+
+    fun updateUser(dto: UpdateUserDto) {
+        val usersResource = getUsersResource()
+        val userRepresentation = usersResource.get(dto.userId.toString()).toRepresentation()
+
+        userRepresentation.username = dto.username
+        userRepresentation.email = dto.email
+        userRepresentation.firstName = dto.firstName
+        userRepresentation.lastName = dto.lastName
+        userRepresentation.isEnabled = true
+        userRepresentation.attributes = mapOf(
+            "middleName" to listOf(dto.middleName),
+            "photoId" to listOf(dto.photoId),
+        )
+
+        usersResource.get(dto.userId.toString()).update(userRepresentation)
     }
 
     fun deleteUser(userId: UUID) {

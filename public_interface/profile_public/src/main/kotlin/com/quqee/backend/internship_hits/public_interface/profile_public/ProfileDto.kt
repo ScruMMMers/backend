@@ -15,6 +15,6 @@ data class ProfileDto(
 ) {
     val fullName: String get() = "$firstName $lastName"
     val primaryColor: ColorEnum get() {
-        return roles.sortedBy { it.priority }.firstOrNull()?.roleColor ?: ColorEnum.OLIVE
+        return roles.minByOrNull { it.priority }?.roleColor ?: ColorEnum.OLIVE
     }
 }

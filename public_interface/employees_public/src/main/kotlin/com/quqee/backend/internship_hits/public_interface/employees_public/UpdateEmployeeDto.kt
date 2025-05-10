@@ -6,4 +6,7 @@ import java.util.UUID
 data class UpdateEmployeeDto(
     val userId: UserId,
     val companyIds: List<UUID>,
+    val fullName: String,
+    val photoId: String?,
+    val email: String?,
 )

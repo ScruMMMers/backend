@@ -35,7 +35,10 @@ class EmployeesController(
             ?: throw ExceptionInApplication(ExceptionType.FORBIDDEN)
         val dto = UpdateEmployeeDto(
             userId = userId,
-            companyIds = emptyList(),
+            companyIds = updateEmployeeView.companyIds ?: emptyList(),
+            fullName = updateEmployeeView.fullName,
+            photoId = updateEmployeeView.avatarId?.toString(),
+            email = updateEmployeeView.email,
         )
         val employee = employeesService.updateEmployee(dto)
 

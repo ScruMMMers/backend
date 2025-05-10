@@ -4,6 +4,8 @@ import com.quqee.backend.internship_hits.file_storage.FileStorageService
 import com.quqee.backend.internship_hits.profile.client.RoleClient
 import com.quqee.backend.internship_hits.profile.client.UserClient
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
+import com.quqee.backend.internship_hits.profile.dto.UpdateUserDto
+import com.quqee.backend.internship_hits.profile.entity.UserEntity
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.common.UserId
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
@@ -31,6 +33,23 @@ class ProfileService(
             roleClient.assignRole(userId, setOf(role))
         }
         return userId
+    }
+
+    fun updateProfile(dto: UpdateUserDto) {
+        val user = userClient.getUser(dto.userId) ?:
+            throw ExceptionInApplication(ExceptionType.NOT_FOUND)
+        val currentRoles = user.roles
+        val newRoles = dto.roles.filter { it !in currentRoles }
+        val removedRoles = currentRoles.filter { it !in dto.roles }
+
+        userClient.updateUser(dto)
+
+        if (newRoles.isNotEmpty()) {
+            roleClient.assignRole(dto.userId, newRoles.toSet())
+        }
+        if (removedRoles.isNotEmpty()) {
+            roleClient.removeRole(dto.userId, removedRoles.toSet())
+        }
     }
 
     fun getShortAccount(dto: GetProfileDto): ShortAccountDto {
@@ -81,6 +100,10 @@ class ProfileService(
             }
             deferred.awaitAll()
         }
+    }
+
+    fun getUser(userId: UserId): UserEntity {
+        return userClient.getUser(userId) ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND)
     }
 
     private fun getProfile(dto: GetProfileDto): ProfileDto {

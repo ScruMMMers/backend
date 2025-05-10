@@ -103,14 +103,14 @@ class EmployeesRepository(
     private fun DSLContext.selectStudentIdsForList(): SelectOnConditionStep<Record1<UUID?>> {
         return this.selectDistinct(EMPLOYEES.USER_ID)
             .from(EMPLOYEES)
-            .join(EMPLOYEES_COMPANIES)
+            .leftJoin(EMPLOYEES_COMPANIES)
             .on(EMPLOYEES.USER_ID.eq(EMPLOYEES_COMPANIES.USER_ID))
     }
 
     private fun DSLContext.selectStudentForList(): SelectOnConditionStep<Record> {
         return this.select(SELECTED_FIELDS_FOR_LIST)
             .from(EMPLOYEES)
-            .join(EMPLOYEES_COMPANIES)
+            .leftJoin(EMPLOYEES_COMPANIES)
             .on(EMPLOYEES.USER_ID.eq(EMPLOYEES_COMPANIES.USER_ID))
     }
 
@@ -126,10 +126,14 @@ class EmployeesRepository(
         return EmployeeEntity(
             userId = employeeRecord[EMPLOYEES.USER_ID]!!,
             createdAt = employeeRecord[EMPLOYEES.CREATED_AT]!!,
-            companies = records.map { record ->
-                CompanyEntity(
-                    companyId = record[EMPLOYEES_COMPANIES.COMPANY_ID]!!
-                )
+            companies = records.mapNotNull { record ->
+                if (record[EMPLOYEES_COMPANIES.COMPANY_ID] == null) {
+                    null
+                } else {
+                    CompanyEntity(
+                        companyId = record[EMPLOYEES_COMPANIES.COMPANY_ID]!!
+                    )
+                }
             }.toSet()
         )
     }

@@ -106,7 +106,10 @@ class StudentsRepository(
             group = studentRecord[STUDENTS.STUDENT_GROUP]!!,
             isOnAcademicLeave = studentRecord[STUDENTS.IS_ON_ACADEMIC_LEAVE]!!,
             companyId = studentRecord[STUDENTS.COMPANY_ID],
-            logs = records.map { record ->
+            logs = records.mapNotNull { record ->
+                if (record[LOGS.ID] == null) {
+                    return@mapNotNull null
+                }
                 StudentEntity.StudentLog(
                     id = record[LOGS.ID]!!,
                     type = record[LOGS.TYPE]!!,
@@ -120,22 +123,22 @@ class StudentsRepository(
     private fun DSLContext.selectStudentIdsForList(): SelectOnConditionStep<Record1<UUID?>> {
         return this.selectDistinct(STUDENTS.USER_ID)
             .from(STUDENTS)
-            .join(LOGS)
+            .leftJoin(LOGS)
             .on(STUDENTS.USER_ID.eq(LOGS.USER_ID))
-            .join(LOG_POSITIONS)
+            .leftJoin(LOG_POSITIONS)
             .on(LOGS.ID.eq(LOG_POSITIONS.LOG_ID))
-            .join(POSITIONS)
+            .leftJoin(POSITIONS)
             .on(POSITIONS.ID.eq(LOG_POSITIONS.POSITION_ID))
     }
 
     private fun DSLContext.selectStudentForList(): SelectOnConditionStep<Record> {
         return this.select(SELECTED_FIELDS_FOR_LIST)
             .from(STUDENTS)
-            .join(LOGS)
+            .leftJoin(LOGS)
             .on(STUDENTS.USER_ID.eq(LOGS.USER_ID))
-            .join(LOG_POSITIONS)
+            .leftJoin(LOG_POSITIONS)
             .on(LOGS.ID.eq(LOG_POSITIONS.LOG_ID))
-            .join(POSITIONS)
+            .leftJoin(POSITIONS)
             .on(POSITIONS.ID.eq(LOG_POSITIONS.POSITION_ID))
     }
 
