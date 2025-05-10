@@ -87,8 +87,8 @@ class UserClient(
                 .filter { it.name.startsWith("ROLE_") }
                 .map { UserRole.fromKeycloakRole(it.name) }
                 .toSet(),
-            middleName = userRepresentation.attributes["middleName"]?.toString(),
-            photoId = userRepresentation.attributes["photoId"]?.toString(),
+            middleName = userRepresentation.attributes?.get("middleName")?.firstOrNull(),
+            photoId = userRepresentation.attributes?.get("photoId")?.firstOrNull(),
         )
     }
 

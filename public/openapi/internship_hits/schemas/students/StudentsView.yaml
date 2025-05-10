@@ -13,15 +13,21 @@ GetStudentsListResponseView:
 
 GetStudentInviteLinkRequestView:
   type: object
+  required:
+    - course
   properties:
     course:
       type: integer
+    group:
+      type: string
 
 GetStudentInviteLinkResponseView:
   type: object
+  required:
+    - link
   properties:
     link:
-      $ref: '../file/FileModels.yaml#/FileView'
+      type: string
 
 CreateStudentView:
   type: object
@@ -55,6 +61,7 @@ CreateStudentView:
       type: string
     inviteLinkId:
       type: string
+      format: uuid
 
 DeaneryEditStudentRequestView:
   type: object

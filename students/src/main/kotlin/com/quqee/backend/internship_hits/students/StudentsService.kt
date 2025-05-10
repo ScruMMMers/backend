@@ -1,5 +1,6 @@
 package com.quqee.backend.internship_hits.students
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.quqee.backend.internship_hits.company.service.CompanyService
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
@@ -12,21 +13,25 @@ import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.ShortLogInfo
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
-import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListDto
-import com.quqee.backend.internship_hits.public_interface.students_public.MoveToCourseByCourseDto
-import com.quqee.backend.internship_hits.public_interface.students_public.MoveToCourseByUserDto
-import com.quqee.backend.internship_hits.public_interface.students_public.MoveToCourseDto
-import com.quqee.backend.internship_hits.public_interface.students_public.StudentDto
+import com.quqee.backend.internship_hits.public_interface.students_public.*
+import com.quqee.backend.internship_hits.students.entity.InviteLinkConfigEntity
+import com.quqee.backend.internship_hits.students.entity.InviteLinkEntity
 import com.quqee.backend.internship_hits.students.entity.StudentEntity
+import com.quqee.backend.internship_hits.students.public_interface.CreateInviteLinkDto
 import com.quqee.backend.internship_hits.students.public_interface.CreateStudentDto
+import com.quqee.backend.internship_hits.students.repository.InviteLinkRepository
 import com.quqee.backend.internship_hits.students.repository.StudentsFilterParams
 import com.quqee.backend.internship_hits.students.repository.StudentsRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
+import org.springframework.util.CollectionUtils
+import org.springframework.web.util.UriComponentsBuilder
+import java.util.*
+import com.quqee.backend.internship_hits.public_interface.students_public.CreateInviteLinkDto as ExternalCreateInviteLinkDto
 import com.quqee.backend.internship_hits.public_interface.students_public.CreateStudentDto as ExternalCreateStudentDto
 
 @Service
@@ -34,6 +39,9 @@ class StudentsService(
     private val profileService: ProfileService,
     private val companyService: CompanyService,
     private val studentsRepository: StudentsRepository,
+    private val inviteLinkRepository: InviteLinkRepository,
+    @Value("\${client.uri}")
+    private val clientUri: String,
 ) {
     fun getStudentsList(dto: GetStudentsListDto): LastIdPaginationResponse<StudentDto, UserId> {
         val students = studentsRepository.getStudents(
@@ -67,8 +75,22 @@ class StudentsService(
         return mapStudentToDto(student)
     }
 
+    fun createInviteLink(dto: ExternalCreateInviteLinkDto): InviteLinkDto {
+        val createDto = CreateInviteLinkDto(
+            config = InviteLinkConfigEntity(
+                group = dto.group,
+                course = dto.course,
+            ),
+        )
+        val inviteLink = inviteLinkRepository.createLink(createDto)
+        return createInviteLinkDto(inviteLink)
+    }
+
     @Transactional
     fun createStudent(dto: ExternalCreateStudentDto): StudentDto {
+        val inviteLink = inviteLinkRepository.getLink(dto.inviteLinkId)
+            ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Пригласительная ссылка не найдена")
+
         val userId = profileService.createProfile(
             CreateUserDto(
                 username = dto.username,
@@ -84,8 +106,8 @@ class StudentsService(
         val student = studentsRepository.createStudent(
             CreateStudentDto(
                 userId = userId,
-                course = dto.course,
-                group = dto.group,
+                course = inviteLink.config.course,
+                group = inviteLink.config.group ?: dto.group,
                 isOnAcademicLeave = false,
                 companyId = null,
             )
@@ -176,5 +198,28 @@ class StudentsService(
             5 -> setOf(UserRole.STUDENT_GRADUATE)
             else -> emptySet()
         }
+    }
+
+    private fun createInviteLinkDto(inviteLinkEntity: InviteLinkEntity): InviteLinkDto {
+        val link = UriComponentsBuilder.fromUriString(clientUri)
+            .pathSegment("students", "registration")
+            .queryParam("id", inviteLinkEntity.id)
+            .queryParams(
+                CollectionUtils.toMultiValueMap(
+                    inviteLinkEntity.config
+                        .toMap()
+                        .mapValues { listOf(OBJECT_MAPPER.writeValueAsString(it.value)) }
+                )
+            )
+            .build()
+            .toUriString()
+
+        return InviteLinkDto(
+            link = link
+        )
+    }
+
+    companion object {
+        private val OBJECT_MAPPER = jacksonObjectMapper()
     }
 }
