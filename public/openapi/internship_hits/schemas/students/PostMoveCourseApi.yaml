@@ -1,0 +1,11 @@
+post:
+  tags:
+    - students
+  summary: Переместить студентов на курс
+  security:
+    - openIdConnect: [ ]
+  responses:
+    '200':
+      description: Успешно переместили студентов
+    '400':
+      description: Что-то пошло не так

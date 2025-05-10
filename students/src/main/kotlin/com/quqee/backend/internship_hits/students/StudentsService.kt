@@ -164,6 +164,19 @@ class StudentsService(
                     studentsRepository.updateCourse(userIds, dto.toCourse)
                 }
             }
+            is MoveToCourseAllDto -> {
+                (1..4).map { course ->
+                    course to studentsRepository.getStudentsByCourse(course).map { it.userId }.toSet()
+                }.forEach { (fromCourse, studentsIds) ->
+                    val toCourse = fromCourse + 1
+                    val fromCourseRole = getRoleByCourse(fromCourse)
+                    val toCourseRole = getRoleByCourse(toCourse)
+
+                    profileService.removeRoles(studentsIds, fromCourseRole)
+                    profileService.addRoles(studentsIds, toCourseRole)
+                    studentsRepository.updateCourse(studentsIds, toCourse)
+                }
+            }
         }
     }
 

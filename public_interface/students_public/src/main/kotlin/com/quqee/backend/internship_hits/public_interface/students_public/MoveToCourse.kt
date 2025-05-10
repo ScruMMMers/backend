@@ -5,11 +5,16 @@ import com.quqee.backend.internship_hits.public_interface.common.UserId
 enum class MoveToCourseType {
     BY_COURSE,
     BY_USER,
+    ALL,
 }
 
 interface MoveToCourseDto {
     val type: MoveToCourseType
 }
+
+data class MoveToCourseAllDto(
+    override val type: MoveToCourseType = MoveToCourseType.ALL,
+) : MoveToCourseDto
 
 data class MoveToCourseByCourseDto(
     override val type: MoveToCourseType = MoveToCourseType.BY_COURSE,

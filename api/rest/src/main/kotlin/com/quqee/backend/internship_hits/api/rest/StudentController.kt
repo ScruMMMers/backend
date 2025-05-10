@@ -13,6 +13,7 @@ import com.quqee.backend.internship_hits.public_interface.students_public.Create
 import com.quqee.backend.internship_hits.public_interface.students_public.CreateStudentDto
 import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListDto
 import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListFilterParamDto
+import com.quqee.backend.internship_hits.public_interface.students_public.MoveToCourseAllDto
 import com.quqee.backend.internship_hits.public_interface.students_public.MoveToCourseDto
 import com.quqee.backend.internship_hits.public_interface.students_public.StudentDto
 import com.quqee.backend.internship_hits.students.StudentsService
@@ -107,6 +108,11 @@ class StudentController(
 
     override fun studentsUserIdRemoveAcademicPost(userId: UUID): ResponseEntity<StudentView> {
         studentsService.removeStudentFromAcademic(userId)
+        return ResponseEntity.ok().build()
+    }
+
+    override fun studentsDeaneryMoveCoursePost(): ResponseEntity<Unit> {
+        studentsService.moveToCourse(MoveToCourseAllDto())
         return ResponseEntity.ok().build()
     }
 
