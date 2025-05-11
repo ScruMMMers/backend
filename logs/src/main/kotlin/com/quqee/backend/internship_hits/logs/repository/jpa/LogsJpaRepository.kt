@@ -2,6 +2,8 @@ package com.quqee.backend.internship_hits.logs.repository.jpa
 
 import com.quqee.backend.internship_hits.logs.entity.LogEntity
 import com.quqee.backend.internship_hits.public_interface.common.CompanyStatisticsProjection
+import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
+import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Query
@@ -38,4 +40,7 @@ interface LogsJpaRepository : JpaRepository<LogEntity, UUID>, JpaSpecificationEx
     """)
     fun getStatisticByCompany(@Param("companyId") companyId: UUID): List<CompanyStatisticsProjection>
 
+    fun existsByUserIdAndType(userId: UUID, type: LogType): Boolean
+
+    fun existsByUserIdAndTypeAndApprovalStatus(userId: UUID, type: LogType, approvalStatus: ApprovalStatus): Boolean
 }

@@ -1,0 +1,33 @@
+CheckDataListView:
+  type: object
+  required:
+    - checks
+  properties:
+    checks:
+      type: array
+      items:
+        $ref: '#/CheckDataView'
+
+CheckDataView:
+  type: object
+  required:
+    - position
+    - ruName
+    - enName
+    - isChecked
+  properties:
+    position:
+      type: integer
+    ruName:
+      type: string
+    enName:
+      type: string
+    ruDescription:
+      type: string
+      nullable: true
+    enDescription:
+      type: string
+      nullable: true
+    isChecked:
+      type: boolean
+      example: true

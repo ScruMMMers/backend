@@ -159,6 +159,15 @@ class LogsRepository(
         return logMapper.toLogDto(savedLog)
     }
 
+    fun existsLogByUserIdAndType(userId: UUID, type: LogType): Boolean {
+        return logsJpaRepository.existsByUserIdAndType(userId, type)
+    }
+
+    fun existsLogByUserIdAndTypeAndApproved(userId: UUID, type: LogType): Boolean {
+        return logsJpaRepository.existsByUserIdAndTypeAndApprovalStatus(userId, type, ApprovalStatus.APPROVED)
+    }
+
+
     fun updateApprovalStatus(logId: UUID, isApprove: Boolean): LogDto {
         val log = logsJpaRepository.findById(logId)
             .orElseThrow { ExceptionInApplication(ExceptionType.NOT_FOUND, "Лог с ID $logId не найден") }
