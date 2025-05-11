@@ -72,6 +72,8 @@ paths:
     $ref: './schemas/logs/ApproveLogApi.yaml'
   /logs/change-company:
     $ref: './schemas/logs/ChangeCompanyApi.yaml'
+  /logs/check-list:
+    $ref: './schemas/logs/GetCheckListApi.yaml'
 
   /company/{companyId}:
     $ref: './schemas/company/GetCompanyApi.yaml'

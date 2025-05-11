@@ -1,11 +1,13 @@
 package com.quqee.backend.internship_hits.api.rest
 
+import com.quqee.backend.internship_hits.logs.service.CheckListService
 import com.quqee.backend.internship_hits.logs.service.CommentService
 import com.quqee.backend.internship_hits.logs.service.LogsService
 import com.quqee.backend.internship_hits.mapper.EnumerationMapper
 import com.quqee.backend.internship_hits.mapper.FromApiToInternalMapper
 import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
 import com.quqee.backend.internship_hits.model.rest.*
+import com.quqee.backend.internship_hits.public_interface.check_list.CheckData
 import com.quqee.backend.internship_hits.public_interface.comment.CommentsListDto
 import com.quqee.backend.internship_hits.public_interface.comment.CreateCommentDto
 import com.quqee.backend.internship_hits.public_interface.comment.UpdateCommentDto
@@ -21,6 +23,7 @@ import java.util.*
 class LogsController(
     private val logsService: LogsService,
     private val commentService: CommentService,
+    private val checkListService: CheckListService,
     private val mapCreateLogRequest: FromApiToInternalMapper<CreateLogRequestView, CreateLogRequestDto>,
     private val mapUpdateLogRequest: FromApiToInternalMapper<UpdateLogRequestView, UpdateLogRequestDto>,
     private val mapCreatedLog: FromInternalToApiMapper<CreatedLogView, CreatedLogDto>,
@@ -30,7 +33,8 @@ class LogsController(
     private val mapCreateComment: FromApiToInternalMapper<CreateCommentView, CreateCommentDto>,
     private val mapUpdateComment: FromApiToInternalMapper<UpdateCommentView, UpdateCommentDto>,
     private val mapLogType: EnumerationMapper<LogTypeEnum, LogType>,
-    private val mapApprovalStatus: EnumerationMapper<ApprovalStatusEnum, ApprovalStatus>
+    private val mapApprovalStatus: EnumerationMapper<ApprovalStatusEnum, ApprovalStatus>,
+    private val mapCheckData: FromInternalToApiMapper<CheckDataView, CheckData>
 ) : LogsApiDelegate {
 
     override fun logsLogIdPost(
@@ -146,5 +150,11 @@ class LogsController(
             ChangeCompanyDto(companyId = changeCompanyView.companyId, positionId = changeCompanyView.positionId)
         )
         return ResponseEntity.ok(mapCreatedLog.fromInternal(createdLogDto))
+    }
+
+    override fun logsCheckListGet(): ResponseEntity<List<CheckDataView>> {
+        val checkDataList = checkListService.getCheckList()
+        val mappedCheckList = checkDataList.map { checkData -> mapCheckData.fromInternal(checkData) }
+        return ResponseEntity.ok(mappedCheckList)
     }
 }
