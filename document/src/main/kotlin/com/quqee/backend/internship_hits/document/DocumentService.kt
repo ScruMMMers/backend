@@ -12,6 +12,7 @@ import com.quqee.backend.internship_hits.students.StudentsService
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
+import java.util.*
 
 @Service
 class DocumentService(
@@ -19,8 +20,8 @@ class DocumentService(
 ) {
     private val emptyCompanyName = "Без компании"
 
-    fun generateInternshipReport(): ByteArray {
-        val grouped: Map<String, List<StudentSummaryDto>> = getStudentsGroupedByCompany()
+    fun generateInternshipReport(companyIds: List<UUID>?): ByteArray {
+        val grouped: Map<String, List<StudentSummaryDto>> = getStudentsGroupedByCompany(companyIds)
 
         val strategy = ReportStrategyFactory
             .getStrategy<StudentSummaryDto>(ReportType.INTERNSHIP)
@@ -35,8 +36,8 @@ class DocumentService(
         return outputStream.toByteArray()
     }
 
-    private fun getStudentsGroupedByCompany(): Map<String, List<StudentSummaryDto>> {
-        val allStudents = getStudentList()
+    private fun getStudentsGroupedByCompany(companyIds: List<UUID>?): Map<String, List<StudentSummaryDto>> {
+        val allStudents = getStudentList(companyIds)
 
         return allStudents
             .groupBy(
@@ -51,7 +52,7 @@ class DocumentService(
             )
     }
 
-    private fun getStudentList(): List<StudentDto> {
+    private fun getStudentList(companyIds: List<UUID>?): List<StudentDto> {
         val allStudents = mutableListOf<StudentDto>()
         var lastId: UserId? = null
 
@@ -72,7 +73,11 @@ class DocumentService(
             )
 
             val response = studentsService.getStudentsList(request)
-            allStudents.addAll(response.responseCollection)
+            val filteredStudents = response.responseCollection.filter {
+                companyIds.isNullOrEmpty() || it.company?.companyId in companyIds
+            }
+
+            allStudents.addAll(filteredStudents)
 
             lastId = response.lastId
 

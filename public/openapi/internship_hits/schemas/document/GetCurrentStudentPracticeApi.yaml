@@ -5,6 +5,16 @@ get:
   operationId: documentsInternshipCurrentGet
   security:
     - openIdConnect: []
+  parameters:
+    - name: companyIds
+      in: query
+      description: Список ID компаний
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+          format: uuid
   responses:
     '200':
       description: Excel-файл с отчётом по практике

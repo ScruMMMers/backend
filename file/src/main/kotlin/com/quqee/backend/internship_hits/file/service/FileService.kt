@@ -42,6 +42,8 @@ interface FileService {
      * @return Сущность с метаданными файла
      */
     fun getFileById(fileId: UUID): FileDto
+
+    fun getZipByIds(fileIds: List<UUID>): ByteArray
 }
 
 @Service
@@ -88,6 +90,14 @@ class FileServiceImpl(
     override fun getFileById(fileId: UUID): FileDto {
         val fileEntity = getFileEntityById(fileId)
         return fileMapper.toDto(fileEntity)
+    }
+
+    override fun getZipByIds(fileIds: List<UUID>): ByteArray {
+        val fileEntities = fileRepository.findAllById(fileIds)
+
+        val fileKeys = fileEntities.map { it.fileKey }
+
+        return fileStorageService.getArchiveForFiles(fileKeys)
     }
 
     private fun getFileEntityById(fileId: UUID): FileEntity {

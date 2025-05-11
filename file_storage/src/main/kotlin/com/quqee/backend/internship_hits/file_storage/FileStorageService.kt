@@ -15,7 +15,10 @@ import software.amazon.awssdk.services.s3.model.HeadObjectRequest
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest
+import java.io.ByteArrayOutputStream
 import java.time.Duration
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 @Service
 class FileStorageService(
@@ -79,5 +82,32 @@ class FileStorageService(
         } catch (e: Exception) {
             throw ExceptionInApplication(ExceptionType.FATAL, "Ошибка при удалении файла")
         }
+    }
+
+    fun getArchiveForFiles(fileKeys: List<String>): ByteArray {
+        val outputStream = ByteArrayOutputStream()
+
+        ZipOutputStream(outputStream).use { zipOut ->
+            fileKeys.forEach { fileKey ->
+                try {
+                    val request = GetObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(fileKey)
+                        .build()
+
+                    s3Client.getObject(request).use { s3InputStream ->
+                        zipOut.putNextEntry(ZipEntry(fileKey.substringAfterLast("/")))
+
+                        s3InputStream.copyTo(zipOut)
+
+                        zipOut.closeEntry()
+                    }
+                } catch (e: Exception) {
+                    log.error("Ошибка при добавлении файла $fileKey в архив", e)
+                }
+            }
+        }
+
+        return outputStream.toByteArray()
     }
 }
