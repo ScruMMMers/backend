@@ -152,9 +152,11 @@ class LogsController(
         return ResponseEntity.ok(mapCreatedLog.fromInternal(createdLogDto))
     }
 
-    override fun logsCheckListGet(): ResponseEntity<List<CheckDataView>> {
+    override fun logsCheckListGet(): ResponseEntity<CheckDataListView> {
         val checkDataList = checkListService.getCheckList()
         val mappedCheckList = checkDataList.map { checkData -> mapCheckData.fromInternal(checkData) }
-        return ResponseEntity.ok(mappedCheckList)
+        return ResponseEntity.ok(
+            CheckDataListView(mappedCheckList)
+        )
     }
 }

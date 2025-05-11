@@ -1,7 +1,12 @@
 CheckDataListView:
-  type: array
-  items:
-    $ref: '#/CheckDataView'
+  type: object
+  required:
+    - checks
+  properties:
+    checks:
+      type: array
+      items:
+        $ref: '#/CheckDataView'
 
 CheckDataView:
   type: object
