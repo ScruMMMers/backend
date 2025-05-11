@@ -12,6 +12,9 @@ LastIdPaginationView:
       format: int32
     hasNext:
       type: boolean
+    fullSize:
+      type: integer
+      format: int32
 
 PaginationPageLastId:
   in: query

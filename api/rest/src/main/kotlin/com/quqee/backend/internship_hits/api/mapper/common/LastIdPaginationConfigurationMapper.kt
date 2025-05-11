@@ -19,7 +19,7 @@ class LastIdPaginationConfigurationMapper {
         LastIdPagination(
             lastId = model.lastId,
             pageSize = model.pageSize,
-            hasNext = model.hasNext
+            hasNext = model.hasNext,
         )
     }
 
@@ -28,7 +28,7 @@ class LastIdPaginationConfigurationMapper {
         LastIdPaginationView(
             pageSize = model.pageSize,
             hasNext = model.hasNext,
-            lastId = model.lastId
+            lastId = model.lastId,
         )
     }
 
@@ -37,7 +37,8 @@ class LastIdPaginationConfigurationMapper {
         LastIdPaginationView(
             pageSize = model.actualPageSize,
             hasNext = model.hasNextPage,
-            lastId = model.lastId
+            lastId = model.lastId,
+            fullSize = model.fullSize,
         )
     }
 }

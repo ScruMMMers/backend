@@ -102,7 +102,8 @@ open class Oauth2SecurityConfiguration {
     companion object {
         private val WHITE_LIST = arrayOf(
             "/hello",
-            "/ws/notification/**"
+            "/ws/notification/**",
+            "/students/registration",
         )
     }
 }

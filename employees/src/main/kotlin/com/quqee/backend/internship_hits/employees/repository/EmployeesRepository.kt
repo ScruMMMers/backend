@@ -57,6 +57,11 @@ class EmployeesRepository(
             .map(::employeeMapper)
     }
 
+    fun getFilteredEmployeesSize(filter: EmployeesFilterParams): Int {
+        return dsl.fetchCount(dsl.selectStudentIdsForList()
+            .where(filter.toCondition()))
+    }
+
     fun createEmployee(dto: CreateEmployeeDto): EmployeeEntity {
         return dsl.insertInto(EMPLOYEES)
             .set(EMPLOYEES.USER_ID, dto.userId)

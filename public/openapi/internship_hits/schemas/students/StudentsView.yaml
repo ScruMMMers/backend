@@ -102,11 +102,12 @@ StudentView:
     group:
       type: string
     course:
-      type: string
+      type: integer
+      format: int32
     fullName:
       type: string
-    photo:
-      $ref: '../file/FileModels.yaml#/FileView'
+    avatarUrl:
+      type: string
     company:
       $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
     logs:

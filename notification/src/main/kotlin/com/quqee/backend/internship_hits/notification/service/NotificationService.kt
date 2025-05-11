@@ -89,7 +89,8 @@ class NotificationService(
 
         return LastIdPaginationResponse(
             notifications,
-            dto.pagination
+            dto.pagination,
+            null
         )
     }
 
@@ -106,7 +107,8 @@ class NotificationService(
 
         return LastIdPaginationResponse(
             notifications,
-            dto.pagination
+            dto.pagination,
+            null,
         )
     }
 
