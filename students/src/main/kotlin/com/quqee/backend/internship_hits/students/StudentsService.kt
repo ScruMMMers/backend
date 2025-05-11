@@ -44,16 +44,17 @@ class StudentsService(
     private val clientUri: String,
 ) {
     fun getStudentsList(dto: GetStudentsListDto): LastIdPaginationResponse<StudentDto, UserId> {
+        val filterDto = StudentsFilterParams(
+            course = dto.filter.course,
+            group = dto.filter.group,
+            logType = dto.filter.logType,
+            logApprovalStatus = dto.filter.logApprovalStatus,
+            positionType = dto.filter.positionType,
+            positionName = dto.filter.positionName,
+        )
         val students = studentsRepository.getStudents(
             pagination = dto.pagination,
-            filter = StudentsFilterParams(
-                course = dto.filter.course,
-                group = dto.filter.group,
-                logType = dto.filter.logType,
-                logApprovalStatus = dto.filter.logApprovalStatus,
-                positionType = dto.filter.positionType,
-                positionName = dto.filter.positionName,
-            )
+            filter = filterDto,
         )
         val studentDtos = runBlocking {
             val deferred = students.map { studentEntity ->
@@ -66,7 +67,8 @@ class StudentsService(
 
         return LastIdPaginationResponse(
             studentDtos,
-            dto.pagination
+            dto.pagination,
+            studentsRepository.getFilteredStudentsSize(filterDto)
         )
     }
 

@@ -51,6 +51,11 @@ class StudentsRepository(
             .map(::studentMapper)
     }
 
+    fun getFilteredStudentsSize(filter: StudentsFilterParams,): Int {
+        return dsl.fetchCount(dsl.selectStudentIdsForList()
+            .where(filter.toCondition()))
+    }
+
     fun getStudent(userId: UserId): StudentEntity? {
         return dsl.selectFrom(STUDENTS)
             .where(STUDENTS.USER_ID.eq(userId))

@@ -32,12 +32,13 @@ class EmployeesService(
     private val employeesRepository: EmployeesRepository,
 ) {
     fun getEmployeesList(dto: GetEmployeesListDto): LastIdPaginationResponse<EmployeeDto, UserId> {
+        val filterDto = EmployeesFilterParams(
+            companiesIds = dto.filter.companiesIds,
+            employeesIds = dto.filter.employeesIds,
+        )
         val employees = employeesRepository.getEmployees(
             pagination = dto.pagination,
-            filter = EmployeesFilterParams(
-                companiesIds = dto.filter.companiesIds,
-                employeesIds = dto.filter.employeesIds,
-            )
+            filter = filterDto,
         )
 
         val employeeDtos = runBlocking {
@@ -51,6 +52,7 @@ class EmployeesService(
         return LastIdPaginationResponse(
             employeeDtos,
             dto.pagination,
+            employeesRepository.getFilteredEmployeesSize(filterDto),
         )
     }
 

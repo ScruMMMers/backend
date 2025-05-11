@@ -28,10 +28,11 @@ open class StudentsConfigurationMapper(
         StudentView(
             userId = model.profile.userId,
             group = model.group,
-            course = "${model.course} курс",
+            course = model.course,
             fullName = model.profile.fullName,
             company = model.company?.let { companyMapper.fromInternal(it) },
             logs = model.logs.map { mapStudentShortLogToApi.fromInternal(it) },
+            avatarUrl = model.profile.avatarUrl,
         )
     }
 
