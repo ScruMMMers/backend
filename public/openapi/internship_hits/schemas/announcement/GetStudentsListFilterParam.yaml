@@ -25,3 +25,9 @@ GetStudentsListFilterParamView:
       type: array
       items:
         type: string
+    excludeUserIds:
+      type: array
+      items:
+        type: string
+        format: uuid
+
