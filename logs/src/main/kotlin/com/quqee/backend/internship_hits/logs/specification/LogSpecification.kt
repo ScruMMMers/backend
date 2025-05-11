@@ -30,4 +30,10 @@ object LogSpecification {
         return if (statuses.isNullOrEmpty()) null
         else Specification { root, _, _ -> root.get<ApprovalStatus>("approvalStatus").`in`(statuses) }
     }
+
+    fun byCreatedAtBetween(start: OffsetDateTime, end: OffsetDateTime): Specification<LogEntity>? {
+        return Specification { root, _, cb ->
+            cb.between(root.get("createdAt"), start, end)
+        }
+    }
 }

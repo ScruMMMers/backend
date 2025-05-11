@@ -169,6 +169,8 @@ paths:
 
   /documents/internship/current:
     $ref: './schemas/document/GetCurrentStudentPracticeApi.yaml'
+  /documents/internship/diary:
+    $ref: './schemas/document/GetZipPracticeDiaryByCourseApi.yaml'
 
   /marks/{userId}/create:
     $ref: './schemas/marks/CreateMarkApi.yaml'

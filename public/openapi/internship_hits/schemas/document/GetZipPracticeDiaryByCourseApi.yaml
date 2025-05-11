@@ -1,0 +1,38 @@
+get:
+  tags:
+    - document
+  summary: Скачать ZIP-архив с дневниками практики по курсу студентов
+  operationId: documentsInternshipArchiveGet
+  security:
+    - openIdConnect: []
+  parameters:
+    - name: course
+      in: query
+      required: true
+      schema:
+        type: integer
+        minimum: 3
+        maximum: 4
+      description: Номер курса студентов (от 3 до 4)
+  responses:
+    '200':
+      description: ZIP-архив с дневниками практики
+      headers:
+        Content-Disposition:
+          schema:
+            type: string
+          example: "attachment; filename=internship_practice_2023-05-15.zip"
+      content:
+        application/octet-stream:
+          schema:
+            type: string
+            format: binary
+        application/zip:
+          schema:
+            type: string
+            format: binary
+    '403':
+      description: Недостаточно прав для доступа к ресурсу
+    '500':
+      description: Ошибка при генерации архива
+

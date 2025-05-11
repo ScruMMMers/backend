@@ -19,4 +19,8 @@ class FileRepository(private val fileJpaRepository: FileJpaRepository) {
     fun findById(fileId: UUID): java.util.Optional<FileEntity> {
         return fileJpaRepository.findById(fileId)
     }
+
+    fun findAllById(fileIds: List<UUID>): List<FileEntity> {
+        return fileJpaRepository.findAllById(fileIds)
+    }
 } 

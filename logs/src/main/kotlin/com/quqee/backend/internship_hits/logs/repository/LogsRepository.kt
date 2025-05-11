@@ -170,6 +170,19 @@ class LogsRepository(
         return logMapper.toLogDto(savedLog)
     }
 
+    fun getApprovedPracticeDiariesByPeriod(
+        start: OffsetDateTime,
+        end: OffsetDateTime
+    ): List<LogEntity> {
+        val spec = Specification
+            .where(LogSpecification.byLogTypes(listOf(LogType.PRACTICE_DIARY)))
+            .and(LogSpecification.byApprovalStatuses(listOf(ApprovalStatus.APPROVED)))
+            .and(LogSpecification.byCreatedAtBetween(start, end))
+
+        val logs = logsJpaRepository.findAll(spec)
+        return logs
+    }
+
     fun getLogById(logId: UUID): LogDto? {
         val log = logsJpaRepository.findById(logId)
         return log.map { logMapper.toLogDto(it) }.orElse(null)
