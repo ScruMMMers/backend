@@ -23,7 +23,8 @@ class AnnouncementController(
         announcementService.sendAnnouncementByFilter(
             CreateAnnouncementByFilterDto(
                 data = mapAnnouncementData.fromApi(createAnnouncementByFilterView.data),
-                filter = mapStudentFilter.fromApi(createAnnouncementByFilterView.filter)
+                filter = mapStudentFilter.fromApi(createAnnouncementByFilterView.filter),
+                excludeUserIds = createAnnouncementByFilterView.filter.excludeUserIds
             )
         )
         return ResponseEntity.ok().build()

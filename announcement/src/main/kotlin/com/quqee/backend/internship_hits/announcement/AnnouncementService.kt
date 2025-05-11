@@ -60,6 +60,7 @@ class AnnouncementServiceImpl(
         val semaphore = Semaphore(maxConcurrentBatches)
         var lastId: UserId? = null
         val pageSize = 20
+        val excludedSet = dto.excludeUserIds?.toSet()
 
         do {
             val studentsPage = studentsService.getStudentsList(
@@ -72,7 +73,18 @@ class AnnouncementServiceImpl(
             val students = studentsPage.responseCollection
             if (students.isEmpty()) break
 
-            val notificationDtos = students.map { student ->
+            val filteredStudents = if (!excludedSet.isNullOrEmpty()) {
+                students.filter { it.id !in excludedSet }
+            } else {
+                students
+            }
+
+            if (filteredStudents.isEmpty()) {
+                lastId = studentsPage.lastId
+                continue
+            }
+
+            val notificationDtos = filteredStudents.map { student ->
                 CreateNotificationDto(
                     title = dto.data.title,
                     message = dto.data.text,
@@ -92,4 +104,5 @@ class AnnouncementServiceImpl(
             lastId = studentsPage.lastId
         } while (students.size == pageSize)
     }
+
 }
