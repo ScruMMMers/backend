@@ -9,12 +9,12 @@ import com.quqee.backend.internship_hits.public_interface.common.enums.Exception
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
+import com.quqee.backend.internship_hits.public_interface.company.ShortCompanyWithEmployersDto
 import com.quqee.backend.internship_hits.public_interface.company.UpdateCompanyDto
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
-import java.net.URI
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -104,7 +104,7 @@ class CompanyRepository(
     /**
      * Получение списка компаний
      */
-    fun getCompaniesList(name: String?, lastId: UUID?, pageSize: Int): List<ShortCompanyDto> {
+    fun getCompaniesList(name: String?, lastId: UUID?, pageSize: Int): List<ShortCompanyWithEmployersDto> {
         val pageable = PageRequest.of(0, pageSize, Sort.by("createdAt").descending())
 
         var lastCompany: CompanyEntity? = null
@@ -120,7 +120,7 @@ class CompanyRepository(
 
         val companies = companyJpaRepository.findAll(spec, pageable).content
 
-        return companies.map { mapper.toShortCompanyDto(it) }
+        return companies.map { mapper.toShortCompanyWithEmployersDto(it) }
     }
 
 }

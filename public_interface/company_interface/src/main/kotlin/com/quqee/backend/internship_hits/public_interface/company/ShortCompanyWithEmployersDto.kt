@@ -1,16 +1,17 @@
-package com.quqee.backend.internship_hits.public_interface.common
+package com.quqee.backend.internship_hits.public_interface.company
 
 import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
 import java.net.URI
 import java.util.*
 
-data class ShortCompanyDto(
+data class ShortCompanyWithEmployersDto(
     val companyId: UUID,
     val name: String,
     val avatarUrl: URI,
     val primaryColor: ColorEnum,
     val sinceYear: String,
-    val description: String
+    val description: String,
+    val employedCount: Int,
 ) {
     constructor() : this(
         companyId = UUID.randomUUID(),
@@ -19,5 +20,6 @@ data class ShortCompanyDto(
         primaryColor = ColorEnum.NAVY,
         sinceYear = "2000",
         description = "string",
+        employedCount = 0,
     )
 }

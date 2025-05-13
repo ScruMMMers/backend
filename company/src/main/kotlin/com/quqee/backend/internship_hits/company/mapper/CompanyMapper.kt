@@ -1,11 +1,13 @@
 package com.quqee.backend.internship_hits.company.mapper
 
 import com.quqee.backend.internship_hits.company.entity.CompanyEntity
+import com.quqee.backend.internship_hits.company.entity.CompanyPositionEntity
 import com.quqee.backend.internship_hits.file.service.FileService
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
+import com.quqee.backend.internship_hits.public_interface.company.ShortCompanyWithEmployersDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
 import org.springframework.stereotype.Component
 import java.net.URI
@@ -42,7 +44,22 @@ class CompanyMapper(
             name = entity.name,
             avatarUrl = URI.create(fileService.getFileLink(entity.avatarId).downloadUrl),
             primaryColor = ColorEnum.fromHex(entity.primaryColor),
-            sinceYear = entity.sinceYear
+            sinceYear = entity.sinceYear,
+            description = entity.description
+        )
+    }
+
+    fun toShortCompanyWithEmployersDto(entity: CompanyEntity): ShortCompanyWithEmployersDto {
+        return ShortCompanyWithEmployersDto(
+            companyId = entity.companyId,
+            name = entity.name,
+            avatarUrl = URI.create(fileService.getFileLink(entity.avatarId).downloadUrl),
+            primaryColor = ColorEnum.fromHex(entity.primaryColor),
+            sinceYear = entity.sinceYear,
+            description = entity.description,
+            employedCount = entity.positions.stream()
+                .mapToInt(CompanyPositionEntity::employedCount)
+                .sum()
         )
     }
 

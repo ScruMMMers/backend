@@ -1,4 +1,4 @@
-ShortCompanyView:
+ShortCompanyWithEmployersView:
   type: object
   required:
     - companyId
@@ -7,6 +7,7 @@ ShortCompanyView:
     - primaryColor
     - sinceYear
     - description
+    - employedCount
   properties:
     companyId:
       type: string
@@ -22,3 +23,5 @@ ShortCompanyView:
       type: string
     description:
       type: string
+    employedCount:
+      type: integer

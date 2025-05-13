@@ -17,7 +17,9 @@ class CompanyPositionMapper(
         return CompanyPositionDto(
             id = entity.id,
             companyId = entity.company.companyId,
-            position = positionService.getPositionById(entity.positionId)
+            position = positionService.getPositionById(entity.positionId),
+            employedCount = entity.employedCount,
+            interviewsCount = entity.interviewsCount
         )
     }
 
