@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.util.*
 
+
 @Component
 class UserClient(
     @Value("\${keycloak.internship.realm}") private val realm: String,
@@ -52,6 +53,26 @@ class UserClient(
         }
     }
 
+    fun getUserByUsername(username: String): UserEntity? {
+        val usersResource = getUsersResource()
+        val userRepresentations = usersResource.searchByUsername(username, true)
+        if (userRepresentations.isEmpty()) {
+            return null
+        }
+        val userRepresentation: UserRepresentation? = userRepresentations.firstOrNull()
+        return userRepresentation?.let { userRepresentationToEntity(it) }
+    }
+
+    fun getUserByEmail(email: String): UserEntity? {
+        val usersResource = getUsersResource()
+        val userRepresentations = usersResource.searchByEmail(email, true)
+        if (userRepresentations.isEmpty()) {
+            return null
+        }
+        val userRepresentation = userRepresentations.firstOrNull()
+        return userRepresentation?.let { userRepresentationToEntity(it) }
+    }
+
     fun updateUser(dto: UpdateUserDto) {
         val usersResource = getUsersResource()
         val userRepresentation = usersResource.get(dto.userId.toString()).toRepresentation()
@@ -83,7 +104,7 @@ class UserClient(
         val usersResource = getUsersResource()
         val userRepresentation = usersResource[userId.toString()]
             ?: return null
-        return userRepresentationToEntity(userRepresentation)
+        return userRepresentationToEntity(userRepresentation.toRepresentation())
     }
 
     private fun getUsersResource(): UsersResource {
@@ -91,15 +112,15 @@ class UserClient(
         return internshipRealm.users()
     }
 
-    private fun userRepresentationToEntity(resource: UserResource): UserEntity {
-        val userRepresentation = resource.toRepresentation()
+    private fun userRepresentationToEntity(userRepresentation: UserRepresentation): UserEntity {
         return UserEntity(
             userId = UUID.fromString(userRepresentation.id),
             username = userRepresentation.username,
             email = userRepresentation.email,
             firstName = userRepresentation.firstName,
             lastName = userRepresentation.lastName,
-            roles = resource.roles()
+            roles = getUsersResource()[userRepresentation.id]
+                .roles()
                 .realmLevel()
                 .listAll()
                 .filter { it.name.startsWith("ROLE_") }
