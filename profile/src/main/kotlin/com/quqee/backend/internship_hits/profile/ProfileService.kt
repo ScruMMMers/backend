@@ -28,6 +28,13 @@ class ProfileService(
     private val fileStorageService: FileStorageService,
 ) {
     fun createProfile(dto: CreateUserDto): UUID {
+        if (userClient.getUserByEmail(dto.email) != null) {
+            throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Пользователь с таким email уже существует")
+        }
+        if (userClient.getUserByUsername(dto.username) != null) {
+            throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Пользователь с таким логином уже существует")
+        }
+
         val userId = userClient.registerUser(dto)
         dto.roles.forEach { role ->
             roleClient.assignRole(userId, setOf(role))
@@ -38,6 +45,14 @@ class ProfileService(
     fun updateProfile(dto: UpdateUserDto) {
         val user = userClient.getUser(dto.userId) ?:
             throw ExceptionInApplication(ExceptionType.NOT_FOUND)
+
+        if (userClient.getUserByEmail(dto.email) != null) {
+            throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Пользователь с таким email уже существует")
+        }
+        if (userClient.getUserByUsername(dto.username) != null) {
+            throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Пользователь с таким логином уже существует")
+        }
+
         val currentRoles = user.roles
         val newRoles = dto.roles.filter { it !in currentRoles }
         val removedRoles = currentRoles.filter { it !in dto.roles }
