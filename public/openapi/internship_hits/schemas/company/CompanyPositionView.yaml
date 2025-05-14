@@ -4,6 +4,8 @@ CompanyPositionView:
     - id
     - companyId
     - position
+    - interviewsCount
+    - employedCount
   properties:
     id:
       type: string
@@ -13,3 +15,7 @@ CompanyPositionView:
       format: uuid
     position:
       $ref: '../common/Position.yaml#/PositionView'
+    interviewsCount:
+      type: integer
+    employedCount:
+      type: integer

@@ -151,3 +151,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/initial_employees.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 22
+      author: yuriy_sitdikov
+      changes:
+        - sqlFile:
+            path: ddl/v18_update_company_positions_table_counts.sql
+            relativeToChangelogFile: true

@@ -7,6 +7,6 @@ CompaniesListView:
     companies:
       type: array
       items:
-        $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
+        $ref: './ShortCompanyWithEmployersView.yaml#/ShortCompanyWithEmployersView'
     page:
       $ref: '../common/Pagination.yaml#/LastIdPaginationView'

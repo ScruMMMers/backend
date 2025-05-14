@@ -6,5 +6,7 @@ import java.util.*
 data class CompanyPositionDto(
     val id: UUID,
     val companyId: UUID,
-    val position: PositionDto
+    val position: PositionDto,
+    val employedCount: Int,
+    val interviewsCount: Int
 )

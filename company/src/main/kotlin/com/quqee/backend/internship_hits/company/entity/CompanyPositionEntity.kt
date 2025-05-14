@@ -22,10 +22,18 @@ data class CompanyPositionEntity(
     @Column(name = "position_id", nullable = false)
     var positionId: Long,
 
+    @Column(name = "interviews_count", nullable = false)
+    var interviewsCount: Int,
+
+    @Column(name = "employed_count", nullable = false)
+    var employedCount: Int
+
     ) {
     constructor() : this(
         UUID.randomUUID(),
         CompanyEntity(),
-        0L
+        0L,
+        0,
+        0
     )
 }

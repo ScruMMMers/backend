@@ -6,9 +6,7 @@ import com.quqee.backend.internship_hits.mapper.makeFromApiMapper
 import com.quqee.backend.internship_hits.mapper.makeToApiMapper
 import com.quqee.backend.internship_hits.model.rest.CompanyPositionView
 import com.quqee.backend.internship_hits.model.rest.PositionView
-import com.quqee.backend.internship_hits.model.rest.ShortAccountView
 import com.quqee.backend.internship_hits.public_interface.common.PositionDto
-import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.company_position.CompanyPositionDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -24,7 +22,9 @@ class CompanyPositionConfigurationMapper {
             CompanyPositionDto(
                 id = model.id,
                 companyId = model.companyId,
-                position = positionMapper.fromApi(model.position)
+                position = positionMapper.fromApi(model.position),
+                interviewsCount = model.interviewsCount,
+                employedCount = model.employedCount
             )
         }
 
@@ -36,7 +36,9 @@ class CompanyPositionConfigurationMapper {
             CompanyPositionView(
                 id = model.id,
                 companyId = model.companyId,
-                position = positionMapper.fromInternal(model.position)
+                position = positionMapper.fromInternal(model.position),
+                interviewsCount = model.interviewsCount,
+                employedCount = model.employedCount
             )
         }
 
