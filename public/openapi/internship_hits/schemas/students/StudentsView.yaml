@@ -66,23 +66,20 @@ CreateStudentView:
 DeaneryEditStudentRequestView:
   type: object
   required:
+    - studentId
     - course
     - group
     - fullName
-    - username
-    - email
+    - companyId
   properties:
+    studentId:
+      type: string
+      format: uuid
     course:
       type: integer
     group:
       type: string
     fullName:
-      type: string
-    photoId:
-      type: string
-    username:
-      type: string
-    email:
       type: string
     companyId:
       type: string
@@ -111,9 +108,10 @@ StudentView:
     company:
       $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
     logs:
-      type: array
-      items:
-        $ref: '#/StudentShortLogView'
+      additionalProperties:
+        type: array
+        items:
+          $ref: '#/StudentShortLogView'
 
 StudentShortLogView:
   type: object

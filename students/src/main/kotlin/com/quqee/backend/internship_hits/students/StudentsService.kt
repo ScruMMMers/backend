@@ -33,6 +33,7 @@ import org.springframework.web.util.UriComponentsBuilder
 import java.util.*
 import com.quqee.backend.internship_hits.public_interface.students_public.CreateInviteLinkDto as ExternalCreateInviteLinkDto
 import com.quqee.backend.internship_hits.public_interface.students_public.CreateStudentDto as ExternalCreateStudentDto
+import com.quqee.backend.internship_hits.public_interface.students_public.DeaneryEditStudentDto as ExternalDeaneryEditStudentDto
 
 @Service
 class StudentsService(
@@ -180,6 +181,34 @@ class StudentsService(
                 }
             }
         }
+    }
+
+    @Transactional
+    fun deaneryEditStudent(dto: ExternalDeaneryEditStudentDto): StudentDto {
+        val student = studentsRepository.getStudent(dto.studentId)
+            ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Студент не найден")
+        val updateStudent = student.copy(
+            course = dto.course,
+            group = dto.group,
+            companyId = dto.companyId,
+        )
+        val updatedStudent = studentsRepository.updateStudent(updateStudent)
+
+        val user = profileService.getUser(dto.studentId)
+        val firstName = dto.fullName.split(" ")[1]
+        val lastName = dto.fullName.split(" ")[0]
+        val middleName = dto.fullName.split(" ").getOrNull(2)
+        val updateProfileDto = user.toUpdateDto(
+            email = user.email,
+            firstName = firstName,
+            lastName = lastName,
+            middleName = middleName,
+            photoId = user.photoId,
+            roles = user.roles,
+        )
+        profileService.updateProfile(updateProfileDto)
+
+        return mapStudentToDto(updatedStudent)
     }
 
     private fun mapStudentToDto(entity: StudentEntity): StudentDto {
