@@ -31,7 +31,9 @@ open class StudentsConfigurationMapper(
             course = model.course,
             fullName = model.profile.fullName,
             company = model.company?.let { companyMapper.fromInternal(it) },
-            logs = model.logs.map { mapStudentShortLogToApi.fromInternal(it) },
+            logs = model.logs
+                .map { mapStudentShortLogToApi.fromInternal(it) }
+                .groupBy { it.type.name },
             avatarUrl = model.profile.avatarUrl,
         )
     }

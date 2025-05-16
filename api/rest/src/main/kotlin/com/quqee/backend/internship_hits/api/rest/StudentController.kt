@@ -11,6 +11,7 @@ import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.students_public.CreateInviteLinkDto
 import com.quqee.backend.internship_hits.public_interface.students_public.CreateStudentDto
+import com.quqee.backend.internship_hits.public_interface.students_public.DeaneryEditStudentDto
 import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListDto
 import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListFilterParamDto
 import com.quqee.backend.internship_hits.public_interface.students_public.MoveToCourseAllDto
@@ -34,7 +35,15 @@ class StudentController(
 
 ) : StudentsApiDelegate {
     override fun studentsDeaneryEditPost(deaneryEditStudentRequestView: DeaneryEditStudentRequestView): ResponseEntity<StudentView> {
-        return super.studentsDeaneryEditPost(deaneryEditStudentRequestView)
+        val dto = DeaneryEditStudentDto(
+            studentId = deaneryEditStudentRequestView.studentId,
+            fullName = deaneryEditStudentRequestView.fullName,
+            group = deaneryEditStudentRequestView.group,
+            course = deaneryEditStudentRequestView.course,
+            companyId = deaneryEditStudentRequestView.companyId,
+        )
+        val student = studentsService.deaneryEditStudent(dto)
+        return ResponseEntity.ok(studentViewMapper.fromInternal(student))
     }
 
     override fun studentsRegistrationLinkPost(getStudentInviteLinkRequestView: GetStudentInviteLinkRequestView): ResponseEntity<GetStudentInviteLinkResponseView> {
