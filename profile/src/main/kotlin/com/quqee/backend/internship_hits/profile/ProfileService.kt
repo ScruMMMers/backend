@@ -1,6 +1,6 @@
 package com.quqee.backend.internship_hits.profile
 
-import com.quqee.backend.internship_hits.file_storage.FileStorageService
+import com.quqee.backend.internship_hits.file.service.FileService
 import com.quqee.backend.internship_hits.profile.client.RoleClient
 import com.quqee.backend.internship_hits.profile.client.UserClient
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
@@ -8,9 +8,9 @@ import com.quqee.backend.internship_hits.profile.dto.UpdateUserDto
 import com.quqee.backend.internship_hits.profile.entity.UserEntity
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.common.UserId
-import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
+import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.ProfileDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.ProfileForHeader
@@ -19,13 +19,13 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 
 @Service
 class ProfileService(
     private val userClient: UserClient,
     private val roleClient: RoleClient,
-    private val fileStorageService: FileStorageService,
+    private val fileService: FileService,
 ) {
     fun createProfile(dto: CreateUserDto): UUID {
         if (userClient.getUserByEmail(dto.email) != null) {
@@ -84,7 +84,6 @@ class ProfileService(
         val profile = getProfile(dto)
         return ProfileForHeader(
             fullName = profile.fullName,
-            // мб эти буквы вообще на клиенте рендерить
             avatarUrl = profile.avatarUrl ?: FALLBACK_PROFILE_IMAGE_URL
         )
     }
@@ -125,11 +124,7 @@ class ProfileService(
         val user = userClient.getUser(dto.userId) ?:
             throw ExceptionInApplication(ExceptionType.NOT_FOUND)
         // TODO: Пока не создаем фотки поэтому и получать нечего
-//        val userAvatarUrl = fileStorageService.getFileLink(
-//            GetLinkForFileDto(
-//                fileKey = PROFILE_PICTURE_FILE_FORMATTED.format(dto.userId)
-//            )
-//        )
+        val userAvatarUrl = user.photoId?.let { fileService.getFileLink(UUID.fromString(it)) }
         return ProfileDto(
             userId = user.userId,
             email = user.email,
@@ -137,14 +132,12 @@ class ProfileService(
             lastName = user.lastName,
             roles = user.roles,
             username = user.username,
-            // TODO: Убрать заглушку после создания фоток
-            avatarUrl = FALLBACK_PROFILE_IMAGE_URL
+            avatarUrl = userAvatarUrl?.downloadUrl ?: FALLBACK_PROFILE_IMAGE_URL
         )
     }
 
     companion object {
-        private const val FALLBACK_PROFILE_IMAGE_URL = "https://storage.yandexcloud.net/s3-metaratings-storage/images/8a/2e/8a2edb16e4505b0dad602c4949784e07.png"
-        private const val PROFILE_PICTURE_FILE_FORMATTED = "profile_picture_%s"
+        private const val FALLBACK_PROFILE_IMAGE_URL = "https://static.vecteezy.com/system/resources/thumbnails/036/280/651/small_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg"
         private val log = LoggerFactory.getLogger(ProfileService::class.java)
     }
 }

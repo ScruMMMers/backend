@@ -11,8 +11,7 @@ dependencies {
 
     implementation project(":public_interface:common")
     implementation project(':public_interface:profile_public')
-    implementation project(':file_storage')
-    implementation project(':public_interface:file_storage_public')
+    implementation project(':file')
 
     implementation libs.keycloak.core
     implementation libs.keycloak.admin.client
