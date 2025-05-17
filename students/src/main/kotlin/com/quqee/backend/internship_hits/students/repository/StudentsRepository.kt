@@ -2,8 +2,10 @@ package com.quqee.backend.internship_hits.students.repository
 
 import com.quqee.backend.internship_hits.notification.public.tables.references.LOGS
 import com.quqee.backend.internship_hits.notification.public.tables.references.LOG_POSITIONS
+import com.quqee.backend.internship_hits.notification.public.tables.references.LOG_TAGS
 import com.quqee.backend.internship_hits.notification.public.tables.references.POSITIONS
 import com.quqee.backend.internship_hits.notification.public.tables.references.STUDENTS
+import com.quqee.backend.internship_hits.notification.public.tables.references.TAGS
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationRequest
 import com.quqee.backend.internship_hits.public_interface.common.SortingStrategy
 import com.quqee.backend.internship_hits.public_interface.common.UserId
@@ -11,6 +13,7 @@ import com.quqee.backend.internship_hits.students.entity.StudentEntity
 import com.quqee.backend.internship_hits.students.entity.StudentEntityMapper
 import com.quqee.backend.internship_hits.students.public_interface.CreateStudentDto
 import org.jooq.*
+import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -134,6 +137,10 @@ class StudentsRepository(
             .on(LOGS.ID.eq(LOG_POSITIONS.LOG_ID))
             .leftJoin(POSITIONS)
             .on(POSITIONS.ID.eq(LOG_POSITIONS.POSITION_ID))
+            .leftJoin(LOG_TAGS)
+            .on(LOGS.ID.eq(LOG_POSITIONS.LOG_ID))
+            .leftJoin(TAGS)
+            .on(LOG_TAGS.TAG_ID.eq(TAGS.ID))
     }
 
     private fun DSLContext.selectStudentForList(): SelectOnConditionStep<Record> {
@@ -145,6 +152,10 @@ class StudentsRepository(
             .on(LOGS.ID.eq(LOG_POSITIONS.LOG_ID))
             .leftJoin(POSITIONS)
             .on(POSITIONS.ID.eq(LOG_POSITIONS.POSITION_ID))
+            .leftJoin(LOG_TAGS)
+            .on(LOGS.ID.eq(LOG_POSITIONS.LOG_ID))
+            .leftJoin(TAGS)
+            .on(LOG_TAGS.TAG_ID.eq(TAGS.ID))
     }
 
     private fun StudentsFilterParams.toCondition(): Collection<Condition> {
@@ -155,6 +166,17 @@ class StudentsRepository(
         logApprovalStatus?.let { conditions.add(LOGS.APPROVAL_STATUS.`in`(it)) }
         positionType?.let { conditions.add(POSITIONS.POSITION.`in`(it)) }
         positionName?.let { conditions.add(POSITIONS.NAME.`in`(it)) }
+        companyIds?.let { conditions.add(STUDENTS.COMPANY_ID.`in`(it)) }
+
+        val typeIdPairs = logByCompany?.entries?.flatMap { (type, companyIds) ->
+            companyIds.map { companyId ->
+                DSL.row(type.name, companyId)
+            }
+        }
+        typeIdPairs?.let {
+            conditions.add(DSL.row(LOGS.TYPE, TAGS.COMPANY_ID).`in`(it))
+        }
+
         return conditions
     }
 
@@ -180,6 +202,9 @@ class StudentsRepository(
                 LOGS.USER_ID,
                 LOGS.TYPE,
                 LOGS.APPROVAL_STATUS,
+
+                TAGS.ID,
+                TAGS.COMPANY_ID,
             )
     }
 }

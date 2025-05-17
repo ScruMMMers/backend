@@ -49,6 +49,18 @@ get:
         type: string
         enum:
           - DEFAULT
+    - in: query
+      name: companyId
+      schema:
+        type: array
+        items:
+          type: string
+          format: uuid
+    - in: query
+      name: logByCompany
+      description: '{"OFFER": ["companyId"]}'
+      schema:
+        type: string
   responses:
     '200':
       description: Список студентов
