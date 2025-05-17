@@ -1,5 +1,7 @@
 package com.quqee.backend.internship_hits.api.rest
 
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.quqee.backend.internship_hits.mapper.EnumerationMapper
 import com.quqee.backend.internship_hits.mapper.FromApiToInternalMapper
 import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
@@ -32,7 +34,7 @@ class StudentController(
     private val studentViewMapper: FromInternalToApiMapper<StudentView, StudentDto>,
     private val moveByCourseMapper: FromApiToInternalMapper<MoveStudentsViewByCourse, MoveToCourseDto>,
     private val moveByUserMapper: FromApiToInternalMapper<MoveStudentsViewByUser, MoveToCourseDto>,
-
+    private val objectMapper: ObjectMapper,
 ) : StudentsApiDelegate {
     override fun studentsDeaneryEditPost(deaneryEditStudentRequestView: DeaneryEditStudentRequestView): ResponseEntity<StudentView> {
         val dto = DeaneryEditStudentDto(
@@ -85,7 +87,9 @@ class StudentController(
         logApprovalStatus: List<ApprovalStatusEnum>?,
         positionType: List<PositionEnum>?,
         positionName: List<String>?,
-        orderBy: String?
+        orderBy: String?,
+        companyId: List<UUID>?,
+        logByCompany: String?
     ): ResponseEntity<GetStudentsListResponseView> {
         val dto = GetStudentsListDto(
             pagination = LastIdPaginationRequest(
@@ -98,7 +102,11 @@ class StudentController(
                 logType = logType?.map { logTypeMapper.mapToInternal(it) }?.toSet(),
                 logApprovalStatus = logApprovalStatus?.map { approvalStatusMapper.mapToInternal(it) }?.toSet(),
                 positionType = positionType?.map { positionNameMapper.mapToInternal(it) }?.toSet(),
-                positionName = positionName?.toSet()
+                positionName = positionName?.toSet(),
+                companyIds = companyId?.toSet(),
+                logByCompany = logByCompany?.let {
+                    objectMapper.readValue(it, object : TypeReference<Map<LogType, Set<UUID>>>() {})
+                },
             ),
         )
         val students = studentsService.getStudentsList(dto)

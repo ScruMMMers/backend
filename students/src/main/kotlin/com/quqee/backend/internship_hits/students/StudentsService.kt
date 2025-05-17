@@ -52,6 +52,8 @@ class StudentsService(
             logApprovalStatus = dto.filter.logApprovalStatus,
             positionType = dto.filter.positionType,
             positionName = dto.filter.positionName,
+            companyIds = dto.filter.companyIds,
+            logByCompany = dto.filter.logByCompany,
         )
         val students = studentsRepository.getStudents(
             pagination = dto.pagination,
@@ -212,10 +214,15 @@ class StudentsService(
     }
 
     private fun mapStudentToDto(entity: StudentEntity): StudentDto {
-        val profile = profileService.getShortAccount(
-            GetProfileDto(userId = entity.userId)
-        )
-        val company = entity.companyId?.let { companyService.getShortCompany(it) }
+        val (profile, company) = runBlocking {
+            val profileDeferred = async {
+                profileService.getShortAccount(GetProfileDto(userId = entity.userId))
+            }
+            val companyDeferred = async {
+                entity.companyId?.let { companyService.getShortCompany(it) }
+            }
+            profileDeferred.await() to companyDeferred.await()
+        }
 
         return StudentDto(
             id = entity.userId,
