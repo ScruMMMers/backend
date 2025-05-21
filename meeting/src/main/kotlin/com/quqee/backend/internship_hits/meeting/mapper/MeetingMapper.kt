@@ -4,6 +4,7 @@ import com.quqee.backend.internship_hits.company.mapper.CompanyMapper
 import com.quqee.backend.internship_hits.company.service.CompanyService
 import com.quqee.backend.internship_hits.meeting.entity.MeetingEntity
 import com.quqee.backend.internship_hits.public_interface.common.MeetingDto
+import com.quqee.backend.internship_hits.public_interface.common.MeetingsListDto
 import org.springframework.stereotype.Component
 
 @Component
@@ -19,6 +20,12 @@ class MeetingMapper(
             meetingEntity.place,
             meetingEntity.meetingType,
             companyMapper.toShortCompanyDto(companyService.getRawCompany(meetingEntity.companyId))
+        )
+    }
+
+    fun mapToListDto(list: List<MeetingDto>): MeetingsListDto {
+        return MeetingsListDto(
+            list
         )
     }
 

@@ -55,6 +55,16 @@ class MeetingConfigurationMapper {
         mapPage: FromInternalToApiMapper<LastIdPaginationView, LastIdPagination>
     ): FromInternalToApiMapper<MeetingsListView, MeetingsListDto> = makeToApiMapper { model ->
         MeetingsListView(
+            meetings = model.meetings.map { mapMeetingToApi.fromInternal(it) }
+        )
+    }
+
+    @Bean
+    fun mapMeetingsListPageable(
+        mapMeetingToApi: FromInternalToApiMapper<MeetingView, MeetingDto>,
+        mapPage: FromInternalToApiMapper<LastIdPaginationView, LastIdPagination>
+    ): FromInternalToApiMapper<MeetingsListPageableView, MeetingsListPageableDto> = makeToApiMapper { model ->
+        MeetingsListPageableView(
             meetings = model.meetings.map { mapMeetingToApi.fromInternal(it) },
             page = mapPage.fromInternal(model.page)
         )

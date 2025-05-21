@@ -17,7 +17,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../common/Meeting.yaml#/MeetingView'
+            $ref: './MeetingsListView.yaml#/MeetingsListView'
     '403':
       description: Недостаточно прав для доступа к ресурсу
     '404':
