@@ -105,11 +105,11 @@ open class CompanyServiceImpl(
     @Transactional(readOnly = true)
     override fun getCompaniesList(name: String?, lastId: UUID?, size: Int?): CompaniesListDto {
         val pageSize = size ?: DEFAULT_PAGE_SIZE
-        val companies = companyRepository.getCompaniesList(name, lastId, pageSize)
-        val hasNext = companies.size >= pageSize
+        val companies = companyRepository.getCompaniesList(name, lastId, pageSize + 1)
+        val hasNext = companies.size > pageSize
 
         return CompaniesListDto(
-            companies = companies,
+            companies = companies.take(pageSize),
             page = LastIdPagination(
                 lastId = if (companies.isNotEmpty()) companies.last().companyId else null,
                 pageSize = pageSize,
