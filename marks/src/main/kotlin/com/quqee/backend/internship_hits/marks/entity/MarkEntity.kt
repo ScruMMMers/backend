@@ -18,11 +18,11 @@ data class MarkEntity(
     @Column(name = "user_id", nullable = false)
     var userId: UUID,
 
-    @Column(name = "mark", nullable = false)
-    var mark: Int,
+    @Column(name = "mark", nullable = true)
+    var mark: Int?,
 
-    @Column(name = "date", nullable = false)
-    var date: OffsetDateTime,
+    @Column(name = "date", nullable = true)
+    var date: OffsetDateTime?,
 
     @Column(name = "semester", nullable = false)
     var semester: Int,

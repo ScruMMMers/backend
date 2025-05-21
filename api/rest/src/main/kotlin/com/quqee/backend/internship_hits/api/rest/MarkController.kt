@@ -8,6 +8,7 @@ import com.quqee.backend.internship_hits.model.rest.MarkListView
 import com.quqee.backend.internship_hits.model.rest.MarkView
 import com.quqee.backend.internship_hits.public_interface.mark.CreateMarkDto
 import com.quqee.backend.internship_hits.public_interface.mark.MarkDto
+import com.quqee.backend.internship_hits.public_interface.mark.MarkListDto
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import java.util.*
@@ -16,11 +17,14 @@ import java.util.*
 class MarkController(
     private val markService: MarkService,
     private val mapMarkToApi: FromInternalToApiMapper<MarkView, MarkDto>,
+    private val mapMarkListToApi: FromInternalToApiMapper<MarkListView, MarkListDto>,
     private val createMarkToDto: FromApiToInternalMapper<CreateMarkView, CreateMarkDto>,
 ) : MarksApiDelegate {
 
     override fun marksMyAllGet(): ResponseEntity<MarkListView> {
-        return ResponseEntity.ok(MarkListView(markService.getMyMarks().map { mapMarkToApi.fromInternal(it) }))
+        return ResponseEntity.ok(
+            mapMarkListToApi.fromInternal(markService.getMyMarks())
+        )
     }
 
     override fun marksMyCurrentGet(): ResponseEntity<MarkView> {
@@ -30,7 +34,7 @@ class MarkController(
     override fun marksUserIdCreatePost(userId: UUID, createMarkView: CreateMarkView): ResponseEntity<MarkView> {
 
         val createMarkDto = createMarkToDto.fromApi(createMarkView)
-        return ResponseEntity.ok(mapMarkToApi.fromInternal(markService.createMark(userId, createMarkDto)))
+        return ResponseEntity.ok(mapMarkToApi.fromInternal(markService.saveMark(userId, createMarkDto)))
     }
 
 }

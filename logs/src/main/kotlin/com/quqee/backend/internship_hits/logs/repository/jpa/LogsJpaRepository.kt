@@ -43,4 +43,6 @@ interface LogsJpaRepository : JpaRepository<LogEntity, UUID>, JpaSpecificationEx
     fun existsByUserIdAndType(userId: UUID, type: LogType): Boolean
 
     fun existsByUserIdAndTypeAndApprovalStatus(userId: UUID, type: LogType, approvalStatus: ApprovalStatus): Boolean
+
+    fun findAllByUserIdAndTypeOrderByCreatedAtDesc(userId: UUID, type: LogType): List<LogEntity>
 }

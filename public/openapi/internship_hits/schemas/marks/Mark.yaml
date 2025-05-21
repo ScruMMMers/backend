@@ -3,8 +3,7 @@ MarkView:
   required:
     - id
     - userId
-    - mark
-    - date
+    - diary
     - semester
   properties:
     id:
@@ -15,8 +14,18 @@ MarkView:
       format: uuid
     mark:
       type: integer
+    diary:
+      $ref: './Mark.yaml#/DiaryStatusEnum'
     date:
       type: string
       format: date-time
     semester:
       type: integer
+
+DiaryStatusEnum:
+  type: string
+  enum:
+    - PENDING
+    - APPROVED
+    - REJECTED
+    - NONE

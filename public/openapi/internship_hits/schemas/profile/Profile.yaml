@@ -25,4 +25,4 @@ ProfileView:
     shortCompany:
       $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
     mark:
-      $ref: '../marks/Mark.yaml#/MarkView'
+      $ref: '../marks/MarkListView.yaml#/MarkListView'
