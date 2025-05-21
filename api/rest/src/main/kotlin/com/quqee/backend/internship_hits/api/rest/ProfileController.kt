@@ -12,6 +12,7 @@ import com.quqee.backend.internship_hits.public_interface.common.enums.Exception
 import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.mark.MarkDto
+import com.quqee.backend.internship_hits.public_interface.mark.MarkListDto
 import com.quqee.backend.internship_hits.public_interface.notification_public.GetNotificationForHeaderDto
 import com.quqee.backend.internship_hits.public_interface.notification_public.ShortNotificationDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
@@ -29,7 +30,7 @@ class ProfileController(
     private val shortNotificationMapper: FromInternalToApiMapper<ShortNotificationView, ShortNotificationDto>,
     private val shortCompanyMapper: FromInternalToApiMapper<ShortCompanyView, ShortCompanyDto>,
     private val userRoleMapper: EnumerationMapper<RoleEnum, UserRole>,
-    private val mapMarkToApi: FromInternalToApiMapper<MarkView, MarkDto>,
+    private val mapMarkToApi: FromInternalToApiMapper<MarkListView, MarkListDto>,
 ) : ProfileApiDelegate {
     override fun profileHeaderGet(): ResponseEntity<GetProfileHeaderResponseView> {
         val userId = KeycloakUtils.getUserId()
@@ -54,7 +55,7 @@ class ProfileController(
             studentsService.getStudent(userId)
         } catch (ignore: Exception) {null}
         val mark = try {
-            markService.getMyCurrentMark()
+            markService.getMyMarks()
         } catch (ignore: Exception) {null}
 
         return ResponseEntity.ok(

@@ -11,7 +11,7 @@ interface MarkRepository : JpaRepository<MarkEntity, UUID> {
 
     fun findByUserIdAndSemester(userId: UserId, semester: Int): Optional<MarkEntity>
 
-    fun findAllByUserIdOrderBySemesterDesc(userId: UserId): List<MarkEntity>
+    fun findAllByUserIdOrderBySemesterAsc(userId: UserId): List<MarkEntity>
 
     fun findFirstByUserIdOrderBySemesterDesc(userId: UserId): Optional<MarkEntity>
 
