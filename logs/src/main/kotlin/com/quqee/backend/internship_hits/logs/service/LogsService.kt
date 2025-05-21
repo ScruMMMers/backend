@@ -112,11 +112,11 @@ class LogsServiceImpl (
         approvalStatuses: List<ApprovalStatus>?
     ): LogListDto {
         val pageSize = size ?: DEFAULT_PAGE_SIZE
-        val logs = logsRepository.getAllLogs(lastId, pageSize, logTypes, approvalStatuses)
-        val hasNext = logs.size >= pageSize
+        val logs = logsRepository.getAllLogs(lastId, pageSize + 1, logTypes, approvalStatuses)
+        val hasNext = logs.size > pageSize
 
         return LogListDto(
-            logs = logs,
+            logs = logs.take(pageSize),
             page = LastIdPagination(
                 lastId = if (logs.isNotEmpty()) logs.last().id else null,
                 pageSize = pageSize,
