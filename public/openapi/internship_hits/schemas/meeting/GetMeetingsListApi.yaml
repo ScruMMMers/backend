@@ -24,6 +24,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: './MeetingsListView.yaml#/MeetingsListView'
+            $ref: './MeetingsListPageableView.yaml#/MeetingsListPageableView'
     '403':
       description: Недостаточно прав для доступа к ресурсу

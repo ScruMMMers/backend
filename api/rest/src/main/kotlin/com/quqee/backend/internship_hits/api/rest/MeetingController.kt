@@ -19,8 +19,9 @@ class MeetingController(
     private val mapBuildingsListToApi: FromInternalToApiMapper<BuildingsListView, BuildingsListDto>,
     private val mapAudiencesListToApi: FromInternalToApiMapper<AudiencesListView, AudiencesListDto>,
     private val mapCreateMeeting: FromApiToInternalMapper<CreateMeetingView, CreateMeetingDto>,
+    private val mapMeetingListToApi: FromInternalToApiMapper<MeetingsListView, MeetingsListDto>,
     private val mapMeetingToApi: FromInternalToApiMapper<MeetingView, MeetingDto>,
-    private val mapMeetingsListToApi: FromInternalToApiMapper<MeetingsListView, MeetingsListDto>,
+    private val mapMeetingsListPageableToApi: FromInternalToApiMapper<MeetingsListPageableView, MeetingsListPageableDto>,
 ) : MeetingApiDelegate {
 
     override fun buildingsBuildingIdAudiencesGet(buildingId: UUID, search: String?): ResponseEntity<AudiencesListView> {
@@ -32,8 +33,8 @@ class MeetingController(
     }
 
 
-    override fun meetingsCompanyCompanyIdNearestGet(companyId: UUID): ResponseEntity<MeetingView> {
-        return ResponseEntity.ok(mapMeetingToApi.fromInternal(meetingService.getNearestMeeting(companyId)))
+    override fun meetingsCompanyCompanyIdNearestGet(companyId: UUID): ResponseEntity<MeetingsListView> {
+        return ResponseEntity.ok(mapMeetingListToApi.fromInternal(meetingService.getNearestMeeting(companyId)))
     }
 
     override fun meetingsCompanyCompanyIdPost(
@@ -50,9 +51,9 @@ class MeetingController(
         upcoming: Boolean?,
         lastId: UUID?,
         size: Int?
-    ): ResponseEntity<MeetingsListView> {
+    ): ResponseEntity<MeetingsListPageableView> {
         return ResponseEntity.ok(
-            mapMeetingsListToApi.fromInternal(
+            mapMeetingsListPageableToApi.fromInternal(
                 meetingService.getMeetings(companyId, upcoming, lastId, size)
             )
         )

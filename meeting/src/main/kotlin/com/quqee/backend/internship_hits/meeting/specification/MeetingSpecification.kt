@@ -33,11 +33,10 @@ object MeetingSpecification {
         return dateAt?.let {
             Specification { root, _, cb ->
                 val predicates = mutableListOf<Predicate>()
-                predicates.add(cb.lessThan(root.get("date"), it))
-
                 if (upcoming) {
-                    val now = OffsetDateTime.now()
-                    predicates.add(cb.greaterThan(root.get("date"), now))
+                    predicates.add(cb.greaterThan(root.get("date"), it))
+                } else {
+                    predicates.add(cb.lessThan(root.get("date"), it))
                 }
 
                 cb.and(*predicates.toTypedArray())

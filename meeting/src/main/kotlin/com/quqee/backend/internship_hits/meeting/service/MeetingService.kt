@@ -4,10 +4,7 @@ import com.quqee.backend.internship_hits.meeting.entity.MeetingEntity
 import com.quqee.backend.internship_hits.meeting.mapper.MeetingMapper
 import com.quqee.backend.internship_hits.meeting.repository.MeetingRepository
 import com.quqee.backend.internship_hits.meeting.specification.MeetingSpecification
-import com.quqee.backend.internship_hits.public_interface.common.CreateMeetingDto
-import com.quqee.backend.internship_hits.public_interface.common.LastIdPagination
-import com.quqee.backend.internship_hits.public_interface.common.MeetingDto
-import com.quqee.backend.internship_hits.public_interface.common.MeetingsListDto
+import com.quqee.backend.internship_hits.public_interface.common.*
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.enums.MeetingTypeEnum
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
@@ -22,9 +19,9 @@ import java.util.*
 interface MeetingService {
     fun createMeeting(companyId: UUID, createMeetingDto: CreateMeetingDto): MeetingDto
 
-    fun getNearestMeeting(companyId: UUID): MeetingDto
+    fun getNearestMeeting(companyId: UUID): MeetingsListDto
 
-    fun getMeetings(companyId: UUID?, upcoming: Boolean?, lastId: UUID?, size: Int?): MeetingsListDto
+    fun getMeetings(companyId: UUID?, upcoming: Boolean?, lastId: UUID?, size: Int?): MeetingsListPageableDto
 
 }
 
@@ -47,7 +44,7 @@ open class MeetingServiceImpl(
         val meetingEntity = meetingRepository.save(
             MeetingEntity(
                 UUID.randomUUID(),
-                createMeetingDto.date,
+                createMeetingDto.date.withNano(kotlin.random.Random.nextInt(0, 999_999_999)),
                 createMeetingDto.place,
                 createMeetingDto.meetingType,
                 companyId
@@ -57,21 +54,20 @@ open class MeetingServiceImpl(
         return meetingMapper.mapToDto(meetingEntity)
     }
 
-    override fun getNearestMeeting(companyId: UUID): MeetingDto {
-        val entity = meetingRepository.findNearestMeetingByCompany(companyId).orElseThrow {
-            ExceptionInApplication(ExceptionType.NOT_FOUND)
-        }
+    override fun getNearestMeeting(companyId: UUID): MeetingsListDto {
+        val entity = meetingRepository.findNearestMeetingByCompany(companyId).orElse(null)
+            ?: return meetingMapper.mapToListDto(emptyList())
 
-        return meetingMapper.mapToDto(entity)
+        return meetingMapper.mapToListDto(listOf(meetingMapper.mapToDto(entity)))
     }
 
-    override fun getMeetings(companyId: UUID?, upcoming: Boolean?, lastId: UUID?, size: Int?): MeetingsListDto {
+    override fun getMeetings(companyId: UUID?, upcoming: Boolean?, lastId: UUID?, size: Int?): MeetingsListPageableDto {
         val pageSize = size ?: PagedListHolder.DEFAULT_PAGE_SIZE
         val sort =
             if (upcoming == false) Sort.by("date").descending() else Sort.by("date").ascending()
         val pageable = PageRequest.of(
             0,
-            pageSize,
+            pageSize + 1,
             sort
         )
 
@@ -83,13 +79,13 @@ open class MeetingServiceImpl(
 
         val spec = Specification.where(MeetingSpecification.byCompanyId(companyId))
             .and(MeetingSpecification.byUpcoming(upcoming ?: true))
-            .and(MeetingSpecification.byDateAt(lastMeeting?.date, upcoming ?: false))
+            .and(MeetingSpecification.byDateAt(lastMeeting?.date, upcoming ?: true))
 
         val meetings = meetingRepository.findAll(spec, pageable).content.map { meetingMapper.mapToDto(it) }
-        val hasNext = meetings.size >= pageSize
+        val hasNext = meetings.size > pageSize
 
-        return MeetingsListDto(
-            meetings = meetings,
+        return MeetingsListPageableDto(
+            meetings = meetings.take(pageSize),
             page = LastIdPagination(
                 lastId = if (meetings.isNotEmpty()) meetings.last().id else null,
                 pageSize = pageSize,
