@@ -3,18 +3,16 @@ package com.quqee.backend.internship_hits.logs.service
 import com.quqee.backend.internship_hits.company.service.CompanyPositionService
 import com.quqee.backend.internship_hits.logs.message.KafkaSender
 import com.quqee.backend.internship_hits.logs.repository.LogsRepository
-import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.position.entity.PositionEntity
 import com.quqee.backend.internship_hits.position.service.PositionService
 import com.quqee.backend.internship_hits.public_interface.common.CompanyStatisticsProjection
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPagination
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
+import com.quqee.backend.internship_hits.public_interface.company_position.CreateCompanyPositionDto
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.*
-import com.quqee.backend.internship_hits.public_interface.message.logs.NewInternshipDto
-import com.quqee.backend.internship_hits.public_interface.message.logs.NewLogDto
 import com.quqee.backend.internship_hits.public_interface.students_public.CreateCompanyToStudentDto
 import com.quqee.backend.internship_hits.students.StudentsService
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
@@ -132,42 +130,99 @@ open class LogsServiceImpl (
         )
     }
 
-    /**
-     * Создание нового лога
-     */
+    @Transactional
     override fun createLog(createLogRequest: CreateLogRequestDto): CreatedLogDto {
+        val tags = extractTags(createLogRequest.message)
+        val hashtags = extractHashtags(createLogRequest.message)
+
+        // Если тип лога не MESSAGE и не DEFAULT - создаём CompanyPosition
+        if (!listOf(LogType.MESSAGE, LogType.DEFAULT).contains(createLogRequest.type)) {
+            createCompanyPositions(tags, hashtags)
+        }
+
         val newLog = logsRepository.createLog(
             message = createLogRequest.message,
-            tags = findTagsByNames(extractTagsFromMessage(createLogRequest.message)),
-            hashtags = findPositionsByNames(extractHashtagsFromMessage(createLogRequest.message)),
+            tags = tags,
+            hashtags = hashtags,
             type = createLogRequest.type,
             files = createLogRequest.files ?: emptyList()
         )
 
-//        kafkaSender.send(
-//            NewLogDto(
-//                userId = newLog.author.userId,
-//                logType = newLog.type
-//            )
-//        )
+        // Если лог типа INTERVIEW, увеличиваем счетчик интервью по каждой комбинации
+        if (createLogRequest.type == LogType.INTERVIEW) {
+            incrementInterviewCounters(tags, hashtags)
+        }
 
         return CreatedLogDto(log = newLog)
     }
 
-    /**
-     * Обновление существующего лога
-     */
+
     override fun updateLog(logId: UUID, updateLogRequest: UpdateLogRequestDto): CreatedLogDto {
+        val tags = extractTags(updateLogRequest.message)
+        val hashtags = extractHashtags(updateLogRequest.message)
+
+        if (!listOf(LogType.MESSAGE, LogType.DEFAULT).contains(updateLogRequest.type)) {
+            createCompanyPositions(tags, hashtags)
+        }
+
+        // Обновляем лог в БД
         val updatedLog = logsRepository.updateLog(
             logId = logId,
             message = updateLogRequest.message,
-            tags = findTagsByNames(extractTagsFromMessage(updateLogRequest.message)),
-            hashtags = findPositionsByNames(extractHashtagsFromMessage(updateLogRequest.message)),
+            tags = tags,
+            hashtags = hashtags,
             type = updateLogRequest.type,
             files = updateLogRequest.files ?: emptyList()
         )
-        
+
         return CreatedLogDto(log = updatedLog)
+    }
+
+
+    /**
+     * Извлечение тегов из сообщения
+     */
+    private fun extractTags(message: String): List<TagEntity> {
+        return findTagsByNames(extractTagsFromMessage(message))
+    }
+
+    /**
+     * Извлечение хэштегов из сообщения
+     */
+    private fun extractHashtags(message: String): List<PositionEntity> {
+        return findPositionsByNames(extractHashtagsFromMessage(message))
+    }
+
+
+    /**
+     * Создание CompanyPosition для каждой комбинации тега и хэштега.
+     */
+    private fun createCompanyPositions(tags: List<TagEntity>, hashtags: List<PositionEntity>) {
+        for (tag in tags) {
+            for (hashtag in hashtags) {
+                try {
+                    companyPositionService.createCompanyPosition(tag.companyId, CreateCompanyPositionDto(hashtag.id))
+                } catch (e: Exception) {
+                    continue
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Увеличение счетчиков интервью для каждой комбинации тега и хэштега.
+     */
+    private fun incrementInterviewCounters(tags: List<TagEntity>, hashtags: List<PositionEntity>) {
+        for (tag in tags) {
+            for (hashtag in hashtags) {
+                try {
+                    companyPositionService.incrementInterviewsCount(tag.companyId, hashtag.id)
+                } catch (e: Exception) {
+                    continue
+                }
+            }
+        }
     }
 
     /**
@@ -190,6 +245,13 @@ open class LogsServiceImpl (
                 studentsService.setCompanyToStudent(
                     CreateCompanyToStudentDto(log.tags[0].shortCompany.companyId, null, log.author.userId)
                 )
+                if (log.hashtags.isNotEmpty()){
+                    try {
+                        companyPositionService.incrementEmployedCount(log.tags[0].shortCompany.companyId, log.hashtags[0].id)
+                    } catch (e: Exception) {
+                        //нужна обработка
+                    }
+                }
             }
         }
         return CreatedLogDto(log = log)
