@@ -165,7 +165,6 @@ open class LogsServiceImpl (
             createCompanyPositions(tags, hashtags)
         }
 
-        // Обновляем лог в БД
         val updatedLog = logsRepository.updateLog(
             logId = logId,
             message = updateLogRequest.message,
@@ -208,7 +207,6 @@ open class LogsServiceImpl (
             }
         }
     }
-
 
     /**
      * Увеличение счетчиков интервью для каждой комбинации тега и хэштега.
