@@ -90,8 +90,16 @@ class StudentsRepository(
             .set(STUDENTS.STUDENT_GROUP, entity.group)
             .set(STUDENTS.IS_ON_ACADEMIC_LEAVE, entity.isOnAcademicLeave)
             .set(STUDENTS.COMPANY_ID, entity.companyId)
+            .where(STUDENTS.USER_ID.eq(entity.userId))
             .execute()
         return entity
+    }
+
+    fun updateCompanyAndPosition(companyId: UUID, userId: UserId) {
+        dsl.update(STUDENTS)
+            .set(STUDENTS.COMPANY_ID, companyId)
+            .where(STUDENTS.USER_ID.eq(userId))
+            .execute()
     }
 
     fun createStudent(dto: CreateStudentDto): StudentEntity {

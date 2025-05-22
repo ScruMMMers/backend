@@ -213,6 +213,11 @@ class StudentsService(
         return mapStudentToDto(updatedStudent)
     }
 
+    @Transactional
+    fun setCompanyToStudent(dto: CreateCompanyToStudentDto){
+        studentsRepository.updateCompanyAndPosition(dto.companyId, dto.userId)
+    }
+
     private fun mapStudentToDto(entity: StudentEntity): StudentDto {
         val (profile, company) = runBlocking {
             val profileDeferred = async {
