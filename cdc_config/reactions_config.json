@@ -1,7 +1,7 @@
 {
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
-    "database.dbname": "origination",
+    "database.dbname": "internship",
     "database.history.kafka.bootstrap.servers": "internship_broker:9092",
     "database.history.kafka.topic": "log_reactions",
     "database.hostname": "db",
