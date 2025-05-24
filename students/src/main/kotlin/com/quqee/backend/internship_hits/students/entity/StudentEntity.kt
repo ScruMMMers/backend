@@ -11,6 +11,7 @@ data class StudentEntity(
     val group: String,
     val isOnAcademicLeave: Boolean,
     val companyId: UUID?,
+    val positionId: Long?,
     val logs: Set<StudentLog>,
 ) {
     data class StudentLog(

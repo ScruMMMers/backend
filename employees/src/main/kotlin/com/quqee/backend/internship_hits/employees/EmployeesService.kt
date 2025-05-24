@@ -32,9 +32,13 @@ class EmployeesService(
     private val employeesRepository: EmployeesRepository,
 ) {
     fun getEmployeesList(dto: GetEmployeesListDto): LastIdPaginationResponse<EmployeeDto, UserId> {
+        val userIds = dto.filter.name?.let { name ->
+            profileService.getUserIdsByName(name)
+        }
+
         val filterDto = EmployeesFilterParams(
             companiesIds = dto.filter.companiesIds,
-            employeesIds = dto.filter.employeesIds,
+            employeesIds = userIds?.toList(),
         )
         val employees = employeesRepository.getEmployees(
             pagination = dto.pagination,

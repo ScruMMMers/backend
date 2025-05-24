@@ -40,6 +40,13 @@ class UserClient(
         userRepresentation.attributes = mapOf(
             "middleName" to listOf(dto.middleName),
             "photoId" to listOf(dto.photoId),
+            "fullName" to listOf(
+                getFullName(
+                    firstName = dto.firstName,
+                    lastName = dto.lastName,
+                    middleName = dto.middleName
+                )
+            ),
         )
 
         val usersResource = getUsersResource()
@@ -85,6 +92,13 @@ class UserClient(
         userRepresentation.attributes = mapOf(
             "middleName" to listOf(dto.middleName),
             "photoId" to listOf(dto.photoId),
+            "fullName" to listOf(
+                getFullName(
+                    firstName = dto.firstName,
+                    lastName = dto.lastName,
+                    middleName = dto.middleName
+                )
+            ),
         )
 
         usersResource.get(dto.userId.toString()).update(userRepresentation)
@@ -98,6 +112,18 @@ class UserClient(
                 throw ExceptionInApplication(ExceptionType.FATAL)
             }
         }
+    }
+
+    fun getUserIdsByName(name: String): Set<UUID> {
+        val usersResource = getUsersResource()
+        val userRepresentations = usersResource.list()
+            .filter {
+                it.attributes
+                    ?.get("fullName")
+                    ?.firstOrNull()
+                    ?.contains(normalizeFullName(name)) == true
+            }
+        return userRepresentations.mapNotNull { it.id?.let(UUID::fromString) }.toSet()
     }
 
     fun getUser(userId: UUID): UserEntity? {
@@ -129,6 +155,21 @@ class UserClient(
             middleName = userRepresentation.attributes?.get("middleName")?.firstOrNull(),
             photoId = userRepresentation.attributes?.get("photoId")?.firstOrNull(),
         )
+    }
+
+    private fun getFullName(firstName: String, lastName: String, middleName: String?): String {
+        return normalizeFullName(formatFullName(firstName, lastName, middleName))
+    }
+
+    private fun formatFullName(firstName: String, lastName: String, middleName: String?): String {
+        return listOfNotNull(firstName, lastName, middleName).joinToString(" ").trim()
+    }
+
+    private fun normalizeFullName(fullName: String): String {
+        return fullName
+            .replace(Regex("\\s+"), " ")
+            .trim()
+            .lowercase()
     }
 
     companion object {

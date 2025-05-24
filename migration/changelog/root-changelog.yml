@@ -158,3 +158,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v18_update_company_positions_table_counts.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 23
+      author: gordey_dovydenko
+      changes:
+        - sqlFile:
+            path: ddl/add_position_id_column_to_student.sql
+            relativeToChangelogFile: true

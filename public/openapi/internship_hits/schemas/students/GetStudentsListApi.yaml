@@ -61,6 +61,10 @@ get:
       description: '{"OFFER": ["companyId"]}'
       schema:
         type: string
+    - in: query
+      name: name
+      schema:
+        type: string
   responses:
     '200':
       description: Список студентов

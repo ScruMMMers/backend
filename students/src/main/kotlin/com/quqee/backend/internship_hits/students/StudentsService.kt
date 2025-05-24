@@ -2,9 +2,12 @@ package com.quqee.backend.internship_hits.students
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.quqee.backend.internship_hits.company.service.CompanyService
+import com.quqee.backend.internship_hits.position.service.PositionService
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationResponse
+import com.quqee.backend.internship_hits.public_interface.common.PositionDto
+import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
 import com.quqee.backend.internship_hits.public_interface.common.UserId
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
@@ -39,12 +42,17 @@ import com.quqee.backend.internship_hits.public_interface.students_public.Deaner
 class StudentsService(
     private val profileService: ProfileService,
     private val companyService: CompanyService,
+    private val positionService: PositionService,
     private val studentsRepository: StudentsRepository,
     private val inviteLinkRepository: InviteLinkRepository,
     @Value("\${client.uri}")
     private val clientUri: String,
 ) {
     fun getStudentsList(dto: GetStudentsListDto): LastIdPaginationResponse<StudentDto, UserId> {
+        val userIds = dto.filter.name?.let { name ->
+            profileService.getUserIdsByName(name)
+        }
+
         val filterDto = StudentsFilterParams(
             course = dto.filter.course,
             group = dto.filter.group,
@@ -54,6 +62,7 @@ class StudentsService(
             positionName = dto.filter.positionName,
             companyIds = dto.filter.companyIds,
             logByCompany = dto.filter.logByCompany,
+            userIds = userIds,
         )
         val students = studentsRepository.getStudents(
             pagination = dto.pagination,
@@ -219,14 +228,19 @@ class StudentsService(
     }
 
     private fun mapStudentToDto(entity: StudentEntity): StudentDto {
-        val (profile, company) = runBlocking {
+        val (profile, company, position) = runBlocking {
             val profileDeferred = async {
                 profileService.getShortAccount(GetProfileDto(userId = entity.userId))
             }
             val companyDeferred = async {
                 entity.companyId?.let { companyService.getShortCompany(it) }
             }
-            profileDeferred.await() to companyDeferred.await()
+            val positionDeferred = async {
+                try {
+                    entity.positionId?.let { positionService.getPositionById(it) }
+                } catch (ignore: Exception) { null }
+            }
+            Triple(profileDeferred.await(), companyDeferred.await(), positionDeferred.await())
         }
 
         return StudentDto(
@@ -242,7 +256,8 @@ class StudentsService(
                     type = LogType.valueOf(log.type),
                     createdAt = log.createdAt,
                 )
-            }.toSet()
+            }.toSet(),
+            position = position,
         )
     }
 
