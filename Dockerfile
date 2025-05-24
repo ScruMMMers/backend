@@ -38,6 +38,7 @@ COPY students ./students
 COPY announcement ./announcement
 COPY document ./document
 COPY employees ./employees
+COPY cdc ./cdc
 RUN gradle --no-daemon --project-dir core build -x test -Dorg.gradle.jvmargs=-Xmx4096m
 
 FROM amazoncorretto:21-alpine
