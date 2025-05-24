@@ -56,7 +56,7 @@ class NotificationListener(
             message = node.get("message").asText(),
             channels = node.get("channels").elements()
                 .asSequence()
-                .map { NotificationChannel.fromString(it.asText()) }
+                .map { NotificationChannel.fromDataBase(it.asInt()) }
                 .toSet(),
             type = NotificationType.fromDataBase(node.get("type").asInt()),
             id = UUID.fromString(node.get("id").asText())
