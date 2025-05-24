@@ -26,3 +26,5 @@ ProfileView:
       $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
     mark:
       $ref: '../marks/MarkListView.yaml#/MarkListView'
+    position:
+      $ref: '../common/Position.yaml#/PositionView'

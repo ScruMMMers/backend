@@ -32,6 +32,7 @@ dependencies {
     implementation project(":public_interface:logs_interface")
     implementation project(":profile")
     implementation project(":company")
+    implementation project(":position")
 
     implementation libs.email.api
     implementation libs.jackson.module.kotlin

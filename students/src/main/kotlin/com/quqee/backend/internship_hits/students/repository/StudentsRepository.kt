@@ -122,6 +122,7 @@ class StudentsRepository(
             group = studentRecord[STUDENTS.STUDENT_GROUP]!!,
             isOnAcademicLeave = studentRecord[STUDENTS.IS_ON_ACADEMIC_LEAVE]!!,
             companyId = studentRecord[STUDENTS.COMPANY_ID],
+            positionId = studentRecord[STUDENTS.POSITION_ID],
             logs = records.mapNotNull { record ->
                 if (record[LOGS.ID] == null) {
                     return@mapNotNull null
@@ -175,6 +176,7 @@ class StudentsRepository(
         positionType?.let { conditions.add(POSITIONS.POSITION.`in`(it)) }
         positionName?.let { conditions.add(POSITIONS.NAME.`in`(it)) }
         companyIds?.let { conditions.add(STUDENTS.COMPANY_ID.`in`(it)) }
+        userIds?.let { conditions.add(STUDENTS.USER_ID.`in`(it)) }
 
         val typeIdPairs = logByCompany?.entries?.flatMap { (type, companyIds) ->
             companyIds.map { companyId ->

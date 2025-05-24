@@ -7,6 +7,7 @@ import com.quqee.backend.internship_hits.model.rest.*
 import com.quqee.backend.internship_hits.notification.service.NotificationService
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.profile.ProfileService
+import com.quqee.backend.internship_hits.public_interface.common.PositionDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
@@ -31,6 +32,7 @@ class ProfileController(
     private val shortCompanyMapper: FromInternalToApiMapper<ShortCompanyView, ShortCompanyDto>,
     private val userRoleMapper: EnumerationMapper<RoleEnum, UserRole>,
     private val mapMarkToApi: FromInternalToApiMapper<MarkListView, MarkListDto>,
+    private val mapPositionToApi: FromInternalToApiMapper<PositionView, PositionDto>,
 ) : ProfileApiDelegate {
     override fun profileHeaderGet(): ResponseEntity<GetProfileHeaderResponseView> {
         val userId = KeycloakUtils.getUserId()
@@ -67,7 +69,8 @@ class ProfileController(
                     course = student?.course?.toString(),
                     group = student?.group,
                     shortCompany = student?.company?.let { shortCompanyMapper.fromInternal(it) },
-                    mark = mark?.let { mapMarkToApi.fromInternal(it) }
+                    mark = mark?.let { mapMarkToApi.fromInternal(it) },
+                    position = student?.position?.let { mapPositionToApi.fromInternal(it) }
                 )
             )
         )

@@ -15,12 +15,9 @@ get:
           type: string
           format: uuid
     - in: query
-      name: userIds
+      name: name
       schema:
-        type: array
-        items:
-          type: string
-          format: uuid
+        type: string
   responses:
     '200':
       description: Список сотрудников

@@ -94,6 +94,10 @@ class ProfileService(
         return user.roles
     }
 
+    fun getUserIdsByName(name: String): Set<UserId> {
+        return userClient.getUserIdsByName(name)
+    }
+
     fun addRoles(userIds: Set<UserId>, roles: Set<UserRole>) {
         runBlocking {
             val deferred = userIds.map { id ->
@@ -123,7 +127,6 @@ class ProfileService(
     private fun getProfile(dto: GetProfileDto): ProfileDto {
         val user = userClient.getUser(dto.userId) ?:
             throw ExceptionInApplication(ExceptionType.NOT_FOUND)
-        // TODO: Пока не создаем фотки поэтому и получать нечего
         val userAvatarUrl = user.photoId?.let { fileService.getFileLink(UUID.fromString(it)) }
         return ProfileDto(
             userId = user.userId,

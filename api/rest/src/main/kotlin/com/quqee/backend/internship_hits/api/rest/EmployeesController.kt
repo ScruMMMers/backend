@@ -49,7 +49,7 @@ class EmployeesController(
         lastId: UUID?,
         size: Int?,
         companyIds: List<UUID>?,
-        userIds: List<UUID>?
+        name: String?,
     ): ResponseEntity<GetEmployeesListResponseView> {
         val dto = GetEmployeesListDto(
             pagination = LastIdPaginationRequest(
@@ -58,7 +58,7 @@ class EmployeesController(
             ),
             filter = GetEmployeesListFilterParamDto(
                 companiesIds = companyIds,
-                employeesIds = userIds,
+                name = name?.takeIf { it.isNotBlank() }?.trim(),
             )
         )
         val employees = employeesService.getEmployeesList(dto)
