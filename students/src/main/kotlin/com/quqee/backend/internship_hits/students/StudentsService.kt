@@ -224,7 +224,7 @@ class StudentsService(
 
     @Transactional
     fun setCompanyToStudent(dto: CreateCompanyToStudentDto){
-        studentsRepository.updateCompanyAndPosition(dto.companyId, dto.userId)
+        studentsRepository.updateCompanyAndPosition(dto.companyId, dto.userId, dto.positionId)
     }
 
     private fun mapStudentToDto(entity: StudentEntity): StudentDto {

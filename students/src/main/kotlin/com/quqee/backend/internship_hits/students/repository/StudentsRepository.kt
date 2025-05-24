@@ -95,9 +95,10 @@ class StudentsRepository(
         return entity
     }
 
-    fun updateCompanyAndPosition(companyId: UUID, userId: UserId) {
+    fun updateCompanyAndPosition(companyId: UUID, userId: UserId, positionId: Long?) {
         dsl.update(STUDENTS)
             .set(STUDENTS.COMPANY_ID, companyId)
+            .set(STUDENTS.POSITION_ID, positionId)
             .where(STUDENTS.USER_ID.eq(userId))
             .execute()
     }
