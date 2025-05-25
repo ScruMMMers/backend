@@ -11,6 +11,7 @@ import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListFilterParamDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import java.util.*
 
 @Configuration
 class StudentFilterMapperConfiguration(
@@ -28,20 +29,14 @@ class StudentFilterMapperConfiguration(
                 logType = view.logType?.map { mapLogType.mapToInternal(it) }?.toSet(),
                 logApprovalStatus = view.logApprovalStatus?.map { mapApprovalStatus.mapToInternal(it) }?.toSet(),
                 positionType = view.positionType?.map { mapPositionType.mapToInternal(it) }?.toSet(),
-                positionName = view.positionName?.toSet()
-            )
-        }
-
-    @Bean
-    fun mapStudentFilterParamsToApi(): FromInternalToApiMapper<GetStudentsListFilterParamView, GetStudentsListFilterParamDto> =
-        makeToApiMapper { dto ->
-            GetStudentsListFilterParamView(
-                course = dto.course?.toList(),
-                group = dto.group?.toList(),
-                logType = dto.logType?.map { mapLogType.mapToApi(it) },
-                logApprovalStatus = dto.logApprovalStatus?.map { mapApprovalStatus.mapToApi(it) },
-                positionType = dto.positionType?.map { mapPositionType.mapToApi(it) },
-                positionName = dto.positionName?.toList()
+                positionName = view.positionName?.toSet(),
+                companyIds = view.companyIds?.toSet(),
+                logByCompany = view.logByCompany?.mapKeys { entry ->
+                    LogType.valueOf(entry.key.uppercase())
+                }?.mapValues { entry ->
+                    entry.value.toSet()
+                },
+                name = view.name
             )
         }
 }
