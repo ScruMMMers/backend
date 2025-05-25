@@ -11,6 +11,7 @@ get:
         $ref: './Notification.yaml#/NotificationTypeEnum'
     - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
     - $ref: '../common/Pagination.yaml#/PaginationPageSize'
+    - $ref: '../common/Pagination.yaml#/PaginationPageDate'
   responses:
     '200':
       description: Список уведомлений
