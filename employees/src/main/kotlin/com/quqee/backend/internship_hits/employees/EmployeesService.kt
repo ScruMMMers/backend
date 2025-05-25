@@ -79,6 +79,12 @@ class EmployeesService(
                 userId = userId,
             )
         )
+        employeesRepository.addCompaniesUser(
+            UpdateEmployeeDto(
+                userId = userId,
+                companiesIds = dto.companyIds,
+            )
+        )
         return mapEmployeeToDto(employee)
     }
 
