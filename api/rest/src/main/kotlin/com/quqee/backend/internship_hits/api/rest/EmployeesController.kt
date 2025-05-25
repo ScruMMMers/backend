@@ -23,7 +23,8 @@ class EmployeesController(
         val dto = CreateEmployeeDto(
             fullName = createEmployeeView.fullName,
             email = createEmployeeView.email,
-            photoId = createEmployeeView.avatarId?.toString()
+            photoId = createEmployeeView.avatarId?.toString(),
+            companyIds = createEmployeeView.companyIds ?: emptyList(),
         )
         val employee = employeesService.createEmployee(dto)
 

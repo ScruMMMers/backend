@@ -43,6 +43,11 @@ CreateEmployeeView:
       format: uuid
     email:
       type: string
+    companyIds:
+      type: array
+      items:
+        type: string
+        format: uuid
 
 UpdateEmployeeView:
   type: object
