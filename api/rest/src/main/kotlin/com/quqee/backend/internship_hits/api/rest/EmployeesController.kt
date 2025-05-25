@@ -3,11 +3,8 @@ package com.quqee.backend.internship_hits.api.rest
 import com.quqee.backend.internship_hits.employees.EmployeesService
 import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
 import com.quqee.backend.internship_hits.model.rest.*
-import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationRequest
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationResponse
-import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
-import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.employees_public.*
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
@@ -23,7 +20,8 @@ class EmployeesController(
         val dto = CreateEmployeeDto(
             fullName = createEmployeeView.fullName,
             email = createEmployeeView.email,
-            photoId = createEmployeeView.avatarId?.toString()
+            photoId = createEmployeeView.avatarId?.toString(),
+            companyIds = createEmployeeView.companyIds ?: emptyList(),
         )
         val employee = employeesService.createEmployee(dto)
 
@@ -31,10 +29,8 @@ class EmployeesController(
     }
 
     override fun employeesUpdatePost(updateEmployeeView: UpdateEmployeeView): ResponseEntity<EmployeeView> {
-        val userId = KeycloakUtils.getUserId()
-            ?: throw ExceptionInApplication(ExceptionType.FORBIDDEN)
         val dto = UpdateEmployeeDto(
-            userId = userId,
+            userId = updateEmployeeView.employeeId,
             companyIds = updateEmployeeView.companyIds ?: emptyList(),
             fullName = updateEmployeeView.fullName,
             photoId = updateEmployeeView.avatarId?.toString(),

@@ -43,13 +43,22 @@ CreateEmployeeView:
       format: uuid
     email:
       type: string
+    companyIds:
+      type: array
+      items:
+        type: string
+        format: uuid
 
 UpdateEmployeeView:
   type: object
   required:
+    - employeeId
     - fullName
     - email
   properties:
+    employeeId:
+      type: string
+      format: uuid
     fullName:
       type: string
     avatarId:
