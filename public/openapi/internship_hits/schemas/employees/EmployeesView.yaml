@@ -52,9 +52,13 @@ CreateEmployeeView:
 UpdateEmployeeView:
   type: object
   required:
+    - employeeId
     - fullName
     - email
   properties:
+    employeeId:
+      type: string
+      format: uuid
     fullName:
       type: string
     avatarId:
