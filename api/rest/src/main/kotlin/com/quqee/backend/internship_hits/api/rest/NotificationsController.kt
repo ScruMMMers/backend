@@ -12,6 +12,7 @@ import com.quqee.backend.internship_hits.public_interface.common.exception.Excep
 import com.quqee.backend.internship_hits.public_interface.notification_public.*
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
+import java.time.OffsetDateTime
 import java.util.*
 
 @Component
@@ -24,7 +25,8 @@ class NotificationsController(
     override fun notificationsGet(
         type: NotificationTypeEnum?,
         lastId: UUID?,
-        size: Int?
+        size: Int?,
+        lastDate: OffsetDateTime?,
     ): ResponseEntity<GetNotificationsResponseView> {
         val userId = KeycloakUtils.getUserId()
             ?: throw ExceptionInApplication(ExceptionType.FORBIDDEN)
@@ -34,7 +36,8 @@ class NotificationsController(
                 notificationType = notificationTypeMapper.mapToInternal(type ?: NotificationTypeEnum.SYSTEM),
                 pagination = LastIdPaginationRequest(
                     lastId = lastId,
-                    pageSize = size
+                    pageSize = size,
+                    lastDate = lastDate,
                 )
             )
         )

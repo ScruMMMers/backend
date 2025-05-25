@@ -14,6 +14,8 @@ import org.jooq.DSLContext
 import org.jooq.JSONB
 import org.jooq.SortField
 import org.springframework.stereotype.Repository
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.*
 
 @Repository
@@ -49,7 +51,7 @@ class NotificationRepository(
             dsl.selectFrom(NOTIFICATION)
                 .where(filter.toConditions())
                 .orderBy(pagination.sorting.toOrderBy())
-                .seek(pagination.lastId)
+                .seek(pagination.lastDate, pagination.lastId)
                 .limit(pagination.sizeForSelect)
                 .fetch(notificationMapper)
         } else {
@@ -89,8 +91,8 @@ class NotificationRepository(
 
     private fun SortingStrategy.toOrderBy(): List<SortField<*>> {
         return when (this) {
-            SortingStrategy.CREATED_AT_ASC -> listOf(NOTIFICATION.CREATED_AT.asc())
-            SortingStrategy.CREATED_AT_DESC -> listOf(NOTIFICATION.CREATED_AT.desc())
+            SortingStrategy.CREATED_AT_ASC -> listOf(NOTIFICATION.CREATED_AT.asc(), NOTIFICATION.ID.asc())
+            SortingStrategy.CREATED_AT_DESC -> listOf(NOTIFICATION.CREATED_AT.desc(), NOTIFICATION.ID.asc())
         }
     }
 

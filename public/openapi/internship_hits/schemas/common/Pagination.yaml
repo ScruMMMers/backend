@@ -24,6 +24,14 @@ PaginationPageLastId:
     format: uuid
   description: Последний id
 
+PaginationPageDate:
+  in: query
+  name: lastDate
+  schema:
+    type: string
+    format: date-time
+  description: Дата последней сущности
+
 PaginationPageSize:
   in: query
   name: size
