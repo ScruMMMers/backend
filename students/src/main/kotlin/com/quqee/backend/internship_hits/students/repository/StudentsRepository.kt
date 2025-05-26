@@ -148,7 +148,7 @@ class StudentsRepository(
             .leftJoin(POSITIONS)
             .on(POSITIONS.ID.eq(LOG_POSITIONS.POSITION_ID))
             .leftJoin(LOG_TAGS)
-            .on(LOGS.ID.eq(LOG_POSITIONS.LOG_ID))
+            .on(LOGS.ID.eq(LOG_TAGS.LOG_ID))
             .leftJoin(TAGS)
             .on(LOG_TAGS.TAG_ID.eq(TAGS.ID))
     }
@@ -163,7 +163,7 @@ class StudentsRepository(
             .leftJoin(POSITIONS)
             .on(POSITIONS.ID.eq(LOG_POSITIONS.POSITION_ID))
             .leftJoin(LOG_TAGS)
-            .on(LOGS.ID.eq(LOG_POSITIONS.LOG_ID))
+            .on(LOGS.ID.eq(LOG_TAGS.LOG_ID))
             .leftJoin(TAGS)
             .on(LOG_TAGS.TAG_ID.eq(TAGS.ID))
     }
