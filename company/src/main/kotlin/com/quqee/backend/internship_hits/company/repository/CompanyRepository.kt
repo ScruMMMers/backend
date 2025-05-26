@@ -37,7 +37,8 @@ class CompanyRepository(
             description = createCompanyDto.description,
             primaryColor = createCompanyDto.primaryColor.hexColor,
             positions = mutableListOf(),
-            createdAt = OffsetDateTime.now()
+            createdAt = OffsetDateTime.now(),
+            isDeleted = false
         )
 
         return mapper.toCompanyDto(
@@ -117,10 +118,21 @@ class CompanyRepository(
             .and(CompanySpecification.createdBefore(
                 lastCompany?.createdAt
             ))
+            .and(CompanySpecification.isDeleted(false))
 
         val companies = companyJpaRepository.findAll(spec, pageable).content
 
         return companies.map { mapper.toShortCompanyWithEmployersDto(it) }
+    }
+
+    fun deleteCompany(companyId: UUID) {
+        val company = companyJpaRepository.findById(companyId).orElseThrow{
+            ExceptionInApplication(ExceptionType.NOT_FOUND, "Компания с ID $companyId не найдена")
+        }
+
+        val deletedCompany = company.copy(isDeleted = true)
+
+        companyJpaRepository.save(deletedCompany)
     }
 
 }

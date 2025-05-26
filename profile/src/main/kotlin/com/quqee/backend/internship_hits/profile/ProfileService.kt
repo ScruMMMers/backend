@@ -11,7 +11,7 @@ import com.quqee.backend.internship_hits.public_interface.common.UserId
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
-import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
+import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.ProfileDto
 import com.quqee.backend.internship_hits.public_interface.profile_public.ProfileForHeader
 import kotlinx.coroutines.async

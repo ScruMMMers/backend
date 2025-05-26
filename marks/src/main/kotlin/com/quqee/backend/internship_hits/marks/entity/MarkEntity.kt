@@ -1,9 +1,7 @@
 package com.quqee.backend.internship_hits.marks.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import com.quqee.backend.internship_hits.public_interface.common.enums.DiaryStatusEnum
+import jakarta.persistence.*
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -21,6 +19,10 @@ data class MarkEntity(
     @Column(name = "mark", nullable = true)
     var mark: Int?,
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "diary_status", nullable = false)
+    var diaryStatusEnum: DiaryStatusEnum = DiaryStatusEnum.NONE,
+
     @Column(name = "date", nullable = true)
     var date: OffsetDateTime?,
 
@@ -32,6 +34,7 @@ data class MarkEntity(
         UUID.randomUUID(),
         UUID.randomUUID(),
         2,
+        DiaryStatusEnum.NONE,
         OffsetDateTime.now(),
         2
     )

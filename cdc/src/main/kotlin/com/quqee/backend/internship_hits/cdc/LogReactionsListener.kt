@@ -8,7 +8,7 @@ import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.notification_public.CreateNotificationDto
 import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationChannel
 import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationType
-import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
+import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.apache.kafka.clients.consumer.ConsumerRecord

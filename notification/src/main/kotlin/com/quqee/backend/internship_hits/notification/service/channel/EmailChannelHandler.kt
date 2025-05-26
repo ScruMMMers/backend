@@ -1,12 +1,11 @@
 package com.quqee.backend.internship_hits.notification.service.channel
 
-import com.quqee.backend.internship_hits.notification.entity.NotificationEntity
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationChannel
 import com.quqee.backend.internship_hits.public_interface.notification_public.SendNotificationDto
-import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
+import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Component

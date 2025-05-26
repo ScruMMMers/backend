@@ -1,4 +1,4 @@
-package com.quqee.backend.internship_hits.public_interface.profile_public
+package com.quqee.backend.internship_hits.public_interface.common
 
 import java.util.UUID
 

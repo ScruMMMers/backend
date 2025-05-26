@@ -5,7 +5,7 @@ import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.comment.CreateCommentDto
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
 import com.quqee.backend.internship_hits.public_interface.common.CommentWithoutRepliesDto
-import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
+import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
 import java.util.*

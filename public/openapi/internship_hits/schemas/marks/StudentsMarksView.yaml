@@ -1,0 +1,20 @@
+StudentsMarksView:
+  type: object
+  required:
+    - id
+    - fullName
+    - group
+    - course
+    - markListView
+  properties:
+    id:
+      type: string
+      format: uuid
+    fullName:
+      type: string
+    group:
+      type: string
+    course:
+      type: integer
+    markListView:
+      $ref: './MarkListView.yaml#/MarkListView'

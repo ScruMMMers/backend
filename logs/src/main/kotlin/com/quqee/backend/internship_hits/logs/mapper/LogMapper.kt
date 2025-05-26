@@ -8,7 +8,7 @@ import com.quqee.backend.internship_hits.position.mapper.PositionMapper
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
 import com.quqee.backend.internship_hits.public_interface.logs.LogDto
-import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
+import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
 import com.quqee.backend.internship_hits.tags_query.service.TagQueryService
 import org.springframework.stereotype.Component
 import java.util.*

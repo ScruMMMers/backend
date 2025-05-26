@@ -25,6 +25,7 @@ interface CompanyService {
     fun getRawCompany(companyId: UUID): CompanyEntity
     fun getShortCompany(companyId: UUID): ShortCompanyDto?
     fun getCompaniesList(name: String?, lastId: UUID?, size: Int?): CompaniesListDto
+    fun deleteCompany(companyId: UUID)
 }
 
 @Service
@@ -116,6 +117,10 @@ open class CompanyServiceImpl(
                 hasNext = hasNext
             )
         )
+    }
+
+    override fun deleteCompany(companyId: UUID) {
+        companyRepository.deleteCompany(companyId)
     }
 
     override fun getShortCompanies(ids: List<UUID>): List<ShortCompanyDto> {

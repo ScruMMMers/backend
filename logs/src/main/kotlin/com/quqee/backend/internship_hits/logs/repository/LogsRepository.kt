@@ -31,6 +31,10 @@ class LogsRepository(
         LogType.COMPANY_CHANGE
     )
 
+    fun getDiaries(userId: UUID, type: LogType): List<LogEntity> {
+        return logsJpaRepository.findAllByUserIdAndTypeOrderByCreatedAtDesc(userId, type)
+    }
+
     fun getLogsByCurrentUser(
         lastId: UUID?,
         pageSize: Int,

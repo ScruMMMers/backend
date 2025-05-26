@@ -165,3 +165,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/add_position_id_column_to_student.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 24
+      author: yuriy_sitdikov
+      changes:
+        - sqlFile:
+            path: ddl/v20_update_marks_and_companies.sql
+            relativeToChangelogFile: true

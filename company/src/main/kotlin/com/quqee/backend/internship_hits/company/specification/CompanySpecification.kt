@@ -25,4 +25,14 @@ object CompanySpecification {
             null
         }
     }
+
+    fun isDeleted(isDeleted: Boolean?): Specification<CompanyEntity>? {
+        return if (isDeleted != null) {
+            Specification { root, _, criteriaBuilder ->
+                criteriaBuilder.equal(root.get<Boolean>("isDeleted"), isDeleted)
+            }
+        } else {
+            null
+        }
+    }
 }
