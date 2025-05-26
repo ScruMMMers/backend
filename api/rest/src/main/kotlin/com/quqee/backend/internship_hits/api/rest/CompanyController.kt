@@ -67,4 +67,9 @@ class CompanyController(
         )
     }
 
+    override fun companyCompanyIdDeleteDelete(companyId: UUID): ResponseEntity<Unit> {
+        companyService.deleteCompany(companyId)
+        return ResponseEntity.ok().build()
+    }
+
 }
