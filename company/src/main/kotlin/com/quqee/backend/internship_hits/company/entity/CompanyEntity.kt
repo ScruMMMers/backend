@@ -38,7 +38,10 @@ data class CompanyEntity(
     var positions: List<CompanyPositionEntity> = mutableListOf(),
 
     @Column(name = "created_at", nullable = false)
-    var createdAt: OffsetDateTime
+    var createdAt: OffsetDateTime,
+
+    @Column(name = "is_deleted", nullable = false)
+    var isDeleted: Boolean
 
 ) {
     constructor() : this(
@@ -50,6 +53,7 @@ data class CompanyEntity(
         "",
         "",
         mutableListOf(),
-        OffsetDateTime.now()
+        OffsetDateTime.now(),
+        false
     )
 }

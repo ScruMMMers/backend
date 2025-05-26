@@ -12,11 +12,10 @@ import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
-import com.quqee.backend.internship_hits.public_interface.mark.MarkDto
-import com.quqee.backend.internship_hits.public_interface.mark.MarkListDto
+import com.quqee.backend.internship_hits.public_interface.common.MarkListDto
 import com.quqee.backend.internship_hits.public_interface.notification_public.GetNotificationForHeaderDto
 import com.quqee.backend.internship_hits.public_interface.notification_public.ShortNotificationDto
-import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
+import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
 import com.quqee.backend.internship_hits.students.StudentsService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component

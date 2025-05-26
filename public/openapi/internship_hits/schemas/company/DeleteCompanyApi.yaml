@@ -1,0 +1,18 @@
+delete:
+  tags:
+    - company
+  summary: Удалить сущность компании
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - in: path
+      name: companyId
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Компания удалена
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

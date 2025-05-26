@@ -8,7 +8,6 @@ import com.quqee.backend.internship_hits.employees.entity.EmployeesFilterParams
 import com.quqee.backend.internship_hits.employees.repository.EmployeesRepository
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
-import com.quqee.backend.internship_hits.profile.dto.UpdateUserDto
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationResponse
 import com.quqee.backend.internship_hits.public_interface.common.UserId
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
@@ -16,7 +15,7 @@ import com.quqee.backend.internship_hits.public_interface.common.enums.UserRole
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.employees_public.EmployeeDto
 import com.quqee.backend.internship_hits.public_interface.employees_public.GetEmployeesListDto
-import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
+import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking

@@ -1,0 +1,43 @@
+get:
+  tags:
+    - marks
+  summary: Получить список студентов с оценками
+  security:
+    - openIdConnect: []
+  parameters:
+    - in: query
+      name: search
+      required: false
+      schema:
+        type: string
+    - in: query
+      name: semester
+      required: false
+      schema:
+        type: integer
+    - in: query
+      name: diaryDoneFirst
+      required: false
+      schema:
+        type: boolean
+    - in: query
+      name: diaryStatus
+      required: false
+      schema:
+        $ref: './Mark.yaml#/DiaryStatusEnum'
+    - in: query
+      name: mark
+      required: false
+      schema:
+        type: integer
+    - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
+    - $ref: '../common/Pagination.yaml#/PaginationPageSize'
+  responses:
+    '200':
+      description: Список студентов
+      content:
+        application/json:
+          schema:
+            $ref: './StudentsMarksListView.yaml#/StudentsMarksListView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

@@ -8,7 +8,7 @@ import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.ShortCompanyWithEmployersDto
-import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
+import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
 import org.springframework.stereotype.Component
 import java.net.URI
 
@@ -54,6 +54,7 @@ class CompanyMapper(
             companyId = entity.companyId,
             name = entity.name,
             avatarUrl = URI.create(fileService.getFileLink(entity.avatarId).downloadUrl),
+            agent = entity.agent?.let {  profileService.getShortAccount(GetProfileDto(it)) },
             primaryColor = ColorEnum.fromHex(entity.primaryColor),
             sinceYear = entity.sinceYear,
             description = entity.description,

@@ -8,7 +8,7 @@ import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
-import com.quqee.backend.internship_hits.public_interface.profile_public.GetProfileDto
+import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
 import com.quqee.backend.internship_hits.public_interface.reaction.PossibleReactionDto
 import com.quqee.backend.internship_hits.public_interface.reaction.ReactionDto
 import org.springframework.stereotype.Service

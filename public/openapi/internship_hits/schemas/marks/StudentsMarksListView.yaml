@@ -1,0 +1,11 @@
+StudentsMarksListView:
+  type: object
+  required:
+    - studentsMarksView
+  properties:
+    studentsMarksView:
+      type: array
+      items:
+        $ref: './StudentsMarksView.yaml#/StudentsMarksView'
+    page:
+      $ref: '../common/Pagination.yaml#/LastIdPaginationView'

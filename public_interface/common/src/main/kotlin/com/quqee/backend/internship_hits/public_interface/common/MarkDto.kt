@@ -1,4 +1,4 @@
-package com.quqee.backend.internship_hits.public_interface.mark
+package com.quqee.backend.internship_hits.public_interface.common
 
 import com.quqee.backend.internship_hits.public_interface.common.enums.DiaryStatusEnum
 import java.time.OffsetDateTime

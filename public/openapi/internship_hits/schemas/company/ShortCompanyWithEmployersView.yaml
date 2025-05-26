@@ -17,6 +17,8 @@ ShortCompanyWithEmployersView:
     avatarUrl:
       type: string
       format: uri
+    agent:
+      $ref: '../common/Account.yaml#/ShortAccountView'
     primaryColor:
       type: string
     sinceYear:
