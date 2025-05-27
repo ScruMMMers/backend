@@ -29,3 +29,10 @@ DiaryStatusEnum:
     - APPROVED
     - REJECTED
     - NONE
+
+OrderStrategy:
+  type: string
+  enum:
+    - ASCENDING
+    - DESCENDING
+    - UNSORTED

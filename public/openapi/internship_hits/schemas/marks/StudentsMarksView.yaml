@@ -5,7 +5,7 @@ StudentsMarksView:
     - fullName
     - group
     - course
-    - markListView
+    - marks
   properties:
     id:
       type: string
@@ -16,5 +16,7 @@ StudentsMarksView:
       type: string
     course:
       type: integer
-    markListView:
-      $ref: './MarkListView.yaml#/MarkListView'
+    marks:
+      type: array
+      items:
+        $ref: './Mark.yaml#/MarkView'

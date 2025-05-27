@@ -68,6 +68,8 @@ interface MarkRepository : JpaRepository<MarkEntity, UUID> {
                 (:semester = 8 AND m8.mark = :mark)
                 )
             ORDER BY
+                CASE WHEN :sortByGroup = 'ASCENDING' THEN s.student_group ELSE NULL END ASC,
+                CASE WHEN :sortByGroup = 'DESCENDING' THEN s.student_group ELSE NULL END DESC,
                 CASE
                     WHEN :semester IS NOT NULL AND :diaryDoneFirst = true THEN
                         CASE
@@ -135,17 +137,18 @@ interface MarkRepository : JpaRepository<MarkEntity, UUID> {
                             END
                     ELSE 0
                     END,
-                s.student_group,
+                CASE WHEN :sortByGroup = 'UNSORTED' THEN s.student_group ELSE NULL END ASC,
                 s.user_id
         """,
         nativeQuery = true
     )
-    fun test(
+    fun getStudentsWithMarks(
         @Param("userIds") userIds: List<UUID>,
         @Param("semester") semester: Int?,
         @Param("diaryDoneFirst") diaryDoneFirst: Boolean?,
         @Param("diaryStatus") diaryStatus: String?,
         @Param("mark") mark: Int?,
+        @Param("sortByGroup") sortByGroup: String,
     ): List<StudentsMarksProjection>
 
 }

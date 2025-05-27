@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 open class StudentsMarksConfigurationMapper(
-    private val mapMark: FromInternalToApiMapper<MarkListView, MarkListDto>
+    private val mapMark: FromInternalToApiMapper<MarkView, MarkDto>
 ) {
     @Bean
     open fun mapStudentsMarksToApi(
@@ -26,7 +26,7 @@ open class StudentsMarksConfigurationMapper(
             fullName = model.fullName,
             group = model.group,
             course = model.course,
-            markListView = mapMark.fromInternal(model.markListDto)
+            marks = model.marks.map { mapMark.fromInternal(it) }
         )
     }
 }

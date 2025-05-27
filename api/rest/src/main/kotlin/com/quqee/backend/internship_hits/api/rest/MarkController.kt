@@ -12,6 +12,7 @@ import com.quqee.backend.internship_hits.public_interface.common.StudentsMarksLi
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import java.util.*
+import javax.swing.SortOrder
 
 @Component
 class MarkController(
@@ -38,6 +39,7 @@ class MarkController(
     }
 
     override fun marksStudentsListGet(
+        orderByGroup: OrderStrategy,
         search: String?,
         semester: Int?,
         diaryDoneFirst: Boolean?,
@@ -60,6 +62,7 @@ class MarkController(
                     diaryDoneFirst,
                     status,
                     mark,
+                    SortOrder.valueOf(orderByGroup.value),
                     lastId,
                     size
                 )

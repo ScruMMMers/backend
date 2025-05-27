@@ -30,6 +30,11 @@ get:
       required: false
       schema:
         type: integer
+    - in: query
+      name: orderByGroup
+      required: true
+      schema:
+        $ref: './Mark.yaml#/OrderStrategy'
     - $ref: '../common/Pagination.yaml#/PaginationPageLastId'
     - $ref: '../common/Pagination.yaml#/PaginationPageSize'
   responses:

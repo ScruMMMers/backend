@@ -12,10 +12,10 @@ import com.quqee.backend.internship_hits.public_interface.common.exception.Excep
 import com.quqee.backend.internship_hits.public_interface.mark.CreateMarkDto
 import com.quqee.backend.internship_hits.students.StudentsService
 import org.springframework.stereotype.Service
-import org.springframework.web.servlet.function.ServerResponse.async
 import java.time.OffsetDateTime
 import java.util.*
 import kotlinx.coroutines.*
+import javax.swing.SortOrder
 
 interface MarkService {
 
@@ -35,6 +35,7 @@ interface MarkService {
         diaryDoneFirst: Boolean?,
         diaryStatus: DiaryStatusEnum?,
         mark: Int?,
+        orderByGroup: SortOrder,
         lastId: UUID?,
         size: Int?
     ): StudentsMarksListDto
@@ -169,17 +170,19 @@ class MarkServiceImpl(
         diaryDoneFirst: Boolean?,
         diaryStatus: DiaryStatusEnum?,
         mark: Int?,
+        orderByGroup: SortOrder,
         lastId: UUID?,
         size: Int?
     ): StudentsMarksListDto = runBlocking {
         val userIds = search?.let { profileService.getUserIdsByName(it) }
 
-        val projections = repository.test(
+        val projections = repository.getStudentsWithMarks(
             userIds?.toList() ?: emptyList(),
             semester,
             diaryDoneFirst,
             diaryStatus?.toString(),
-            mark
+            mark,
+            orderByGroup.toString()
         )
 
         val filteredProjections = lastId?.let {
@@ -220,40 +223,39 @@ class MarkServiceImpl(
             fullName = userFullName,
             group = this.group,
             course = this.course,
-            markListDto = MarkListDto(
-                marks = listOfNotNull(
-                    MarkDto(
-                        id = UUID.randomUUID(),
-                        userId = this.id,
-                        mark = this.fifthSemesterMark,
-                        diary = this.fifthSemesterDiary,
-                        date = markDate,
-                        semester = 5
-                    ),
-                    MarkDto(
-                        id = UUID.randomUUID(),
-                        userId = this.id,
-                        mark = this.sixthSemesterMark,
-                        diary = this.sixthSemesterDiary,
-                        date = markDate,
-                        semester = 6
-                    ),
-                    MarkDto(
-                        id = UUID.randomUUID(),
-                        userId = this.id,
-                        mark = this.seventhSemesterMark,
-                        diary = this.seventhSemesterDiary,
-                        date = markDate,
-                        semester = 7
-                    ),
-                    MarkDto(
-                        id = UUID.randomUUID(),
-                        userId = this.id,
-                        mark = this.eighthSemesterMark,
-                        diary = this.eighthSemesterDiary,
-                        date = markDate,
-                        semester = 8
-                    )
+
+            marks = listOfNotNull(
+                MarkDto(
+                    id = UUID.randomUUID(),
+                    userId = this.id,
+                    mark = this.fifthSemesterMark,
+                    diary = this.fifthSemesterDiary,
+                    date = markDate,
+                    semester = 5
+                ),
+                MarkDto(
+                    id = UUID.randomUUID(),
+                    userId = this.id,
+                    mark = this.sixthSemesterMark,
+                    diary = this.sixthSemesterDiary,
+                    date = markDate,
+                    semester = 6
+                ),
+                MarkDto(
+                    id = UUID.randomUUID(),
+                    userId = this.id,
+                    mark = this.seventhSemesterMark,
+                    diary = this.seventhSemesterDiary,
+                    date = markDate,
+                    semester = 7
+                ),
+                MarkDto(
+                    id = UUID.randomUUID(),
+                    userId = this.id,
+                    mark = this.eighthSemesterMark,
+                    diary = this.eighthSemesterDiary,
+                    date = markDate,
+                    semester = 8
                 )
             )
         )

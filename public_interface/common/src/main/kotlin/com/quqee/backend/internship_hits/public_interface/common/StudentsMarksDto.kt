@@ -7,5 +7,5 @@ data class StudentsMarksDto(
     val fullName: String,
     val group: String,
     val course: Int,
-    val markListDto: MarkListDto
+    val marks: List<MarkDto>
 )
