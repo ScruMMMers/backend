@@ -46,10 +46,10 @@ class ProfileService(
         val user = userClient.getUser(dto.userId) ?:
             throw ExceptionInApplication(ExceptionType.NOT_FOUND)
 
-        if (userClient.getUserByEmail(dto.email) != null) {
+        if (dto.isEmailChanged && userClient.getUserByEmail(dto.email) != null) {
             throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Пользователь с таким email уже существует")
         }
-        if (userClient.getUserByUsername(dto.username) != null) {
+        if (dto.isUsernameChanged && userClient.getUserByUsername(dto.username) != null) {
             throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Пользователь с таким логином уже существует")
         }
 
@@ -74,9 +74,10 @@ class ProfileService(
             userId = profile.userId,
             fullName = profile.fullName,
             roles = profile.roles.toList(),
-            avatarUrl = profile.avatarUrl ?: FALLBACK_PROFILE_IMAGE_URL,
+            avatarUrl = profile.avatar?.downloadUrl ?: FALLBACK_PROFILE_IMAGE_URL,
             primaryColor = profile.primaryColor,
             email = profile.email,
+            avatar = profile.avatar,
         )
     }
 
@@ -84,7 +85,7 @@ class ProfileService(
         val profile = getProfile(dto)
         return ProfileForHeader(
             fullName = profile.fullName,
-            avatarUrl = profile.avatarUrl ?: FALLBACK_PROFILE_IMAGE_URL
+            avatarUrl = profile.avatar?.downloadUrl ?: FALLBACK_PROFILE_IMAGE_URL
         )
     }
 
@@ -127,7 +128,13 @@ class ProfileService(
     private fun getProfile(dto: GetProfileDto): ProfileDto {
         val user = userClient.getUser(dto.userId) ?:
             throw ExceptionInApplication(ExceptionType.NOT_FOUND)
-        val userAvatarUrl = user.photoId?.let { fileService.getFileLink(UUID.fromString(it)) }
+        val userAvatar = user.photoId?.let {
+            try {
+                fileService.getFileById(UUID.fromString(it))
+            } catch (e: Exception) {
+                null
+            }
+        }
         return ProfileDto(
             userId = user.userId,
             email = user.email,
@@ -135,7 +142,7 @@ class ProfileService(
             lastName = user.lastName,
             roles = user.roles,
             username = user.username,
-            avatarUrl = userAvatarUrl?.downloadUrl ?: FALLBACK_PROFILE_IMAGE_URL
+            avatar = userAvatar,
         )
     }
 

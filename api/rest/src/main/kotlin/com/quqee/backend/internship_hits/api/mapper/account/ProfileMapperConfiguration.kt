@@ -23,7 +23,8 @@ open class ProfileMapperConfiguration(
             roles = model.roles.map { mapRole.mapToInternal(it) },
             avatarUrl = model.avatarUrl.toString(),
             primaryColor = ColorEnum.fromHex(model.primaryColor),
-            email = ""
+            email = "",
+            avatar = null,
         )
     }
 

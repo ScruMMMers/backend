@@ -11,4 +11,5 @@ data class ShortAccountDto(
     val avatarUrl: String,
     val primaryColor: ColorEnum,
     val email: String,
+    val avatar: FileDto?,
 )

@@ -17,6 +17,7 @@ EmployeeView:
     - userId
     - fullName
     - companies
+    - email
   properties:
     userId:
       type: string
@@ -25,6 +26,8 @@ EmployeeView:
       type: string
     photo:
       $ref: '../file/FileModels.yaml#/FileView'
+    email:
+      type: string
     companies:
       type: array
       items:

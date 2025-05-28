@@ -14,22 +14,4 @@ data class ShortCompanyWithEmployersDto(
     val sinceYear: String,
     val description: String,
     val employedCount: Int,
-) {
-    constructor() : this(
-        companyId = UUID.randomUUID(),
-        name = "Яндекс",
-        avatarUrl = URI.create("https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png"),
-        agent = ShortAccountDto(
-            UUID.randomUUID(),
-            "Иванов Иван Иванович",
-            emptyList(),
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Yandex_icon.svg/2048px-Yandex_icon.svg.png",
-            ColorEnum.CYAN,
-            "raiz@gmail.com"
-        ),
-        primaryColor = ColorEnum.NAVY.hexColor,
-        sinceYear = "2000",
-        description = "string",
-        employedCount = 0,
-    )
-}
+)

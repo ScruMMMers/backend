@@ -214,6 +214,7 @@ class StudentsService(
             middleName = middleName,
             photoId = user.photoId,
             roles = user.roles,
+            userName = user.username,
         )
         profileService.updateProfile(updateProfileDto)
 
