@@ -12,4 +12,6 @@ data class UpdateUserDto(
     val roles: Set<UserRole>,
     val middleName: String?,
     val photoId: String?,
+    val isEmailChanged: Boolean = true,
+    val isUsernameChanged: Boolean = true,
 )

@@ -119,6 +119,7 @@ class EmployeesService(
             middleName = middleName,
             photoId = dto.photoId,
             roles = user.roles,
+            userName = dto.email?.substringBefore("@"),
         )
         profileService.updateProfile(updateProfileDto)
 

@@ -33,6 +33,8 @@ data class UserEntity(
             roles = roles ?: this.roles,
             middleName = middleName,
             photoId = photoId,
+            isEmailChanged = this.email != email,
+            isUsernameChanged = this.username != userName,
         )
     }
 }

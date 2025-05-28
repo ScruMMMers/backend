@@ -8,5 +8,5 @@ data class DeaneryEditStudentDto(
     val fullName: String,
     val group: String,
     val course: Int,
-    val companyId: UUID,
+    val companyId: UUID?,
 )

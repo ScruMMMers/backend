@@ -70,7 +70,6 @@ DeaneryEditStudentRequestView:
     - course
     - group
     - fullName
-    - companyId
   properties:
     studentId:
       type: string
