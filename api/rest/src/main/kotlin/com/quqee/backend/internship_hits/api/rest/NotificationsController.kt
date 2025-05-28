@@ -7,6 +7,7 @@ import com.quqee.backend.internship_hits.notification.service.NotificationServic
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationRequest
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationResponse
+import com.quqee.backend.internship_hits.public_interface.common.SortingStrategy
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.notification_public.*
@@ -38,6 +39,7 @@ class NotificationsController(
                     lastId = lastId,
                     pageSize = size,
                     lastDate = lastDate,
+                    sorting = SortingStrategy.CREATED_AT_DESC,
                 )
             )
         )
