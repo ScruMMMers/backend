@@ -1,0 +1,9 @@
+CreateMarksListView:
+  type: object
+  required:
+    - marks
+  properties:
+    marks:
+      type: array
+      items:
+        $ref: './CreateMarkView.yaml#/CreateMarkView'

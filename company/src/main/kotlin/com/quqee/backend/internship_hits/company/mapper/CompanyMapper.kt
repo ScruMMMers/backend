@@ -5,7 +5,6 @@ import com.quqee.backend.internship_hits.company.entity.CompanyPositionEntity
 import com.quqee.backend.internship_hits.file.service.FileService
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
-import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.ShortCompanyWithEmployersDto
 import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
@@ -29,7 +28,7 @@ class CompanyMapper(
             avatarUrl = URI.create(fileService.getFileLink(entity.avatarId).downloadUrl),
             sinceYear = entity.sinceYear,
             description = entity.description,
-            primaryColor = ColorEnum.fromHex(entity.primaryColor),
+            primaryColor = entity.primaryColor,
             positions = entity.positions.map { companyPositionMapper.toCompanyPositionDto(it) },
             createdAt = entity.createdAt
         )
@@ -43,7 +42,7 @@ class CompanyMapper(
             companyId = entity.companyId,
             name = entity.name,
             avatarUrl = URI.create(fileService.getFileLink(entity.avatarId).downloadUrl),
-            primaryColor = ColorEnum.fromHex(entity.primaryColor),
+            primaryColor = entity.primaryColor,
             sinceYear = entity.sinceYear,
             description = entity.description
         )
@@ -55,7 +54,7 @@ class CompanyMapper(
             name = entity.name,
             avatarUrl = URI.create(fileService.getFileLink(entity.avatarId).downloadUrl),
             agent = entity.agent?.let {  profileService.getShortAccount(GetProfileDto(it)) },
-            primaryColor = ColorEnum.fromHex(entity.primaryColor),
+            primaryColor = entity.primaryColor,
             sinceYear = entity.sinceYear,
             description = entity.description,
             employedCount = entity.positions.stream()

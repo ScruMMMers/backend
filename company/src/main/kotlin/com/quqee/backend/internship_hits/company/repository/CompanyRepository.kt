@@ -35,7 +35,7 @@ class CompanyRepository(
             agent = createCompanyDto.agentId,
             sinceYear = createCompanyDto.sinceYear,
             description = createCompanyDto.description,
-            primaryColor = createCompanyDto.primaryColor.hexColor,
+            primaryColor = createCompanyDto.primaryColor,
             positions = mutableListOf(),
             createdAt = OffsetDateTime.now(),
             isDeleted = false
@@ -96,7 +96,7 @@ class CompanyRepository(
             avatarId = updateCompanyDto.avatarId ?: existingCompany.avatarId,
             agent = updateCompanyDto.agentId ?: existingCompany.agent,
             description = updateCompanyDto.description ?: existingCompany.description,
-            primaryColor = updateCompanyDto.primaryColor?.toString() ?: existingCompany.primaryColor,
+            primaryColor = updateCompanyDto.primaryColor ?: existingCompany.primaryColor,
         )
 
         return mapper.toCompanyDto(companyJpaRepository.save(updatedCompany))

@@ -9,6 +9,7 @@ import com.quqee.backend.internship_hits.public_interface.common.MarkDto
 import com.quqee.backend.internship_hits.public_interface.common.MarkListDto
 import com.quqee.backend.internship_hits.public_interface.common.StudentsMarksDto
 import com.quqee.backend.internship_hits.public_interface.common.StudentsMarksListDto
+import com.quqee.backend.internship_hits.public_interface.mark.CreateMarksListDto
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import java.util.*
@@ -19,7 +20,7 @@ class MarkController(
     private val markService: MarkService,
     private val mapMarkToApi: FromInternalToApiMapper<MarkView, MarkDto>,
     private val mapMarkListToApi: FromInternalToApiMapper<MarkListView, MarkListDto>,
-    private val createMarkToDto: FromApiToInternalMapper<CreateMarkView, CreateMarkDto>,
+    private val createMarkListToDto: FromApiToInternalMapper<CreateMarksListView, CreateMarksListDto>,
     private val mapStudentsMarksList: FromInternalToApiMapper<StudentsMarksListView, StudentsMarksListDto>,
 ) : MarksApiDelegate {
 
@@ -33,18 +34,18 @@ class MarkController(
         return ResponseEntity.ok(mapMarkToApi.fromInternal(markService.getMyCurrentMark()))
     }
 
-    override fun marksUserIdCreatePost(userId: UUID, createMarkView: CreateMarkView): ResponseEntity<MarkView> {
-        val createMarkDto = createMarkToDto.fromApi(createMarkView)
-        return ResponseEntity.ok(mapMarkToApi.fromInternal(markService.saveMark(userId, createMarkDto)))
+    override fun marksUserIdCreatePost(userId: UUID, createMarksListView: CreateMarksListView): ResponseEntity<MarkListView> {
+        val createMarkDto = createMarkListToDto.fromApi(createMarksListView)
+        return ResponseEntity.ok(mapMarkListToApi.fromInternal(markService.saveMarks(userId, createMarkDto)))
     }
 
     override fun marksStudentsListGet(
-        orderByGroup: OrderStrategy,
         search: String?,
         semester: Int?,
         diaryDoneFirst: Boolean?,
         diaryStatus: DiaryStatusEnum?,
         mark: Int?,
+        orderByGroup: OrderStrategy?,
         lastId: UUID?,
         size: Int?
     ): ResponseEntity<StudentsMarksListView> {
@@ -52,6 +53,11 @@ class MarkController(
         if (diaryStatus != null) {
             status =
                 com.quqee.backend.internship_hits.public_interface.common.enums.DiaryStatusEnum.valueOf(diaryStatus.toString())
+        }
+
+        var order: SortOrder? = null
+        if (orderByGroup != null) {
+            order = SortOrder.valueOf(orderByGroup.value)
         }
 
         return ResponseEntity.ok(
@@ -62,7 +68,7 @@ class MarkController(
                     diaryDoneFirst,
                     status,
                     mark,
-                    SortOrder.valueOf(orderByGroup.value),
+                    order,
                     lastId,
                     size
                 )

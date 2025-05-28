@@ -7,7 +7,6 @@ import com.quqee.backend.internship_hits.mapper.makeToApiMapper
 import com.quqee.backend.internship_hits.model.rest.ShortAccountView
 import com.quqee.backend.internship_hits.model.rest.ShortCompanyWithEmployersView
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
-import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
 import com.quqee.backend.internship_hits.public_interface.company.ShortCompanyWithEmployersDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -23,7 +22,7 @@ class ShortCompanyWithEmployersConfigurationMapper {
             name = model.name,
             avatarUrl = model.avatarUrl,
             agent = model.agent?.let { accountMapper.fromApi(it) },
-            primaryColor = ColorEnum.fromHex(model.primaryColor),
+            primaryColor = model.primaryColor,
             sinceYear = model.sinceYear,
             description = model.description,
             employedCount = model.employedCount,
@@ -39,7 +38,7 @@ class ShortCompanyWithEmployersConfigurationMapper {
             name = model.name,
             avatarUrl = model.avatarUrl,
             agent = model.agent?.let { accountMapper.fromInternal(it) },
-            primaryColor = model.primaryColor.hexColor,
+            primaryColor = model.primaryColor,
             sinceYear = model.sinceYear,
             description = model.description,
             employedCount = model.employedCount,

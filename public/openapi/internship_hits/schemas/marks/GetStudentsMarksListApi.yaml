@@ -32,7 +32,7 @@ get:
         type: integer
     - in: query
       name: orderByGroup
-      required: true
+      required: false
       schema:
         $ref: './Mark.yaml#/OrderStrategy'
     - $ref: '../common/Pagination.yaml#/PaginationPageLastId'

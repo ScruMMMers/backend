@@ -17,13 +17,13 @@ post:
     content:
       application/json:
         schema:
-          $ref: './CreateMarkView.yaml#/CreateMarkView'
+          $ref: './CreateMarksListView.yaml#/CreateMarksListView'
   responses:
     '200':
       description: Выставленная оценка
       content:
         application/json:
           schema:
-            $ref: './Mark.yaml#/MarkView'
+            $ref: './MarkListView.yaml#/MarkListView'
     '403':
       description: Недостаточно прав для доступа к ресурсу

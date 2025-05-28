@@ -1,6 +1,5 @@
 package com.quqee.backend.internship_hits.public_interface.company
 
-import com.quqee.backend.internship_hits.public_interface.common.enums.ColorEnum
 import java.util.*
 
 data class CreateCompanyDto (
@@ -9,5 +8,5 @@ data class CreateCompanyDto (
     val avatarId: UUID,
     val agentId: UUID?,
     val description: String,
-    val primaryColor: ColorEnum
+    val primaryColor: String
 )

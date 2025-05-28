@@ -35,4 +35,3 @@ OrderStrategy:
   enum:
     - ASCENDING
     - DESCENDING
-    - UNSORTED

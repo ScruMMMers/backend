@@ -10,16 +10,18 @@ import com.quqee.backend.internship_hits.public_interface.common.enums.DiaryStat
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.mark.CreateMarkDto
+import com.quqee.backend.internship_hits.public_interface.mark.CreateMarksListDto
 import com.quqee.backend.internship_hits.students.StudentsService
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 import java.util.*
 import kotlinx.coroutines.*
+import org.springframework.transaction.annotation.Transactional
 import javax.swing.SortOrder
 
 interface MarkService {
 
-    fun saveMark(userId: UserId, createMarkDto: CreateMarkDto): MarkDto
+    fun saveMarks(userId: UserId, createMarksListDto: CreateMarksListDto): MarkListDto
 
     fun createMarks(userId: UserId): List<MarkEntity>
 
@@ -35,7 +37,7 @@ interface MarkService {
         diaryDoneFirst: Boolean?,
         diaryStatus: DiaryStatusEnum?,
         mark: Int?,
-        orderByGroup: SortOrder,
+        orderByGroup: SortOrder?,
         lastId: UUID?,
         size: Int?
     ): StudentsMarksListDto
@@ -43,14 +45,23 @@ interface MarkService {
 }
 
 @Service
-class MarkServiceImpl(
+open class MarkServiceImpl(
     private val markMapper: MarkMapper,
     private val studentsService: StudentsService,
     private val repository: MarkRepository,
     private val profileService: ProfileService,
 ) : MarkService {
 
-    override fun saveMark(userId: UserId, createMarkDto: CreateMarkDto): MarkDto {
+    @Transactional
+    override fun saveMarks(userId: UserId, createMarksListDto: CreateMarksListDto): MarkListDto {
+        return MarkListDto(
+            createMarksListDto.marks.stream().map {
+                saveMark(userId, it)
+            }.toList()
+        )
+    }
+
+    private fun saveMark(userId: UserId, createMarkDto: CreateMarkDto): MarkDto {
         val student = studentsService.getStudent(userId)
 
         if (createMarkDto.semester == null && student.course < 3) {
@@ -170,7 +181,7 @@ class MarkServiceImpl(
         diaryDoneFirst: Boolean?,
         diaryStatus: DiaryStatusEnum?,
         mark: Int?,
-        orderByGroup: SortOrder,
+        orderByGroup: SortOrder?,
         lastId: UUID?,
         size: Int?
     ): StudentsMarksListDto = runBlocking {
@@ -182,7 +193,7 @@ class MarkServiceImpl(
             diaryDoneFirst,
             diaryStatus?.toString(),
             mark,
-            orderByGroup.toString()
+            orderByGroup?.toString()
         )
 
         val filteredProjections = lastId?.let {

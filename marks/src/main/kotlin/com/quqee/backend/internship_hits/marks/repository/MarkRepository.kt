@@ -137,7 +137,7 @@ interface MarkRepository : JpaRepository<MarkEntity, UUID> {
                             END
                     ELSE 0
                     END,
-                CASE WHEN :sortByGroup = 'UNSORTED' THEN s.student_group ELSE NULL END ASC,
+                CASE WHEN :sortByGroup IS NULL THEN s.student_group ELSE NULL END ASC,
                 s.user_id
         """,
         nativeQuery = true
@@ -148,7 +148,7 @@ interface MarkRepository : JpaRepository<MarkEntity, UUID> {
         @Param("diaryDoneFirst") diaryDoneFirst: Boolean?,
         @Param("diaryStatus") diaryStatus: String?,
         @Param("mark") mark: Int?,
-        @Param("sortByGroup") sortByGroup: String,
+        @Param("sortByGroup") sortByGroup: String?,
     ): List<StudentsMarksProjection>
 
 }

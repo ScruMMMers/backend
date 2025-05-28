@@ -10,7 +10,7 @@ data class ShortCompanyWithEmployersDto(
     val name: String,
     val avatarUrl: URI,
     val agent: ShortAccountDto?,
-    val primaryColor: ColorEnum,
+    val primaryColor: String,
     val sinceYear: String,
     val description: String,
     val employedCount: Int,
@@ -27,7 +27,7 @@ data class ShortCompanyWithEmployersDto(
             ColorEnum.CYAN,
             "raiz@gmail.com"
         ),
-        primaryColor = ColorEnum.NAVY,
+        primaryColor = ColorEnum.NAVY.hexColor,
         sinceYear = "2000",
         description = "string",
         employedCount = 0,
