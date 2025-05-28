@@ -87,7 +87,7 @@ open class MeetingServiceImpl(
         return MeetingsListPageableDto(
             meetings = meetings.take(pageSize),
             page = LastIdPagination(
-                lastId = if (meetings.isNotEmpty()) meetings.last().id else null,
+                lastId = if (meetings.isNotEmpty()) meetings.take(pageSize).last().id else null,
                 pageSize = pageSize,
                 hasNext = hasNext
             )

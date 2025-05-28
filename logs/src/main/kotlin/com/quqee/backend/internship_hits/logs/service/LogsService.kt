@@ -123,7 +123,7 @@ open class LogsServiceImpl (
         return LogListDto(
             logs = logs.take(pageSize),
             page = LastIdPagination(
-                lastId = if (logs.isNotEmpty()) logs.last().id else null,
+                lastId = if (logs.isNotEmpty()) logs.take(pageSize).last().id else null,
                 pageSize = pageSize,
                 hasNext = hasNext
             )

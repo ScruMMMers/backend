@@ -112,7 +112,7 @@ open class CompanyServiceImpl(
         return CompaniesListDto(
             companies = companies.take(pageSize),
             page = LastIdPagination(
-                lastId = if (companies.isNotEmpty()) companies.last().companyId else null,
+                lastId = if (companies.isNotEmpty()) companies.take(pageSize).last().companyId else null,
                 pageSize = pageSize,
                 hasNext = hasNext
             )
