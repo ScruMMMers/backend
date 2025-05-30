@@ -38,6 +38,7 @@ interface MarkService {
         diaryStatus: DiaryStatusEnum?,
         mark: Int?,
         orderByGroup: SortOrder?,
+        groups: List<String>?,
         lastId: UUID?,
         size: Int?
     ): StudentsMarksListDto
@@ -182,6 +183,7 @@ open class MarkServiceImpl(
         diaryStatus: DiaryStatusEnum?,
         mark: Int?,
         orderByGroup: SortOrder?,
+        groups: List<String>?,
         lastId: UUID?,
         size: Int?
     ): StudentsMarksListDto = runBlocking {
@@ -193,7 +195,8 @@ open class MarkServiceImpl(
             diaryDoneFirst,
             diaryStatus?.toString(),
             mark,
-            orderByGroup?.toString()
+            orderByGroup?.toString(),
+            groups ?: emptyList()
         )
 
         val filteredProjections = lastId?.let {

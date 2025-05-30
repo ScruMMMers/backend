@@ -16,8 +16,6 @@ interface MarkRepository : JpaRepository<MarkEntity, UUID> {
 
     fun findAllByUserIdOrderBySemesterAsc(userId: UserId): List<MarkEntity>
 
-    fun findFirstByUserIdOrderBySemesterDesc(userId: UserId): Optional<MarkEntity>
-
     @Query(
         """
             SELECT
@@ -67,6 +65,7 @@ interface MarkRepository : JpaRepository<MarkEntity, UUID> {
                     OR
                 (:semester = 8 AND m8.mark = :mark)
                 )
+                AND (:studentGroups IS NULL OR s.student_group IN (:studentGroups))
             ORDER BY
                 CASE WHEN :sortByGroup = 'ASCENDING' THEN s.student_group ELSE NULL END ASC,
                 CASE WHEN :sortByGroup = 'DESCENDING' THEN s.student_group ELSE NULL END DESC,
@@ -149,6 +148,7 @@ interface MarkRepository : JpaRepository<MarkEntity, UUID> {
         @Param("diaryStatus") diaryStatus: String?,
         @Param("mark") mark: Int?,
         @Param("sortByGroup") sortByGroup: String?,
+        @Param("studentGroups") groups: List<String>,
     ): List<StudentsMarksProjection>
 
 }

@@ -4,10 +4,8 @@ import com.quqee.backend.internship_hits.mapper.FromApiToInternalMapper
 import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
 import com.quqee.backend.internship_hits.marks.service.MarkService
 import com.quqee.backend.internship_hits.model.rest.*
-import com.quqee.backend.internship_hits.public_interface.mark.CreateMarkDto
 import com.quqee.backend.internship_hits.public_interface.common.MarkDto
 import com.quqee.backend.internship_hits.public_interface.common.MarkListDto
-import com.quqee.backend.internship_hits.public_interface.common.StudentsMarksDto
 import com.quqee.backend.internship_hits.public_interface.common.StudentsMarksListDto
 import com.quqee.backend.internship_hits.public_interface.mark.CreateMarksListDto
 import org.springframework.http.ResponseEntity
@@ -46,6 +44,7 @@ class MarkController(
         diaryStatus: DiaryStatusEnum?,
         mark: Int?,
         orderByGroup: OrderStrategy?,
+        groups: List<String>?,
         lastId: UUID?,
         size: Int?
     ): ResponseEntity<StudentsMarksListView> {
@@ -69,6 +68,7 @@ class MarkController(
                     status,
                     mark,
                     order,
+                    groups,
                     lastId,
                     size
                 )
