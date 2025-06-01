@@ -227,12 +227,16 @@ class StudentsService(
     }
 
     private fun mapStudentToDto(entity: StudentEntity): StudentDto {
-        val (profile, company, position) = runBlocking {
+        val (profile, companies, position) = runBlocking {
             val profileDeferred = async {
                 profileService.getShortAccount(GetProfileDto(userId = entity.userId))
             }
             val companyDeferred = async {
-                entity.companyId?.let { companyService.getShortCompany(it) }
+                val ids = mutableListOf<UUID>()
+                entity.companyId?.let { ids.add(it) }
+                entity.logs.mapNotNull { it.companyIds }.run { ids.addAll(this.flatten()) }
+
+                companyService.getShortCompanies(ids).groupBy { it.companyId }
             }
             val positionDeferred = async {
                 try {
@@ -247,13 +251,18 @@ class StudentsService(
             profile = profile,
             group = entity.group,
             course = entity.course,
-            company = company,
+            company = entity.companyId?.let { companies[it]?.firstOrNull() },
             logs = entity.logs.map { log ->
                 ShortLogInfo(
                     id = log.id,
                     status = ApprovalStatus.valueOf(log.status),
                     type = LogType.valueOf(log.type),
                     createdAt = log.createdAt,
+                    companies = log.companyIds?.let { companyIds ->
+                        companyIds.mapNotNull { companyId ->
+                            companies[companyId]?.firstOrNull()
+                        }
+                    } ?: emptyList(),
                 )
             }.toSet(),
             position = position,

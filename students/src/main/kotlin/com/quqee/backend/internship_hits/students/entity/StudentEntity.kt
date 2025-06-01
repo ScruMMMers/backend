@@ -19,6 +19,7 @@ data class StudentEntity(
         val type: String,
         val status: String,
         val createdAt: OffsetDateTime,
+        val companyIds: Set<UUID>?,
     )
 
     companion object {
