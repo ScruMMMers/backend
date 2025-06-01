@@ -44,7 +44,7 @@ class MarkController(
         diaryStatus: DiaryStatusEnum?,
         mark: Int?,
         orderByGroup: OrderStrategy?,
-        groups: List<String>?,
+        group: List<String>?,
         lastId: UUID?,
         size: Int?
     ): ResponseEntity<StudentsMarksListView> {
@@ -68,7 +68,7 @@ class MarkController(
                     status,
                     mark,
                     order,
-                    groups,
+                    group,
                     lastId,
                     size
                 )
