@@ -22,8 +22,10 @@ data class CompanyEntity(
     @Column(name = "avatar_id", nullable = false)
     var avatarId: UUID,
 
-    @Column(name = "agent", nullable = true)
-    var agent: UUID?,
+    @ElementCollection
+    @CollectionTable(name = "employees_companies", joinColumns = [JoinColumn(name = "company_id")])
+    @Column(name = "user_id", nullable = true)
+    var employees: List<UUID> = mutableListOf(),
 
     @Column(name = "since_year", nullable = false)
     var sinceYear: String,
@@ -48,7 +50,7 @@ data class CompanyEntity(
         UUID.randomUUID(),
         "",
         UUID.randomUUID(),
-        UUID.randomUUID(),
+        mutableListOf(),
         "",
         "",
         "",
