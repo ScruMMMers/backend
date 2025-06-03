@@ -172,3 +172,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v20_update_marks_and_companies.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 25
+      author: alexander_kirsanov
+      changes:
+        - sqlFile:
+            path: ddl/v21_delete_agent_from_company.sql
+            relativeToChangelogFile: true
