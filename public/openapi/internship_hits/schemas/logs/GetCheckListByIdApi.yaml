@@ -1,0 +1,23 @@
+get:
+  tags:
+    - logs
+  summary: Получить чек-лист логов по Id
+  security:
+    - openIdConnect: []
+  parameters:
+    - name: userId
+      in: query
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Идентификатор пользователя
+  responses:
+    '200':
+      description: Чек лист
+      content:
+        application/json:
+          schema:
+            $ref: './CheckData.yaml#/CheckDataListView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

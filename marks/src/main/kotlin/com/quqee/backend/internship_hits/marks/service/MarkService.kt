@@ -27,7 +27,11 @@ interface MarkService {
 
     fun getMyCurrentMark(): MarkDto
 
+    fun getCurrentMarkByUserId(userId: UserId): MarkDto
+
     fun getMyMarks(): MarkListDto
+
+    fun getMarksByUserId(userId: UserId): MarkListDto
 
     fun updateDiaryStatus(status: DiaryStatusEnum, userId: UserId, logDate: OffsetDateTime)
 
@@ -102,15 +106,20 @@ open class MarkServiceImpl(
 
     override fun getMyCurrentMark(): MarkDto {
         val myId = getCurrentUser()
-        val student = studentsService.getStudent(myId)
+
+        return getCurrentMarkByUserId(myId)
+    }
+
+    override fun getCurrentMarkByUserId(userId: UserId): MarkDto {
+        val student = studentsService.getStudent(userId)
 
         val currentSemester = getSemester(student.course, OffsetDateTime.now())
 
-        val mark = repository.findByUserIdAndSemester(myId, currentSemester)
+        val mark = repository.findByUserIdAndSemester(userId, currentSemester)
             .orElseGet {
                 val newMark = MarkEntity(
                     id = UUID.randomUUID(),
-                    userId = myId,
+                    userId = userId,
                     mark = null,
                     diaryStatusEnum = DiaryStatusEnum.NONE,
                     date = null,
@@ -119,7 +128,6 @@ open class MarkServiceImpl(
                 repository.save(newMark)
                 newMark
             }
-
         return markMapper.mapToDto(mark)
     }
 
@@ -146,9 +154,13 @@ open class MarkServiceImpl(
     override fun getMyMarks(): MarkListDto {
         val myId = getCurrentUser()
 
-        var marks = repository.findAllByUserIdOrderBySemesterAsc(myId)
+        return getMarksByUserId(myId)
+    }
+
+    override fun getMarksByUserId(userId: UserId): MarkListDto {
+        var marks = repository.findAllByUserIdOrderBySemesterAsc(userId)
         if (marks.isEmpty()) {
-            marks = createMarks(myId)
+            marks = createMarks(userId)
         }
 
         return MarkListDto(

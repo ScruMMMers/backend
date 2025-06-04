@@ -20,6 +20,7 @@ import com.quqee.backend.internship_hits.students.StudentsService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import java.net.URI
+import java.util.*
 
 @Component
 class ProfileController(
@@ -51,26 +52,12 @@ class ProfileController(
     override fun profileMeGet(): ResponseEntity<GetMyProfileResponseView> {
         val userId = KeycloakUtils.getUserId()
             ?: throw ExceptionInApplication(ExceptionType.FORBIDDEN)
-        val profile = profileService.getShortAccount(GetProfileDto(userId))
-        val student = try {
-            studentsService.getStudent(userId)
-        } catch (ignore: Exception) {null}
-        val mark = try {
-            markService.getMyMarks()
-        } catch (ignore: Exception) {null}
+
+        val profileView = createProfileView(userId)
 
         return ResponseEntity.ok(
             GetMyProfileResponseView(
-                profile = ProfileView(
-                    fullName = profile.fullName,
-                    avatarUrl = URI.create(profile.avatarUrl),
-                    roles = profile.roles.map { userRoleMapper.mapToApi(it) },
-                    course = student?.course?.toString(),
-                    group = student?.group,
-                    shortCompany = student?.company?.let { shortCompanyMapper.fromInternal(it) },
-                    mark = mark?.let { mapMarkToApi.fromInternal(it) },
-                    position = student?.position?.let { mapPositionToApi.fromInternal(it) }
-                )
+                profile = profileView
             )
         )
     }
@@ -84,6 +71,38 @@ class ProfileController(
             GetMyRolesView(
                 roles = roles.map { userRoleMapper.mapToApi(it) }
             )
+        )
+    }
+
+    override fun profileUserIdGet(userId: UUID): ResponseEntity<GetMyProfileResponseView> {
+        val profileView = createProfileView(userId)
+
+        return ResponseEntity.ok(
+            GetMyProfileResponseView(
+                profile = profileView
+            )
+        )
+    }
+
+    private fun createProfileView(userId: UUID): ProfileView {
+        val profile = profileService.getShortAccount(GetProfileDto(userId))
+        val student = try {
+            studentsService.getStudent(userId)
+        } catch (ignore: Exception) { null }
+
+        val mark = try {
+            markService.getMarksByUserId(userId)
+        } catch (ignore: Exception) { null }
+
+        return ProfileView(
+            fullName = profile.fullName,
+            avatarUrl = URI.create(profile.avatarUrl),
+            roles = profile.roles.map { userRoleMapper.mapToApi(it) },
+            course = student?.course?.toString(),
+            group = student?.group,
+            shortCompany = student?.company?.let { shortCompanyMapper.fromInternal(it) },
+            mark = mark?.let { mapMarkToApi.fromInternal(it) },
+            position = student?.position?.let { mapPositionToApi.fromInternal(it) }
         )
     }
 }

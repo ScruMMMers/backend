@@ -4,24 +4,21 @@ import com.quqee.backend.internship_hits.logs.repository.LogsRepository
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.check_list.CheckData
+import com.quqee.backend.internship_hits.public_interface.common.UserId
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import org.springframework.stereotype.Service
 
 interface CheckListService {
-    fun getCheckList(): List<CheckData>
+    fun getCheckList(userId: UserId): List<CheckData>
 }
 
 @Service
 class CheckListServiceImpl(
     private val logsRepository: LogsRepository,
-    private val profileService: ProfileService,
 ) : CheckListService {
-    override fun getCheckList(): List<CheckData> {
-        val userId = KeycloakUtils.getUserId()
-            ?: throw ExceptionInApplication(ExceptionType.FORBIDDEN, "User is null")
-
+    override fun getCheckList(userId: UserId): List<CheckData> {
         return listOf(
             CheckData(
                 position = 1,

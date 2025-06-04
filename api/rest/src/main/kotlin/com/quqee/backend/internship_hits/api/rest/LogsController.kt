@@ -7,11 +7,14 @@ import com.quqee.backend.internship_hits.mapper.EnumerationMapper
 import com.quqee.backend.internship_hits.mapper.FromApiToInternalMapper
 import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
 import com.quqee.backend.internship_hits.model.rest.*
+import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.public_interface.check_list.CheckData
 import com.quqee.backend.internship_hits.public_interface.comment.CommentsListDto
 import com.quqee.backend.internship_hits.public_interface.comment.CreateCommentDto
 import com.quqee.backend.internship_hits.public_interface.comment.UpdateCommentDto
 import com.quqee.backend.internship_hits.public_interface.common.CommentDto
+import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.*
@@ -153,7 +156,17 @@ class LogsController(
     }
 
     override fun logsCheckListGet(): ResponseEntity<CheckDataListView> {
-        val checkDataList = checkListService.getCheckList()
+        val userId = KeycloakUtils.getUserId()
+            ?: throw ExceptionInApplication(ExceptionType.FORBIDDEN, "User is null")
+        val checkDataList = checkListService.getCheckList(userId)
+        val mappedCheckList = checkDataList.map { checkData -> mapCheckData.fromInternal(checkData) }
+        return ResponseEntity.ok(
+            CheckDataListView(mappedCheckList)
+        )
+    }
+
+    override fun logsCheckListUserIdGet(userId: UUID): ResponseEntity<CheckDataListView> {
+        val checkDataList = checkListService.getCheckList(userId)
         val mappedCheckList = checkDataList.map { checkData -> mapCheckData.fromInternal(checkData) }
         return ResponseEntity.ok(
             CheckDataListView(mappedCheckList)
