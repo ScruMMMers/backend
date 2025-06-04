@@ -1,0 +1,23 @@
+get:
+  tags:
+    - marks
+  summary: Получить все оценки за практику по id пользователя
+  security:
+    - openIdConnect: []
+  parameters:
+    - name: userId
+      in: query
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Идентификатор пользователя
+  responses:
+    '200':
+      description: Мои оценки
+      content:
+        application/json:
+          schema:
+            $ref: './MarkListView.yaml#/MarkListView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

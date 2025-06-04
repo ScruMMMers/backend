@@ -184,6 +184,8 @@ paths:
     $ref: './schemas/marks/CreateMarkApi.yaml'
   /marks/my/all:
     $ref: './schemas/marks/GetAllMarksApi.yaml'
+  /marks/{userId}/all:
+    $ref: './schemas/marks/GetAllMarksByIdApi.yaml'
   /marks/my/current:
     $ref: './schemas/marks/GetCurrentMarkApi.yaml'
   /marks/{userId}/current:

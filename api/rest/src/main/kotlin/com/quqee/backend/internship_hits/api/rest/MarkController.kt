@@ -79,4 +79,10 @@ class MarkController(
     override fun marksUserIdCurrentGet(userId: UUID): ResponseEntity<MarkView> {
         return ResponseEntity.ok(mapMarkToApi.fromInternal(markService.getCurrentMarkByUserId(userId)))
     }
+
+    override fun marksUserIdAllGet(userId: UUID): ResponseEntity<MarkListView> {
+        return ResponseEntity.ok(
+            mapMarkListToApi.fromInternal(markService.getMarksByUserId(userId))
+        )
+    }
 }
