@@ -24,7 +24,7 @@ class CompanyMapper(
         return CompanyDto(
             companyId = entity.companyId,
             name = entity.name,
-            agent = entity.agent?.let {  profileService.getShortAccount(GetProfileDto(it)) },
+            agent = entity.employees.firstOrNull()?.let { profileService.getShortAccount(GetProfileDto(it)) },
             avatarUrl = URI.create(fileService.getFileLink(entity.avatarId).downloadUrl),
             sinceYear = entity.sinceYear,
             description = entity.description,
@@ -53,7 +53,7 @@ class CompanyMapper(
             companyId = entity.companyId,
             name = entity.name,
             avatarUrl = URI.create(fileService.getFileLink(entity.avatarId).downloadUrl),
-            agent = entity.agent?.let {  profileService.getShortAccount(GetProfileDto(it)) },
+            agent = entity.employees.firstOrNull()?.let { profileService.getShortAccount(GetProfileDto(it)) },
             primaryColor = entity.primaryColor,
             sinceYear = entity.sinceYear,
             description = entity.description,

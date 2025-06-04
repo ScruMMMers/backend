@@ -32,7 +32,7 @@ class CompanyRepository(
             companyId = UUID.randomUUID(),
             name = createCompanyDto.name,
             avatarId = createCompanyDto.avatarId,
-            agent = createCompanyDto.agentId,
+            employees = createCompanyDto.agentId?.let { listOf(it) } ?: emptyList(),
             sinceYear = createCompanyDto.sinceYear,
             description = createCompanyDto.description,
             primaryColor = createCompanyDto.primaryColor,
@@ -94,7 +94,7 @@ class CompanyRepository(
             name = updateCompanyDto.name ?: existingCompany.name,
             sinceYear = updateCompanyDto.sinceYear ?: existingCompany.sinceYear,
             avatarId = updateCompanyDto.avatarId ?: existingCompany.avatarId,
-            agent = updateCompanyDto.agentId ?: existingCompany.agent,
+            employees = updateCompanyDto.agentId?.let { listOf(it) } ?: existingCompany.employees,
             description = updateCompanyDto.description ?: existingCompany.description,
             primaryColor = updateCompanyDto.primaryColor ?: existingCompany.primaryColor,
         )

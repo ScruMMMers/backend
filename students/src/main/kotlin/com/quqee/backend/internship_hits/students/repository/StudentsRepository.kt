@@ -124,15 +124,16 @@ class StudentsRepository(
             isOnAcademicLeave = studentRecord[STUDENTS.IS_ON_ACADEMIC_LEAVE]!!,
             companyId = studentRecord[STUDENTS.COMPANY_ID],
             positionId = studentRecord[STUDENTS.POSITION_ID],
-            logs = records.mapNotNull { record ->
-                if (record[LOGS.ID] == null) {
-                    return@mapNotNull null
-                }
+            logs = records.filter { record -> record[LOGS.ID] != null }
+                .groupBy { record -> record[LOGS.ID]!! }
+            .map { (_, logRecords) ->
+                val baseRecord = logRecords.first()
                 StudentEntity.StudentLog(
-                    id = record[LOGS.ID]!!,
-                    type = record[LOGS.TYPE]!!,
-                    status = record[LOGS.APPROVAL_STATUS]!!,
-                    createdAt = record[LOGS.CREATED_AT]!!
+                    id = baseRecord[LOGS.ID]!!,
+                    type = baseRecord[LOGS.TYPE]!!,
+                    status = baseRecord[LOGS.APPROVAL_STATUS]!!,
+                    createdAt = baseRecord[LOGS.CREATED_AT]!!,
+                    companyIds = logRecords.mapNotNull { it[TAGS.COMPANY_ID] }.toSet(),
                 )
             }.toSet(),
         )

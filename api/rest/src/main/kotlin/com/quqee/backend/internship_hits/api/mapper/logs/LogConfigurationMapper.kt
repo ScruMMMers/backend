@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration
 class LogConfigurationMapper (
     private val mapLogType: EnumerationMapper<LogTypeEnum, LogType>,
     private val mapApprovalStatus: EnumerationMapper<ApprovalStatusEnum, ApprovalStatus>,
+    private val mapShortCompany: FromInternalToApiMapper<ShortCompanyView, ShortCompanyDto>,
 ) {
     @Bean
     fun mapLog(
@@ -72,6 +73,8 @@ class LogConfigurationMapper (
             id = model.id,
             type = mapLogType.mapToApi(model.type),
             approvalStatus = mapApprovalStatus.mapToApi(model.status),
+            createdAt = model.createdAt,
+            companies = model.companies.map { mapShortCompany.fromInternal(it) },
         )
     }
 }

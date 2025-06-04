@@ -88,7 +88,7 @@ class CompanyPositionServiceImpl(
                 "Позиция не найдена в компании с идентификатором $companyId"
             )
         }
-        val updatedEntity = entity.copy(interviewsCount = entity.employedCount + 1)
+        val updatedEntity = entity.copy(employedCount = entity.employedCount + 1)
         companyPositionJpaRepository.save(updatedEntity)
     }
 
@@ -99,7 +99,7 @@ class CompanyPositionServiceImpl(
                 "Позиция не найдена в компании с идентификатором $companyId"
             )
         }
-        val updatedEntity = entity.copy(interviewsCount = entity.employedCount - 1)
+        val updatedEntity = entity.copy(employedCount = entity.employedCount - 1)
         companyPositionJpaRepository.save(updatedEntity)
     }
 

@@ -12,18 +12,15 @@ import com.quqee.backend.internship_hits.public_interface.common.exception.Excep
 import com.quqee.backend.internship_hits.public_interface.mark.CreateMarkDto
 import com.quqee.backend.internship_hits.public_interface.mark.CreateMarksListDto
 import com.quqee.backend.internship_hits.students.StudentsService
+import kotlinx.coroutines.*
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 import java.util.*
-import kotlinx.coroutines.*
-import org.springframework.transaction.annotation.Transactional
 import javax.swing.SortOrder
 
 interface MarkService {
 
     fun saveMarks(userId: UserId, createMarksListDto: CreateMarksListDto): MarkListDto
-
-    fun createMarks(userId: UserId): List<MarkEntity>
 
     fun getMyCurrentMark(): MarkDto
 
@@ -57,7 +54,6 @@ open class MarkServiceImpl(
     private val profileService: ProfileService,
 ) : MarkService {
 
-    @Transactional
     override fun saveMarks(userId: UserId, createMarksListDto: CreateMarksListDto): MarkListDto {
         return MarkListDto(
             createMarksListDto.marks.stream().map {
@@ -94,19 +90,15 @@ open class MarkServiceImpl(
 
             return markMapper.mapToDto(existingMark)
         } else {
-            val marks = createMarks(userId)
-
+            val marks = createMarks(userId, semester, createMarkDto.mark)
             val mark = marks[semester - 5]
-            val editedMark = mark.copy(mark = createMarkDto.mark)
 
-            repository.save(mark)
-            return markMapper.mapToDto(editedMark)
+            return markMapper.mapToDto(mark)
         }
     }
 
     override fun getMyCurrentMark(): MarkDto {
         val myId = getCurrentUser()
-
         return getCurrentMarkByUserId(myId)
     }
 
@@ -128,21 +120,34 @@ open class MarkServiceImpl(
                 repository.save(newMark)
                 newMark
             }
+
         return markMapper.mapToDto(mark)
     }
 
-    override fun createMarks(userId: UserId): List<MarkEntity> {
+    private fun createMarks(userId: UserId, semesterToAdd: Int?, markToAdd: Int?): List<MarkEntity> {
         val marks = mutableListOf<MarkEntity>()
 
         for (semester in 5..8) {
-            val mark = MarkEntity(
-                id = UUID.randomUUID(),
-                userId = userId,
-                mark = null,
-                diaryStatusEnum = DiaryStatusEnum.NONE,
-                date = null,
-                semester = semester
-            )
+            var mark: MarkEntity
+            if (semesterToAdd == semester) {
+                mark = MarkEntity(
+                    id = UUID.randomUUID(),
+                    userId = userId,
+                    mark = markToAdd,
+                    diaryStatusEnum = DiaryStatusEnum.NONE,
+                    date = OffsetDateTime.now(),
+                    semester = semester
+                )
+            } else {
+                mark = MarkEntity(
+                    id = UUID.randomUUID(),
+                    userId = userId,
+                    mark = null,
+                    diaryStatusEnum = DiaryStatusEnum.NONE,
+                    date = null,
+                    semester = semester
+                )
+            }
             marks.add(mark)
         }
 
@@ -160,13 +165,14 @@ open class MarkServiceImpl(
     override fun getMarksByUserId(userId: UserId): MarkListDto {
         var marks = repository.findAllByUserIdOrderBySemesterAsc(userId)
         if (marks.isEmpty()) {
-            marks = createMarks(userId)
+            marks = createMarks(userId, null, null)
         }
 
         return MarkListDto(
             marks.map { markMapper.mapToDto(it) }
         )
     }
+
 
     override fun updateDiaryStatus(status: DiaryStatusEnum, userId: UserId, logDate: OffsetDateTime) {
         val course = studentsService.getStudent(userId).course
@@ -178,7 +184,7 @@ open class MarkServiceImpl(
             val newMark = existingMark.copy(diaryStatusEnum = status)
             repository.save(newMark)
         } else {
-            val marks = createMarks(userId)
+            val marks = createMarks(userId, null, null)
 
             val mark = marks[semester - 5]
             val editedMark = mark.copy(diaryStatusEnum = status)

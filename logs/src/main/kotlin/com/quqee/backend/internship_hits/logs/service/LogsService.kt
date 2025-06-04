@@ -17,6 +17,8 @@ import com.quqee.backend.internship_hits.public_interface.students_public.Create
 import com.quqee.backend.internship_hits.students.StudentsService
 import com.quqee.backend.internship_hits.tags.entity.TagEntity
 import com.quqee.backend.internship_hits.tags_query.service.TagQueryService
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -62,7 +64,7 @@ open class LogsServiceImpl (
     private val companyPositionService: CompanyPositionService,
     private val kafkaSender: KafkaSender<Any>,
 ) : LogsService {
-
+    private val logger: Logger = LoggerFactory.getLogger(LogsServiceImpl::class.java)
     /**
      * Получение логов текущего пользователя с фильтрацией по типам и статусам одобрения
      */
@@ -245,6 +247,7 @@ open class LogsServiceImpl (
                 )
                 if (log.hashtags.isNotEmpty()){
                     try {
+                        logger.info("Увеличение числа сотрудников в компании: " + log.tags[0].shortCompany.name)
                         companyPositionService.incrementEmployedCount(log.tags[0].shortCompany.companyId, log.hashtags[0].id)
                     } catch (e: Exception) {
                         //нужна обработка

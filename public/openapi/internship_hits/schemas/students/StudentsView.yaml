@@ -126,3 +126,10 @@ StudentShortLogView:
       $ref: '../logs/Log.yaml#/LogTypeEnum'
     approvalStatus:
       $ref: '../logs/Log.yaml#/ApprovalStatusEnum'
+    createdAt:
+      type: string
+      format: date-time
+    companies:
+      type: array
+      items:
+        $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
