@@ -74,6 +74,8 @@ paths:
     $ref: './schemas/logs/ChangeCompanyApi.yaml'
   /logs/check-list:
     $ref: './schemas/logs/GetCheckListApi.yaml'
+  /logs/check-list/{userId}:
+    $ref: './schemas/logs/GetCheckListByIdApi.yaml'
 
   /company/{companyId}:
     $ref: './schemas/company/GetCompanyApi.yaml'
@@ -110,6 +112,8 @@ paths:
     $ref: './schemas/profile/GetProfileHeaderApi.yaml'
   /profile/roles:
     $ref: './schemas/profile/GetMyRolesApi.yaml'
+  /profile/{userId}:
+    $ref: './schemas/profile/GetProfileByIdApi.yaml'
 
   /notifications/last:
     $ref: './schemas/notifications/GetLastNotificationsApi.yaml'
@@ -182,6 +186,8 @@ paths:
     $ref: './schemas/marks/GetAllMarksApi.yaml'
   /marks/my/current:
     $ref: './schemas/marks/GetCurrentMarkApi.yaml'
+  /marks/{userId}/current:
+    $ref: './schemas/marks/GetCurrentMarkByIdApi.yaml'
   /marks/students/list:
     $ref: './schemas/marks/GetStudentsMarksListApi.yaml'
 
