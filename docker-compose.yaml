@@ -34,6 +34,11 @@ services:
       AWS_REGION: ru-central1
       SERVER_APP_KEYCLOAK_SECRET: ${SERVER_APP_KEYCLOAK_SECRET}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
     ports:
       - '8080:8080'
     networks:
@@ -56,6 +61,11 @@ services:
       timeout: 60s
       retries: 5
       start_period: 80s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
     volumes:
       - db:/var/lib/postgresql/data
       - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
@@ -74,6 +84,11 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
     networks:
       - my_network
 
@@ -101,6 +116,11 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
     networks:
       - my_network
 
@@ -119,6 +139,11 @@ services:
       KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       ENABLE_DEBEZIUM_SCRIPTING: 'true'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
     networks:
       - my_network
 
