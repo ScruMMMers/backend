@@ -126,6 +126,15 @@ class EmployeesService(
         return mapEmployeeToDto(employeesRepository.getByUserId(dto.userId)!!)
     }
 
+    @Transactional
+    fun deleteEmployee(userId: UserId) {
+        employeesRepository.getByUserId(userId)
+            ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "User not found")
+
+        employeesRepository.deleteEmployee(userId)
+        profileService.deleteUser(userId)
+    }
+
     private fun mapEmployeeToDto(entity: EmployeeEntity): EmployeeDto {
         val profile = profileService.getShortAccount(
             GetProfileDto(userId = entity.userId)

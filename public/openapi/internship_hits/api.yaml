@@ -169,6 +169,8 @@ paths:
     $ref: './schemas/students/PostMoveCourseByUserApi.yaml'
   /students/deanery/move-course:
     $ref: './schemas/students/PostMoveCourseApi.yaml'
+  /students/deanery/delete/{userId}:
+    $ref: './schemas/students/PostStudentsDeleteApi.yaml'
 
   /locker/{featureName}/switch:
     $ref: './schemas/locker/SwitchLockStatusApi.yaml'
@@ -199,3 +201,5 @@ paths:
     $ref: './schemas/employees/PostEmployeesRegistrationApi.yaml'
   /employees/update:
     $ref: './schemas/employees/PostEmployeesUpdateApi.yaml'
+  /employees/deanery/delete/{userId}:
+    $ref: './schemas/employees/PostEmployeesDeleteApi.yaml'

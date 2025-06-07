@@ -115,6 +115,12 @@ class StudentsRepository(
             .fetchOne(STUDENT_RECORD_MAPPER)!!
     }
 
+    fun deleteStudent(userId: UserId) {
+        dsl.deleteFrom(STUDENTS)
+            .where(STUDENTS.USER_ID.eq(userId))
+            .execute()
+    }
+
     private fun studentMapper(records: Collection<Record>): StudentEntity {
         val studentRecord = records.first()
         return StudentEntity(
@@ -169,24 +175,28 @@ class StudentsRepository(
             .on(LOG_TAGS.TAG_ID.eq(TAGS.ID))
     }
 
-    private fun StudentsFilterParams.toCondition(): Collection<Condition> {
-        val conditions = mutableListOf<Condition>()
-        course?.let { conditions.add(STUDENTS.STUDENT_COURSE.`in`(it)) }
-        group?.let { conditions.add(STUDENTS.STUDENT_GROUP.`in`(it)) }
-        logType?.let { conditions.add(LOGS.TYPE.`in`(it)) }
-        logApprovalStatus?.let { conditions.add(LOGS.APPROVAL_STATUS.`in`(it)) }
-        positionType?.let { conditions.add(POSITIONS.POSITION.`in`(it)) }
-        positionName?.let { conditions.add(POSITIONS.NAME.`in`(it)) }
-        companyIds?.let { conditions.add(STUDENTS.COMPANY_ID.`in`(it)) }
-        userIds?.let { conditions.add(STUDENTS.USER_ID.`in`(it)) }
+    private fun StudentsFilterParams.toCondition(): Condition {
+        val conditions = DSL.trueCondition()
 
-        val typeIdPairs = logByCompany?.entries?.flatMap { (type, companyIds) ->
-            companyIds.map { companyId ->
+        course?.let { conditions.and(STUDENTS.STUDENT_COURSE.`in`(it)) }
+        group?.let { conditions.and(STUDENTS.STUDENT_GROUP.`in`(it)) }
+        logType?.let { conditions.and(LOGS.TYPE.`in`(it)) }
+        logApprovalStatus?.let { conditions.and(LOGS.APPROVAL_STATUS.`in`(it)) }
+        positionType?.let { conditions.and(POSITIONS.POSITION.`in`(it)) }
+        positionName?.let { conditions.and(POSITIONS.NAME.`in`(it)) }
+        companyIds?.let { conditions.and(STUDENTS.COMPANY_ID.`in`(it)) }
+        userIds?.let { conditions.and(STUDENTS.USER_ID.`in`(it)) }
+
+        val typeIdPairs = logByCompany?.entries?.flatMap { (type, companyIdsByLog) ->
+            if (companyIdsByLog.isEmpty()) {
+                conditions.and(LOGS.TYPE.eq(type.name))
+            }
+            companyIdsByLog.map { companyId ->
                 DSL.row(type.name, companyId)
             }
         }
         typeIdPairs?.let {
-            conditions.add(DSL.row(LOGS.TYPE, TAGS.COMPANY_ID).`in`(it))
+            conditions.and(DSL.row(LOGS.TYPE, TAGS.COMPANY_ID).`in`(it))
         }
 
         return conditions

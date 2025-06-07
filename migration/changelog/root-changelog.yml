@@ -179,3 +179,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/v21_delete_agent_from_company.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 26
+      author: gordey_dovydenko
+      changes:
+        - sqlFile:
+            path: ddl/added_constraint_to_drop_cascade_logs.sql
+            relativeToChangelogFile: true

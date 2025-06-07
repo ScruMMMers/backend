@@ -65,4 +65,9 @@ class EmployeesController(
             )
         )
     }
+
+    override fun employeesDeaneryDeleteUserIdDelete(userId: UUID): ResponseEntity<Unit> {
+        employeesService.deleteEmployee(userId)
+        return ResponseEntity.ok().build()
+    }
 }

@@ -125,6 +125,10 @@ class ProfileService(
         return userClient.getUser(userId) ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND)
     }
 
+    fun deleteUser(userId: UserId) {
+        userClient.deleteUser(userId)
+    }
+
     private fun getProfile(dto: GetProfileDto): ProfileDto {
         val user = userClient.getUser(dto.userId) ?:
             throw ExceptionInApplication(ExceptionType.NOT_FOUND)
