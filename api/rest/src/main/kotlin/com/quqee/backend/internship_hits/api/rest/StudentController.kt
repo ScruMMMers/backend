@@ -148,4 +148,9 @@ class StudentController(
 
         return ResponseEntity.ok().build()
     }
+
+    override fun studentsDeaneryDeleteUserIdDelete(userId: UUID): ResponseEntity<Unit> {
+        studentsService.deaneryDeleteStudent(userId)
+        return ResponseEntity.ok().build()
+    }
 }

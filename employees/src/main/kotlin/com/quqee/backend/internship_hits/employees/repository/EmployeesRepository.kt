@@ -98,6 +98,12 @@ class EmployeesRepository(
             .firstOrNull()
     }
 
+    fun deleteEmployee(id: UserId) {
+        dsl.deleteFrom(EMPLOYEES)
+            .where(EMPLOYEES.USER_ID.eq(id))
+            .execute()
+    }
+
     private fun EmployeesFilterParams.toCondition(): Collection<Condition> {
         val conditions = mutableListOf<Condition>()
         companiesIds?.let { conditions.add(EMPLOYEES_COMPANIES.COMPANY_ID.`in`(it)) }

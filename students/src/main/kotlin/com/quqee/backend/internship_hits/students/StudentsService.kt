@@ -83,7 +83,8 @@ class StudentsService(
     }
 
     fun getStudent(id: UUID): StudentDto {
-        val student = studentsRepository.getStudent(id) ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND)
+        val student = studentsRepository.getStudent(id)
+            ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND)
         return mapStudentToDto(student)
     }
 
@@ -224,6 +225,15 @@ class StudentsService(
     @Transactional
     fun setCompanyToStudent(dto: CreateCompanyToStudentDto){
         studentsRepository.updateCompanyAndPosition(dto.companyId, dto.userId, dto.positionId)
+    }
+
+    @Transactional
+    fun deaneryDeleteStudent(userId: UserId) {
+        studentsRepository.getStudent(userId)
+            ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Студент не найден")
+
+        studentsRepository.deleteStudent(userId)
+        profileService.deleteUser(userId)
     }
 
     private fun mapStudentToDto(entity: StudentEntity): StudentDto {

@@ -1,0 +1,18 @@
+delete:
+  tags:
+    - students
+  summary: Удаление студента
+  parameters:
+    - in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+        format: uuid
+  security:
+    - openIdConnect: [ ]
+  responses:
+    '200':
+      description: Успешное удаление студента
+    '400':
+      description: Что-то пошло не так
