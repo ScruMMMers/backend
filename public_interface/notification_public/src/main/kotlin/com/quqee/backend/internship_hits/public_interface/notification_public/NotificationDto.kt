@@ -13,4 +13,5 @@ data class NotificationDto(
     val createdAt: OffsetDateTime,
     val isRead: Boolean,
     val pollId: UUID?,
+    val redirect: RedirectNotificationDto?,
 ) : IHaveId<NotificationId>

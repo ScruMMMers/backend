@@ -4,4 +4,5 @@ import java.util.*
 
 data class NotificationAttachmentEntity(
     val pollId: UUID?,
+    val redirectId: UUID?,
 )

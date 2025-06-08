@@ -50,6 +50,9 @@ NotificationView:
     pollId:
       type: string
       format: uuid
+    redirect:
+      $ref: '#/RedirectNotificationView'
+
 
 ReadNotificationView:
   type: object
@@ -68,3 +71,19 @@ NotificationTypeEnum:
     - SYSTEM
     - DEANERY
     - POLL
+
+RedirectNotificationView:
+  type: object
+  required:
+    - redirectId
+    - fullName
+    - avatarUrl
+  properties:
+    redirectId:
+      type: string
+      format: uuid
+    fullName:
+      type: string
+    avatarUrl:
+      type: string
+

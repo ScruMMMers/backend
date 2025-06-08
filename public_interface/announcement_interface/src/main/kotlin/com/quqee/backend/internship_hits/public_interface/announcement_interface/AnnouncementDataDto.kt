@@ -5,5 +5,6 @@ import java.util.*
 data class AnnouncementDataDto(
     val title: String,
     val text: String,
-    val pollId: UUID? = null
+    val pollId: UUID? = null,
+    val redirectId: UUID? = null
 )

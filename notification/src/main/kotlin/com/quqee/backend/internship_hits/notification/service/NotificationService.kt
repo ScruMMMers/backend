@@ -6,10 +6,8 @@ import com.quqee.backend.internship_hits.notification.entity.NotificationEntity
 import com.quqee.backend.internship_hits.notification.repository.NotificationFilterParams
 import com.quqee.backend.internship_hits.notification.repository.NotificationRepository
 import com.quqee.backend.internship_hits.notification.service.channel.ChannelHandler
-import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationRequest
-import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationResponse
-import com.quqee.backend.internship_hits.public_interface.common.NotificationId
-import com.quqee.backend.internship_hits.public_interface.common.SortingStrategy
+import com.quqee.backend.internship_hits.profile.ProfileService
+import com.quqee.backend.internship_hits.public_interface.common.*
 import com.quqee.backend.internship_hits.public_interface.notification_public.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -23,6 +21,7 @@ class NotificationService(
     private val notificationRepository: NotificationRepository,
     private val clock: Clock,
     private val channelHandlers: List<ChannelHandler>,
+    private val profileService: ProfileService
 ) {
     private val channelHandlesByType = channelHandlers.associateBy { it.channelType }
 
@@ -31,7 +30,8 @@ class NotificationService(
         val internalNotifications = dtos.map {
             val attachment = it.pollId?.let { pollId ->
                 NotificationAttachmentEntity(
-                    pollId = pollId
+                    pollId = pollId,
+                    redirectId = it.redirectId
                 )
             }
             CreateNotificationDtoInternal(
@@ -145,7 +145,17 @@ class NotificationService(
             description = notification.message,
             createdAt = notification.createdAt,
             isRead = notification.isRead,
-            pollId = notification.attachment?.pollId
+            pollId = notification.attachment?.pollId,
+            redirect = notification.attachment?.redirectId?.let { redirectId ->
+                val profile = profileService.getProfileForHeader(GetProfileDto(redirectId))
+                profile.let {
+                    RedirectNotificationDto(
+                        redirectId = redirectId,
+                        fullName = it.fullName,
+                        avatarUrl = it.avatarUrl
+                    )
+                }
+            }
         )
     }
 
