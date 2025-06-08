@@ -36,7 +36,7 @@ class CommentServiceImpl(
 ) : CommentService {
     override fun getCommentsList(logId: UUID, lastId: UUID?, size: Int?): CommentsListDto {
         val pageSize = size ?: DEFAULT_PAGE_SIZE
-        val pageable = PageRequest.of(0, pageSize, Sort.by("createdAt").descending())
+        val pageable = PageRequest.of(0, pageSize, Sort.by("createdAt").ascending())
 
         var lastComment: CommentEntity? = null
         if (lastId != null) {

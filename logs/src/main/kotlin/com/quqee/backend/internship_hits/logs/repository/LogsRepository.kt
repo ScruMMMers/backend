@@ -7,6 +7,7 @@ import com.quqee.backend.internship_hits.logs.specification.LogSpecification
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.position.entity.PositionEntity
 import com.quqee.backend.internship_hits.public_interface.common.CompanyStatisticsProjection
+import com.quqee.backend.internship_hits.public_interface.common.UserId
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
@@ -108,12 +109,10 @@ class LogsRepository(
         tags: List<TagEntity>,
         hashtags: List<PositionEntity>,
         type: LogType,
-        files: List<UUID>
+        files: List<UUID>,
+        currentUserId: UserId,
+        createdAt: OffsetDateTime,
     ): LogDto {
-        val currentUserId = KeycloakUtils.getUserId()
-            ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "User is null")
-        val now = OffsetDateTime.now()
-
         val logEntity = LogEntity(
             id = UUID.randomUUID(),
             userId = currentUserId,
@@ -121,7 +120,7 @@ class LogsRepository(
             tags = tags,
             hashtags = hashtags,
             type = type,
-            createdAt = now,
+            createdAt = createdAt,
             editedAt = null,
             fileIds = files,
             approvalStatus = getApprovalStatus(type)
