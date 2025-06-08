@@ -1,10 +1,14 @@
 package com.quqee.backend.internship_hits.logs.service
 
+import com.quqee.backend.internship_hits.announcement.AnnouncementService
 import com.quqee.backend.internship_hits.logs.entity.CommentEntity
 import com.quqee.backend.internship_hits.logs.mapper.CommentMapper
 import com.quqee.backend.internship_hits.logs.repository.jpa.CommentJpaRepository
+import com.quqee.backend.internship_hits.logs.repository.jpa.LogsJpaRepository
 import com.quqee.backend.internship_hits.logs.specification.CommentSpecification
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
+import com.quqee.backend.internship_hits.public_interface.announcement_interface.AnnouncementDataDto
+import com.quqee.backend.internship_hits.public_interface.announcement_interface.CreateAnnouncementDto
 import com.quqee.backend.internship_hits.public_interface.comment.CommentsListDto
 import com.quqee.backend.internship_hits.public_interface.comment.CreateCommentDto
 import com.quqee.backend.internship_hits.public_interface.comment.UpdateCommentDto
@@ -32,7 +36,9 @@ interface CommentService {
 @Service
 class CommentServiceImpl(
     private val commentJpaRepository: CommentJpaRepository,
-    private val commentMapper: CommentMapper
+    private val commentMapper: CommentMapper,
+    private val logsJpaRepository: LogsJpaRepository,
+    private val announcementService: AnnouncementService,
 ) : CommentService {
     override fun getCommentsList(logId: UUID, lastId: UUID?, size: Int?): CommentsListDto {
         val pageSize = size ?: DEFAULT_PAGE_SIZE
@@ -76,6 +82,9 @@ class CommentServiceImpl(
 
     override fun createComment(logID: UUID, createCommentDto: CreateCommentDto): CommentDto {
         val myId = getCurrentUser()
+        val log = logsJpaRepository.findById(logID).orElseThrow {
+            ExceptionInApplication(ExceptionType.BAD_REQUEST, "Лог с ID $logID не найден")
+        }
 
         checkMessageEmpty(createCommentDto.message)
 
@@ -96,6 +105,17 @@ class CommentServiceImpl(
         val savedComment = commentJpaRepository.save(
             commentMapper.toCommentEntity(createCommentDto, myId, logID)
         )
+
+        // Получение пользователей, которые уже оставили комментарии к этому логу, за исключением себя
+        val usersWhoCommented = (commentJpaRepository.findDistinctUsersByLogId(logID) + log.userId).toSet().filter { it != myId }
+        announcementService.sendSystemAnnouncementByUserId(CreateAnnouncementDto(
+            data = AnnouncementDataDto(
+                title = "Новый ответ на лог",
+                text = "Пользователь ${KeycloakUtils.getUsername()} ответил: ${savedComment.message}",
+                redirectId = log.userId
+            ),
+            userIds = usersWhoCommented
+        ))
 
         return commentMapper.toCommentDto(
             savedComment,

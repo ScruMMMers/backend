@@ -9,4 +9,5 @@ data class CreateNotificationDto(
     val type: NotificationType,
     val channels: Set<NotificationChannel>,
     val pollId: UUID? = null,
+    val redirectId: UUID? = null,
 )

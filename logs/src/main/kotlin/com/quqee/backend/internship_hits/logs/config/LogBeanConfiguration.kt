@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration
         "com.quqee.backend.internship_hits.position",
         "com.quqee.backend.internship_hits.students",
         "com.quqee.backend.internship_hits.marks",
+        "com.quqee.backend.internship_hits.announcement",
     ]
 )
 open class LogBeanConfiguration

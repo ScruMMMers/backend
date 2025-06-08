@@ -49,7 +49,8 @@ class AnnouncementServiceImpl(
                 userId = userId,
                 type = NotificationType.SYSTEM,
                 channels = setOf(NotificationChannel.PUSH, NotificationChannel.EMAIL),
-                pollId = dto.data.pollId
+                pollId = dto.data.pollId,
+                redirectId = dto.data.redirectId
             )
         }
 

@@ -8,6 +8,7 @@ dependencies {
     implementation project(':students')
     implementation project(':company')
     implementation project(':profile')
+    implementation project(':announcement')
 
     implementation project(':public_interface:logs_interface')
     implementation project(':public_interface:profile_public')
@@ -15,6 +16,7 @@ dependencies {
     implementation project(':public_interface:students_public')
     implementation project(':public_interface:company_interface')
     implementation project(':public_interface:mark_interface')
+    implementation project(':public_interface:announcement_interface')
 
     implementation libs.spring.boot.starter.data.jpa
     implementation libs.spring.kafka

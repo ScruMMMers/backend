@@ -5,9 +5,11 @@ import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
 import com.quqee.backend.internship_hits.mapper.makeToApiMapper
 import com.quqee.backend.internship_hits.model.rest.NotificationTypeEnum
 import com.quqee.backend.internship_hits.model.rest.NotificationView
+import com.quqee.backend.internship_hits.model.rest.RedirectNotificationView
 import com.quqee.backend.internship_hits.model.rest.ShortNotificationView
 import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationDto
 import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationType
+import com.quqee.backend.internship_hits.public_interface.notification_public.RedirectNotificationDto
 import com.quqee.backend.internship_hits.public_interface.notification_public.ShortNotificationDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,6 +17,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 open class NotificationMapperConfiguration(
     private val notificationTypeMapper: EnumerationMapper<NotificationTypeEnum, NotificationType>,
+    private val notificationRedirectMapper: FromInternalToApiMapper<RedirectNotificationView, RedirectNotificationDto>
 ) {
     @Bean
     open fun shortNotificationMapper(): FromInternalToApiMapper<ShortNotificationView, ShortNotificationDto> = makeToApiMapper { model ->
@@ -38,6 +41,7 @@ open class NotificationMapperConfiguration(
             createdAt = model.createdAt,
             isRead = model.isRead,
             pollId = model.pollId,
+            redirect = model.redirect?.let { notificationRedirectMapper.fromInternal(it) }
         )
     }
 }
