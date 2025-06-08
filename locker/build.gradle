@@ -1,6 +1,11 @@
 dependencies {
     implementation project(':oauth2_security')
     implementation project(':public_interface:common')
+
+    implementation project(':announcement')
+    implementation project(':public_interface:announcement_interface')
+    implementation project(":public_interface:students_public")
+
     implementation libs.spring.boot.starter.data.jpa
     implementation libs.spring.kafka
 }

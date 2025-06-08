@@ -58,12 +58,7 @@ class AnnouncementCronService(
             val request = GetStudentsListDto(
                 pagination = LastIdPaginationRequest(lastId = lastId, pageSize = 100),
                 filter = GetStudentsListFilterParamDto(
-                    course = setOf(2),
-                    group = null,
-                    logType = null,
-                    logApprovalStatus = null,
-                    positionType = null,
-                    positionName = null
+                    course = setOf(2)
                 )
             )
             val response = studentsService.getStudentsList(request)

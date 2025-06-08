@@ -25,6 +25,12 @@ object KeycloakUtils {
         }
     }
 
+    fun getUsername(): String? {
+        val principal = getPrincipal() ?: return null
+        return principal.claims["preferred_username"] as? String
+            ?: principal.claims["name"] as? String
+    }
+
     private fun getPrincipal(): Jwt? {
         return try {
             SecurityContextHolder.getContext()
