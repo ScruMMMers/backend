@@ -3,10 +3,13 @@ package com.quqee.backend.internship_hits.logs.service
 import com.quqee.backend.internship_hits.company.service.CompanyPositionService
 import com.quqee.backend.internship_hits.logs.message.KafkaSender
 import com.quqee.backend.internship_hits.logs.repository.LogsRepository
+import com.quqee.backend.internship_hits.marks.service.MarkService
+import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.position.entity.PositionEntity
 import com.quqee.backend.internship_hits.position.service.PositionService
 import com.quqee.backend.internship_hits.public_interface.common.CompanyStatisticsProjection
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPagination
+import com.quqee.backend.internship_hits.public_interface.common.enums.DiaryStatusEnum
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.company_position.CreateCompanyPositionDto
@@ -22,6 +25,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.support.PagedListHolder.DEFAULT_PAGE_SIZE
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.OffsetDateTime
 import java.util.*
 
 interface LogsService {
@@ -62,7 +66,7 @@ open class LogsServiceImpl (
     private val positionService: PositionService,
     private val studentsService: StudentsService,
     private val companyPositionService: CompanyPositionService,
-    private val kafkaSender: KafkaSender<Any>,
+    private val markService: MarkService
 ) : LogsService {
     private val logger: Logger = LoggerFactory.getLogger(LogsServiceImpl::class.java)
     /**
@@ -134,6 +138,10 @@ open class LogsServiceImpl (
 
     @Transactional
     override fun createLog(createLogRequest: CreateLogRequestDto): CreatedLogDto {
+        val currentUserId = KeycloakUtils.getUserId()
+            ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "User is null")
+        val now = OffsetDateTime.now()
+
         val tags = extractTags(createLogRequest.message)
         val hashtags = extractHashtags(createLogRequest.message)
 
@@ -147,12 +155,18 @@ open class LogsServiceImpl (
             tags = tags,
             hashtags = hashtags,
             type = createLogRequest.type,
-            files = createLogRequest.files ?: emptyList()
+            files = createLogRequest.files ?: emptyList(),
+            currentUserId = currentUserId,
+            createdAt = now
         )
 
         // Если лог типа INTERVIEW, увеличиваем счетчик интервью по каждой комбинации
         if (createLogRequest.type == LogType.INTERVIEW) {
             incrementInterviewCounters(tags, hashtags)
+        }
+
+        if (createLogRequest.type == LogType.PRACTICE_DIARY) {
+            markService.updateDiaryStatus(DiaryStatusEnum.PENDING, currentUserId, now)
         }
 
         return CreatedLogDto(log = newLog)
@@ -240,12 +254,23 @@ open class LogsServiceImpl (
     override fun updateApprovalStatus(logId: UUID, isApprove: Boolean): CreatedLogDto {
         val log = logsRepository.updateApprovalStatus(logId, isApprove)
 
-        if (log.type == LogType.FINAL || log.type == LogType.COMPANY_CHANGE){
+        if (log.type == LogType.PRACTICE_DIARY) {
+            val status = if (isApprove) {
+                DiaryStatusEnum.APPROVED
+            } else {
+                DiaryStatusEnum.REJECTED
+            }
+            markService.updateDiaryStatus(status, log.author.userId, log.createdAt)
+        }
+
+        if ((log.type == LogType.FINAL || log.type == LogType.COMPANY_CHANGE) && isApprove){
             if (log.tags.isNotEmpty()){
+                val positionId = log.hashtags.firstOrNull()?.id
+
                 studentsService.setCompanyToStudent(
-                    CreateCompanyToStudentDto(log.tags[0].shortCompany.companyId, null, log.author.userId)
+                    CreateCompanyToStudentDto(log.tags[0].shortCompany.companyId, positionId, log.author.userId)
                 )
-                if (log.hashtags.isNotEmpty()){
+                if (positionId != null) {
                     try {
                         logger.info("Увеличение числа сотрудников в компании: " + log.tags[0].shortCompany.name)
                         companyPositionService.incrementEmployedCount(log.tags[0].shortCompany.companyId, log.hashtags[0].id)
@@ -262,6 +287,9 @@ open class LogsServiceImpl (
      * Получить статистику по логам
      */
     override fun changeCompanyLog(changeCompanyRequest: ChangeCompanyDto): CreatedLogDto {
+        val now = OffsetDateTime.now()
+        val currentUserId = KeycloakUtils.getUserId()
+            ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "User is null")
         val tag = tagQueryService.getTagByCompanyId(changeCompanyRequest.companyId)
         val hashtag = positionService.getPositionEntityById(changeCompanyRequest.positionId)
         val companyChangeLog = logsRepository.createLog(
@@ -269,16 +297,10 @@ open class LogsServiceImpl (
             tags = listOf(tag),
             hashtags = listOf(hashtag),
             type = LogType.COMPANY_CHANGE,
-            files = emptyList()
+            files = emptyList(),
+            currentUserId = currentUserId,
+            createdAt = now
         )
-
-//        kafkaSender.send(
-//            NewInternshipDto(
-//                userId = companyChangeLog.author.userId,
-//                companyId = tag.companyId,
-//                positionId = hashtag.id
-//            )
-//        )
 
         return CreatedLogDto(log = companyChangeLog)
     }
