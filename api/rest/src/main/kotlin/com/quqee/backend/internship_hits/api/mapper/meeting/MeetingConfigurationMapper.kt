@@ -55,8 +55,7 @@ class MeetingConfigurationMapper {
         UpdateMeetingDto(
             date = model.date,
             place = model.place,
-            meetingType = model.meetingType?.let { MeetingTypeEnum.valueOf(it.value) },
-            isPlaceChanges = model.isPlaceChanges
+            meetingType = MeetingTypeEnum.valueOf(model.meetingType.value)
         )
     }
 

@@ -1,7 +1,8 @@
 UpdateMeetingView:
   type: object
   required:
-    - isPlaceChanges
+    - date
+    - meetingType
   properties:
     date:
       type: string
@@ -10,5 +11,3 @@ UpdateMeetingView:
       type: string
     meetingType:
       $ref: '../common/Meeting.yaml#/MeetingTypeEnum'
-    isPlaceChanges:
-      type: boolean

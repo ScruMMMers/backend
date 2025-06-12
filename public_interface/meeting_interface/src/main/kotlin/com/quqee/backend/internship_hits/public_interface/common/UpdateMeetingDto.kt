@@ -4,8 +4,7 @@ import com.quqee.backend.internship_hits.public_interface.common.enums.MeetingTy
 import java.time.OffsetDateTime
 
 data class UpdateMeetingDto(
-    val date: OffsetDateTime?,
+    val date: OffsetDateTime,
     val place: String?,
-    val meetingType: MeetingTypeEnum?,
-    val isPlaceChanges: Boolean
+    val meetingType: MeetingTypeEnum
 )

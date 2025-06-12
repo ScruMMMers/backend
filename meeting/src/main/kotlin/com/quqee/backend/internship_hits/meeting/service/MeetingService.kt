@@ -104,9 +104,9 @@ open class MeetingServiceImpl(
         }
 
         val newMeeting = meeting.copy(
-            date = updateMeetingDto.date?.withNano(kotlin.random.Random.nextInt(0, 999_999_999)) ?: meeting.date,
-            place = if (updateMeetingDto.isPlaceChanges) updateMeetingDto.place else meeting.place,
-            meetingType = updateMeetingDto.meetingType ?: meeting.meetingType
+            date = updateMeetingDto.date.withNano(kotlin.random.Random.nextInt(0, 999_999_999)),
+            place = updateMeetingDto.place,
+            meetingType = updateMeetingDto.meetingType
         )
 
         return meetingMapper.mapToDto(meetingRepository.save(newMeeting))
