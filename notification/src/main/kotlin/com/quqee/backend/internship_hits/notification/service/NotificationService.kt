@@ -28,11 +28,12 @@ class NotificationService(
     @Transactional
     fun createNotifications(dtos: List<CreateNotificationDto>) {
         val internalNotifications = dtos.map {
-            val attachment = NotificationAttachmentEntity(
-                pollId = it.pollId,
-                redirectId = it.redirectId
-            )
-
+            val attachment = it.pollId?.let { pollId ->
+                NotificationAttachmentEntity(
+                    pollId = pollId,
+                    redirectId = it.redirectId
+                )
+            }
             CreateNotificationDtoInternal(
                 title = it.title,
                 message = it.message,
