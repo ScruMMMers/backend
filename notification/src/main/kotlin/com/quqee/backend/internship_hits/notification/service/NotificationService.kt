@@ -10,6 +10,7 @@ import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.*
 import com.quqee.backend.internship_hits.public_interface.notification_public.*
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -28,12 +29,10 @@ class NotificationService(
     @Transactional
     fun createNotifications(dtos: List<CreateNotificationDto>) {
         val internalNotifications = dtos.map {
-            val attachment = it.pollId?.let { pollId ->
-                NotificationAttachmentEntity(
-                    pollId = pollId,
-                    redirectId = it.redirectId
-                )
-            }
+            val attachment = NotificationAttachmentEntity(
+                pollId = it.pollId,
+                redirectId = it.redirectId
+            )
             CreateNotificationDtoInternal(
                 title = it.title,
                 message = it.message,
@@ -78,14 +77,18 @@ class NotificationService(
     }
 
     fun getNotifications(dto: GetUserNotificationsDto): LastIdPaginationResponse<NotificationDto, NotificationId> {
-        val notifications = notificationRepository.getNotifications(
-            dto.pagination,
-            NotificationFilterParams(
-                userId = dto.userId,
-                type = dto.notificationType,
-            )
-        ).map {
-            mapNotificationToDto(it)
+        val notifications = runBlocking {
+            notificationRepository.getNotifications(
+                dto.pagination,
+                NotificationFilterParams(
+                    userId = dto.userId,
+                    type = dto.notificationType,
+                )
+            ).map {
+                async {
+                    mapNotificationToDto(it)
+                }
+            }.awaitAll()
         }
 
         return LastIdPaginationResponse(
