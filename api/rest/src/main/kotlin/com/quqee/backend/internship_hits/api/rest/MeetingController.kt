@@ -19,6 +19,7 @@ class MeetingController(
     private val mapBuildingsListToApi: FromInternalToApiMapper<BuildingsListView, BuildingsListDto>,
     private val mapAudiencesListToApi: FromInternalToApiMapper<AudiencesListView, AudiencesListDto>,
     private val mapCreateMeeting: FromApiToInternalMapper<CreateMeetingView, CreateMeetingDto>,
+    private val mapUpdateMeeting: FromApiToInternalMapper<UpdateMeetingView, UpdateMeetingDto>,
     private val mapMeetingListToApi: FromInternalToApiMapper<MeetingsListView, MeetingsListDto>,
     private val mapMeetingToApi: FromInternalToApiMapper<MeetingView, MeetingDto>,
     private val mapMeetingsListPageableToApi: FromInternalToApiMapper<MeetingsListPageableView, MeetingsListPageableDto>,
@@ -43,7 +44,14 @@ class MeetingController(
     ): ResponseEntity<MeetingView> {
         val createMeetingDto = mapCreateMeeting.fromApi(createMeetingView)
 
-        return ResponseEntity.ok(mapMeetingToApi.fromInternal(meetingService.createMeeting(companyId, createMeetingDto)))
+        return ResponseEntity.ok(
+            mapMeetingToApi.fromInternal(
+                meetingService.createMeeting(
+                    companyId,
+                    createMeetingDto
+                )
+            )
+        )
     }
 
     override fun meetingsGet(
@@ -55,6 +63,30 @@ class MeetingController(
         return ResponseEntity.ok(
             mapMeetingsListPageableToApi.fromInternal(
                 meetingService.getMeetings(companyId, upcoming, lastId, size)
+            )
+        )
+    }
+
+    override fun meetingsMeetingIdUpdatePut(
+        meetingId: UUID,
+        updateMeetingView: UpdateMeetingView
+    ): ResponseEntity<MeetingView> {
+        val updateMeetingDto = mapUpdateMeeting.fromApi(updateMeetingView)
+
+        return ResponseEntity.ok(
+            mapMeetingToApi.fromInternal(
+                meetingService.updateMeeting(
+                    meetingId,
+                    updateMeetingDto
+                )
+            )
+        )
+    }
+
+    override fun meetingsMeetingIdDeleteDelete(meetingId: UUID): ResponseEntity<Unit> {
+        return ResponseEntity.ok(
+            meetingService.deleteMeeting(
+                meetingId
             )
         )
     }

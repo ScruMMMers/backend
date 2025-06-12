@@ -96,6 +96,10 @@ paths:
     $ref: './schemas/meeting/GetNearestMeetingApi.yaml'
   /meetings:
     $ref: './schemas/meeting/GetMeetingsListApi.yaml'
+  /meetings/{meetingId}/update:
+    $ref: './schemas/meeting/UpdateMeetingApi.yaml'
+  /meetings/{meetingId}/delete:
+    $ref: './schemas/meeting/DeleteMeetingApi.yaml'
   /buildings:
     $ref: './schemas/meeting/GetBuildingsListApi.yaml'
   /buildings/{buildingId}/audiences:

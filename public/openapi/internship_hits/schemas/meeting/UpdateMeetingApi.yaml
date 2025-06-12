@@ -1,0 +1,29 @@
+put:
+  tags:
+    - meeting
+  summary: Изменить встречу с компанией
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - in: path
+      name: meetingId
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    description: Встреча
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './UpdateMeetingView.yaml#/UpdateMeetingView'
+  responses:
+    '200':
+      description: Измененная встреча с компанией
+      content:
+        application/json:
+          schema:
+            $ref: '../common/Meeting.yaml#/MeetingView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

@@ -50,6 +50,17 @@ class MeetingConfigurationMapper {
     }
 
     @Bean
+    fun mapUpdateMeeting(
+    ): FromApiToInternalMapper<UpdateMeetingView, UpdateMeetingDto> = makeFromApiMapper { model ->
+        UpdateMeetingDto(
+            date = model.date,
+            place = model.place,
+            meetingType = model.meetingType?.let { MeetingTypeEnum.valueOf(it.value) },
+            isPlaceChanges = model.isPlaceChanges
+        )
+    }
+
+    @Bean
     fun mapMeetingsList(
         mapMeetingToApi: FromInternalToApiMapper<MeetingView, MeetingDto>,
         mapPage: FromInternalToApiMapper<LastIdPaginationView, LastIdPagination>

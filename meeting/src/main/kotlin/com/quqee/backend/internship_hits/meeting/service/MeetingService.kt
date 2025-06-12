@@ -23,6 +23,10 @@ interface MeetingService {
 
     fun getMeetings(companyId: UUID?, upcoming: Boolean?, lastId: UUID?, size: Int?): MeetingsListPageableDto
 
+    fun updateMeeting(meetingId: UUID, updateMeetingDto: UpdateMeetingDto): MeetingDto
+
+    fun deleteMeeting(meetingId: UUID)
+
 }
 
 @Service
@@ -92,6 +96,28 @@ open class MeetingServiceImpl(
                 hasNext = hasNext
             )
         )
+    }
+
+    override fun updateMeeting(meetingId: UUID, updateMeetingDto: UpdateMeetingDto): MeetingDto {
+        val meeting = meetingRepository.findById(meetingId).orElseThrow {
+            ExceptionInApplication(ExceptionType.NOT_FOUND, "Встреча с ID $meetingId не найдена")
+        }
+
+        val newMeeting = meeting.copy(
+            date = updateMeetingDto.date?.withNano(kotlin.random.Random.nextInt(0, 999_999_999)) ?: meeting.date,
+            place = if (updateMeetingDto.isPlaceChanges) updateMeetingDto.place else meeting.place,
+            meetingType = updateMeetingDto.meetingType ?: meeting.meetingType
+        )
+
+        return meetingMapper.mapToDto(meetingRepository.save(newMeeting))
+    }
+
+    override fun deleteMeeting(meetingId: UUID) {
+        val meeting = meetingRepository.findById(meetingId).orElseThrow {
+            ExceptionInApplication(ExceptionType.NOT_FOUND, "Встреча с ID $meetingId не найдена")
+        }
+
+        meetingRepository.delete(meeting)
     }
 
 
