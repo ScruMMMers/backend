@@ -20,7 +20,7 @@ class NotificationEntityMapper : RecordMapper<NotificationRecord, NotificationEn
             userId = record[NOTIFICATION.RECEIVER_ID]!!,
             type = NotificationType.fromDataBase(record[NOTIFICATION.TYPE]!!),
             channels = record[NOTIFICATION.CHANNELS]!!.map { NotificationChannel.fromDataBase(it!!) }.toSet(),
-            attachment = record[NOTIFICATION.ATTACHMENT]?.let { MAPPER.convertValue(it.data(), NotificationAttachmentEntity::class.java) },
+            attachment = record[NOTIFICATION.ATTACHMENT]?.let { MAPPER.readValue(it.data(), NotificationAttachmentEntity::class.java) },
         )
     }
 
