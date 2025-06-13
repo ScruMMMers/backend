@@ -1,0 +1,22 @@
+MeetingWithAgentView:
+  type: object
+  required:
+    - id
+    - date
+    - meetingType
+    - company
+  properties:
+    id:
+      type: string
+      format: uuid
+    date:
+      type: string
+      format: date-time
+    place:
+      type: string
+    meetingType:
+      $ref: '../common/Meeting.yaml#/MeetingTypeEnum'
+    company:
+      $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
+    agent:
+      $ref: '../common/Account.yaml#/ShortAccountView'

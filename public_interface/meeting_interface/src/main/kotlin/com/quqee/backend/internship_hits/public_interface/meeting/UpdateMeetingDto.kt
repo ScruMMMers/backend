@@ -1,6 +1,6 @@
-package com.quqee.backend.internship_hits.public_interface.common
+package com.quqee.backend.internship_hits.public_interface.meeting
 
-import com.quqee.backend.internship_hits.public_interface.common.enums.MeetingTypeEnum
+import com.quqee.backend.internship_hits.public_interface.meeting.enums.MeetingTypeEnum
 import java.time.OffsetDateTime
 
 data class UpdateMeetingDto(

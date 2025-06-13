@@ -7,6 +7,7 @@ import com.quqee.backend.internship_hits.meeting.service.BuildingService
 import com.quqee.backend.internship_hits.meeting.service.MeetingService
 import com.quqee.backend.internship_hits.model.rest.*
 import com.quqee.backend.internship_hits.public_interface.common.*
+import com.quqee.backend.internship_hits.public_interface.meeting.*
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import java.util.*

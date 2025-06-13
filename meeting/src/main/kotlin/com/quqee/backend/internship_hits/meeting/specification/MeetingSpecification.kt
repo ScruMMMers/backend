@@ -18,8 +18,9 @@ object MeetingSpecification {
         }
     }
 
-    fun byUpcoming(upcoming: Boolean): Specification<MeetingEntity> {
-        return Specification { root, _, cb ->
+    fun byUpcoming(upcoming: Boolean?): Specification<MeetingEntity>? {
+        if (upcoming != null) {
+            return Specification { root, _, cb ->
                 val now = OffsetDateTime.now()
                 if (upcoming) {
                     cb.greaterThan(root.get("date"), now)
@@ -27,13 +28,15 @@ object MeetingSpecification {
                     cb.lessThanOrEqualTo(root.get("date"), now)
                 }
             }
+        }
+        return null
     }
 
-    fun byDateAt(dateAt: OffsetDateTime?, upcoming: Boolean): Specification<MeetingEntity>? {
+    fun byDateAt(dateAt: OffsetDateTime?, upcoming: Boolean?): Specification<MeetingEntity>? {
         return dateAt?.let {
             Specification { root, _, cb ->
                 val predicates = mutableListOf<Predicate>()
-                if (upcoming) {
+                if (upcoming == true) {
                     predicates.add(cb.greaterThan(root.get("date"), it))
                 } else {
                     predicates.add(cb.lessThan(root.get("date"), it))

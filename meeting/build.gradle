@@ -3,5 +3,6 @@ dependencies {
     implementation project(':public_interface:common')
     implementation project(':public_interface:meeting_interface')
     implementation project(':company')
+    implementation project(':profile')
     implementation libs.spring.boot.starter.data.jpa
 }

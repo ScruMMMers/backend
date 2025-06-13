@@ -1,7 +1,7 @@
 package com.quqee.backend.internship_hits.meeting.mapper
 
 import com.quqee.backend.internship_hits.meeting.entity.AudienceEntity
-import com.quqee.backend.internship_hits.public_interface.common.AudienceDto
+import com.quqee.backend.internship_hits.public_interface.meeting.AudienceDto
 import org.springframework.stereotype.Component
 
 @Component

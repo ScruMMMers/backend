@@ -11,6 +11,7 @@ import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CreateCompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.ShortCompanyWithEmployersDto
 import com.quqee.backend.internship_hits.public_interface.company.UpdateCompanyDto
+import com.quqee.backend.internship_hits.tags.service.TagService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification
@@ -21,7 +22,8 @@ import java.util.*
 @Component
 class CompanyRepository(
     private val companyJpaRepository: CompanyJpaRepository,
-    private val mapper: CompanyMapper
+    private val mapper: CompanyMapper,
+    private val tagService: TagService
 ) {
 
     /**
@@ -133,6 +135,8 @@ class CompanyRepository(
         val deletedCompany = company.copy(isDeleted = true)
 
         companyJpaRepository.save(deletedCompany)
+
+        tagService.deleteTag(companyId)
     }
 
 }

@@ -3,7 +3,7 @@ package com.quqee.backend.internship_hits.meeting.service
 import com.quqee.backend.internship_hits.meeting.mapper.AudienceMapper
 import com.quqee.backend.internship_hits.meeting.repository.AudienceRepository
 import com.quqee.backend.internship_hits.meeting.specification.AudienceSpecification
-import com.quqee.backend.internship_hits.public_interface.common.AudiencesListDto
+import com.quqee.backend.internship_hits.public_interface.meeting.AudiencesListDto
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.util.*

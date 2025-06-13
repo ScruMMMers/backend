@@ -11,6 +11,7 @@ interface TagService {
     fun createTag(name: String, companyId: UUID): UUID
     fun updateTag(tagId: UUID, newName: String): UUID
     fun updateTagByCompanyId(companyId: UUID, newName: String): UUID
+    fun deleteTag(companyId: UUID)
 }
 
 @Service
@@ -43,5 +44,11 @@ class TagServiceImpl(
         val updatedTag = tag.copy(name = newName)
         val savedTag = tagJpaRepository.save(updatedTag)
         return savedTag.id
+    }
+
+    override fun deleteTag(companyId: UUID) {
+        val tag = tagJpaRepository.findByCompanyId(companyId)
+            ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Компания с ID $companyId не найдена")
+        tagJpaRepository.delete(tag)
     }
 }

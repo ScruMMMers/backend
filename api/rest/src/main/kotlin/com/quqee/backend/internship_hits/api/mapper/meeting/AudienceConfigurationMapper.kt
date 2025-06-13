@@ -4,8 +4,8 @@ import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
 import com.quqee.backend.internship_hits.mapper.makeToApiMapper
 import com.quqee.backend.internship_hits.model.rest.AudienceView
 import com.quqee.backend.internship_hits.model.rest.AudiencesListView
-import com.quqee.backend.internship_hits.public_interface.common.AudienceDto
-import com.quqee.backend.internship_hits.public_interface.common.AudiencesListDto
+import com.quqee.backend.internship_hits.public_interface.meeting.AudienceDto
+import com.quqee.backend.internship_hits.public_interface.meeting.AudiencesListDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

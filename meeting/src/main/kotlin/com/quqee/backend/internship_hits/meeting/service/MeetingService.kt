@@ -6,8 +6,9 @@ import com.quqee.backend.internship_hits.meeting.repository.MeetingRepository
 import com.quqee.backend.internship_hits.meeting.specification.MeetingSpecification
 import com.quqee.backend.internship_hits.public_interface.common.*
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
-import com.quqee.backend.internship_hits.public_interface.common.enums.MeetingTypeEnum
+import com.quqee.backend.internship_hits.public_interface.meeting.enums.MeetingTypeEnum
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
+import com.quqee.backend.internship_hits.public_interface.meeting.*
 import org.springframework.beans.support.PagedListHolder
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -68,7 +69,7 @@ open class MeetingServiceImpl(
     override fun getMeetings(companyId: UUID?, upcoming: Boolean?, lastId: UUID?, size: Int?): MeetingsListPageableDto {
         val pageSize = size ?: PagedListHolder.DEFAULT_PAGE_SIZE
         val sort =
-            if (upcoming == false) Sort.by("date").descending() else Sort.by("date").ascending()
+            if (upcoming == true) Sort.by("date").ascending() else Sort.by("date").descending()
         val pageable = PageRequest.of(
             0,
             pageSize + 1,
@@ -82,10 +83,10 @@ open class MeetingServiceImpl(
         }
 
         val spec = Specification.where(MeetingSpecification.byCompanyId(companyId))
-            .and(MeetingSpecification.byUpcoming(upcoming ?: true))
+            .and(MeetingSpecification.byUpcoming(upcoming))
             .and(MeetingSpecification.byDateAt(lastMeeting?.date, upcoming ?: true))
 
-        val meetings = meetingRepository.findAll(spec, pageable).content.map { meetingMapper.mapToDto(it) }
+        val meetings = meetingRepository.findAll(spec, pageable).content.map { meetingMapper.mapToWithAgentDto(it) }
         val hasNext = meetings.size > pageSize
 
         return MeetingsListPageableDto(

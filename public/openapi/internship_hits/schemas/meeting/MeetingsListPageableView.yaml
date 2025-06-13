@@ -7,6 +7,6 @@ MeetingsListPageableView:
     meetings:
       type: array
       items:
-        $ref: '../common/Meeting.yaml#/MeetingView'
+        $ref: './MeetingWithAgentView.yaml#/MeetingWithAgentView'
     page:
       $ref: '../common/Pagination.yaml#/LastIdPaginationView'

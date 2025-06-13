@@ -4,6 +4,8 @@ import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
 import com.quqee.backend.internship_hits.mapper.makeToApiMapper
 import com.quqee.backend.internship_hits.model.rest.*
 import com.quqee.backend.internship_hits.public_interface.common.*
+import com.quqee.backend.internship_hits.public_interface.meeting.BuildingDto
+import com.quqee.backend.internship_hits.public_interface.meeting.BuildingsListDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

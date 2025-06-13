@@ -1,6 +1,6 @@
 package com.quqee.backend.internship_hits.meeting.entity
 
-import com.quqee.backend.internship_hits.public_interface.common.enums.MeetingTypeEnum
+import com.quqee.backend.internship_hits.public_interface.meeting.enums.MeetingTypeEnum
 import jakarta.persistence.*
 import java.time.OffsetDateTime
 import java.util.*

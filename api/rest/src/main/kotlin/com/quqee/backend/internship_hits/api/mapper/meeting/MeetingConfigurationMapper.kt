@@ -6,7 +6,8 @@ import com.quqee.backend.internship_hits.mapper.makeFromApiMapper
 import com.quqee.backend.internship_hits.mapper.makeToApiMapper
 import com.quqee.backend.internship_hits.model.rest.*
 import com.quqee.backend.internship_hits.public_interface.common.*
-import com.quqee.backend.internship_hits.public_interface.common.enums.MeetingTypeEnum
+import com.quqee.backend.internship_hits.public_interface.meeting.enums.MeetingTypeEnum
+import com.quqee.backend.internship_hits.public_interface.meeting.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -36,6 +37,21 @@ class MeetingConfigurationMapper {
             place = model.place,
             meetingType = com.quqee.backend.internship_hits.model.rest.MeetingTypeEnum.valueOf(model.meetingType.name),
             company = shortCompanyMapper.fromInternal(model.company)
+        )
+    }
+
+    @Bean
+    fun mapMeetingWithAgentToApi(
+        shortCompanyMapper: FromInternalToApiMapper<ShortCompanyView, ShortCompanyDto>,
+        shortAccountMapper: FromInternalToApiMapper<ShortAccountView, ShortAccountDto>
+    ): FromInternalToApiMapper<MeetingWithAgentView, MeetingWithAgentDto> = makeToApiMapper { model ->
+        MeetingWithAgentView(
+            id = model.id,
+            date = model.date,
+            place = model.place,
+            meetingType = com.quqee.backend.internship_hits.model.rest.MeetingTypeEnum.valueOf(model.meetingType.name),
+            company = shortCompanyMapper.fromInternal(model.company),
+            agent = model.agent?.let { shortAccountMapper.fromInternal(it) }
         )
     }
 
@@ -71,11 +87,11 @@ class MeetingConfigurationMapper {
 
     @Bean
     fun mapMeetingsListPageable(
-        mapMeetingToApi: FromInternalToApiMapper<MeetingView, MeetingDto>,
+        mapMeetingWithAgentToApi: FromInternalToApiMapper<MeetingWithAgentView, MeetingWithAgentDto>,
         mapPage: FromInternalToApiMapper<LastIdPaginationView, LastIdPagination>
     ): FromInternalToApiMapper<MeetingsListPageableView, MeetingsListPageableDto> = makeToApiMapper { model ->
         MeetingsListPageableView(
-            meetings = model.meetings.map { mapMeetingToApi.fromInternal(it) },
+            meetings = model.meetings.map { mapMeetingWithAgentToApi.fromInternal(it) },
             page = mapPage.fromInternal(model.page)
         )
     }
