@@ -110,6 +110,7 @@ open class Oauth2SecurityConfiguration {
             "/company/{companyId}",
             "/company/list",
             "/meetings",
+            "/meetings/company/{companyId}/nearest",
         )
     }
 }
