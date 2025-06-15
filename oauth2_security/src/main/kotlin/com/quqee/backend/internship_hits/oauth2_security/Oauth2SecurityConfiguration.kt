@@ -61,6 +61,7 @@ open class Oauth2SecurityConfiguration {
             .authorizeHttpRequests{ c ->
                 c.requestMatchers(*WHITE_LIST).anonymous()
                     .requestMatchers("/logs/{logId}/approve").hasRole("DEANERY")
+                    .requestMatchers(*PERMIT_ALL).permitAll()
                     .anyRequest().access(customAuthManager())
             }
             .oauth2ResourceServer { oauth2: OAuth2ResourceServerConfigurer<HttpSecurity?> -> oauth2.jwt(Customizer.withDefaults()) }
@@ -104,6 +105,11 @@ open class Oauth2SecurityConfiguration {
             "/hello",
             "/ws/notification/**",
             "/students/registration",
+        )
+        private val PERMIT_ALL = arrayOf(
+            "/company/{companyId}",
+            "/company/list",
+            "/meetings",
         )
     }
 }
