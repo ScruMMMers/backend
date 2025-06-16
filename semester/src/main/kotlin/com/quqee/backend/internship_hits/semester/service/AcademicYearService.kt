@@ -66,16 +66,19 @@ open class AcademicYearService(
         return mapToDto(updatedYear)
     }
 
-    fun getAllAcademicYears(): List<AcademicYearDto> =
+    @Transactional(readOnly = true)
+    open fun getAllAcademicYears(): List<AcademicYearDto> =
         academicYearRepository.findAll().map { mapToDto(it) }
 
-    fun getSemestersByYear(yearId: UUID): List<SemesterDto> {
+    @Transactional(readOnly = true)
+    open fun getSemestersByYear(yearId: UUID): List<SemesterDto> {
         val year = academicYearRepository.findById(yearId)
             .orElseThrow { ExceptionInApplication(ExceptionType.BAD_REQUEST, "Учебный год не найден") }
         return year.semesters.map { mapSemesterToDto(it) }
     }
 
-    fun updateSemester(semesterId: UUID, updated: UpdateSemesterDto): SemesterDto {
+    @Transactional
+    open fun updateSemester(semesterId: UUID, updated: UpdateSemesterDto): SemesterDto {
         val existing = semesterRepository.findById(semesterId)
             .orElseThrow {
                 ExceptionInApplication(ExceptionType.BAD_REQUEST, "Семестр не найден")
