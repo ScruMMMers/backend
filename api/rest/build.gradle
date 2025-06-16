@@ -25,6 +25,7 @@ dependencies {
     implementation project(":locker")
     implementation project(":document")
     implementation project(":employees")
+    implementation project(":semester")
 
     implementation project(":public_interface:logs_interface")
     implementation project(":public_interface:statistic_interface")
@@ -38,6 +39,7 @@ dependencies {
     implementation project(":public_interface:notification_public")
     implementation project(":public_interface:mark_interface")
     implementation project(":public_interface:employees_public")
+    implementation project(":public_interface:semester_interface")
     implementation project(":oauth2_security")
     implementation project(":mapper")
 

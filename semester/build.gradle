@@ -1,0 +1,6 @@
+dependencies {
+    implementation project(':oauth2_security')
+    implementation project(':public_interface:common')
+    implementation project(':public_interface:semester_interface')
+    implementation libs.spring.boot.starter.data.jpa
+}

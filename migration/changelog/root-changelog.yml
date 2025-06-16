@@ -186,3 +186,10 @@ databaseChangeLog:
         - sqlFile:
             path: ddl/added_constraint_to_drop_cascade_logs.sql
             relativeToChangelogFile: true
+  - changeSet:
+      id: 27
+      author: alexander_kirsanov
+      changes:
+        - sqlFile:
+            path: ddl/v22_create_academic_year.sql
+            relativeToChangelogFile: true

@@ -1,0 +1,29 @@
+put:
+  tags:
+    - year
+  summary: Обновить семестр
+  security:
+    - openIdConnect: [ ]
+  parameters:
+    - in: path
+      name: semesterId
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    description: Передаем сюда данные для изменения семестра в учебной году
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './AcademicYear.yaml#/UpdateSemesterView'
+  responses:
+    '200':
+      description: Семестр
+      content:
+        application/json:
+          schema:
+            $ref: './AcademicYear.yaml#/SemesterView'
+    '403':
+      description: Недостаточно прав для доступа к ресурсу

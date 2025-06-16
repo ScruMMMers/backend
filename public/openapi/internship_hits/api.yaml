@@ -42,6 +42,8 @@ tags:
     description: Работа с оценками студента
   - name: employees
     description: Сотрудники
+  - name: year
+    description: Учебные года/семестры
 
 components:
   securitySchemes:
@@ -207,3 +209,11 @@ paths:
     $ref: './schemas/employees/PostEmployeesUpdateApi.yaml'
   /employees/deanery/delete/{userId}:
     $ref: './schemas/employees/PostEmployeesDeleteApi.yaml'
+
+  /academic-year/create:
+    $ref: './schemas/semester/CreateAcademicYearApi.yaml'
+  /academic-year/all:
+    $ref: './schemas/semester/GetAllAcademicYearsApi.yaml'
+  /academic-year/semester/{semesterId}:
+    $ref: './schemas/semester/UpdateSemesterApi.yaml'
+
