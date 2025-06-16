@@ -1,0 +1,26 @@
+post:
+  tags:
+    - year
+  summary: Создание учебного года
+  security:
+    - openIdConnect: []
+  requestBody:
+    description: Передаем сюда год
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './AcademicYear.yaml#/CreateAcademicYearView'
+  responses:
+    '200':
+      description: Создали год
+      content:
+        application/json:
+          schema:
+            $ref: './AcademicYear.yaml#/AcademicYearView'
+    '400':
+      description: Некорректные данные
+      content:
+        application/json:
+          schema:
+            $ref: '../common/Error.yaml#/ErrorView'

@@ -1,0 +1,111 @@
+AcademicYearListView:
+  type: array
+  items:
+    $ref: '#/AcademicYearView'
+
+AcademicYearView:
+  type: object
+  required:
+    - id
+    - yearRange
+    - semesters
+  properties:
+    id:
+      type: string
+      format: uuid
+      example: "123e4567-e89b-12d3-a456-426614174000"
+    yearRange:
+      type: string
+      example: "2025/2026"
+    semesters:
+      type: array
+      items:
+        $ref: '#/SemesterView'
+
+SemesterView:
+  type: object
+  required:
+    - id
+    - name
+    - startDate
+    - endDate
+    - practiceDiaryStart
+    - practiceDiaryEnd
+    - companyChangeStart
+    - companyChangeEnd
+  properties:
+    id:
+      type: string
+      format: uuid
+      example: "223e4567-e89b-12d3-a456-426614174111"
+    name:
+      type: string
+      example: "Первый семестр"
+    startDate:
+      type: string
+      format: date-time
+      example: "2025-09-01T00:00:00+03:00"
+    endDate:
+      type: string
+      format: date-time
+      example: "2026-02-01T00:00:00+03:00"
+    practiceDiaryStart:
+      type: string
+      format: date-time
+      example: "2025-09-15T00:00:00+03:00"
+    practiceDiaryEnd:
+      type: string
+      format: date-time
+      example: "2026-01-20T00:00:00+03:00"
+    companyChangeStart:
+      type: string
+      format: date-time
+      example: "2025-11-01T00:00:00+03:00"
+    companyChangeEnd:
+      type: string
+      format: date-time
+      example: "2026-01-01T00:00:00+03:00"
+
+UpdateSemesterView:
+  type: object
+  required:
+    - startDate
+    - endDate
+    - practiceDiaryStart
+    - practiceDiaryEnd
+    - companyChangeStart
+    - companyChangeEnd
+  properties:
+    startDate:
+      type: string
+      format: date-time
+      example: "2025-09-01T00:00:00+03:00"
+    endDate:
+      type: string
+      format: date-time
+      example: "2026-02-01T00:00:00+03:00"
+    practiceDiaryStart:
+      type: string
+      format: date-time
+      example: "2025-09-01T00:00:00+03:00"
+    practiceDiaryEnd:
+      type: string
+      format: date-time
+      example: "2026-02-01T00:00:00+03:00"
+    companyChangeStart:
+      type: string
+      format: date-time
+      example: "2025-09-01T00:00:00+03:00"
+    companyChangeEnd:
+      type: string
+      format: date-time
+      example: "2026-02-01T00:00:00+03:00"
+
+CreateAcademicYearView:
+  type: object
+  required:
+    - startYear
+  properties:
+    startYear:
+      type: integer
+      example: 2025
