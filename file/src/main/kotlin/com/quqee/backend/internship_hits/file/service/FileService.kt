@@ -22,7 +22,8 @@ interface FileService {
      * @return ID созданной записи о файле
      */
     fun uploadFile(file: MultipartFile): FileDto
-    
+
+    fun uploadFileWithId(file: MultipartFile, fileId: UUID): FileDto
     /**
      * Получает ссылку для доступа к файлу
      * @param fileId ID файла в БД
@@ -55,6 +56,10 @@ class FileServiceImpl(
     
     override fun uploadFile(file: MultipartFile): FileDto {
         val fileId = UUID.randomUUID()
+        return uploadFileWithId(file, fileId)
+    }
+
+    override fun uploadFileWithId(file: MultipartFile, fileId: UUID): FileDto {
         val fileName = "${file.originalFilename}"
         val fileKey = "${fileId}_${file.originalFilename}"
         val contentType = file.contentType ?: "application/octet-stream"
@@ -71,7 +76,7 @@ class FileServiceImpl(
             contentType = contentType,
             fileSize = fileSize
         )
-        
+
         return fileMapper.toDto(fileRepository.saveFile(fileEntity))
     }
     

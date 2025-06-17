@@ -1,0 +1,18 @@
+delete:
+  tags:
+    - file
+  summary: Удалить шаблон дневника практики
+  description: Удаляет шаблон дневника практики
+  security:
+    - openIdConnect: []
+  responses:
+    '200':
+      description: Файл успешно удален
+    '400':
+      description: Некорректный запрос
+    '401':
+      description: Не авторизован
+    '403':
+      description: Недостаточно прав
+    '404':
+      description: Файл не найден
