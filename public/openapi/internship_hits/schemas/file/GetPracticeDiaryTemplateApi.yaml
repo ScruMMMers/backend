@@ -1,0 +1,20 @@
+get:
+  tags:
+    - file
+  summary: Получить информацию о шаблоне дневника практики
+  description: Возвращает информацию о шаблоне дневника практики
+  security:
+    - openIdConnect: []
+  responses:
+    '200':
+      description: Дневник практики шаблон
+      content:
+        application/json:
+          schema:
+            $ref: './FileModels.yaml#/FileView'
+    '400':
+      description: Некорректный запрос
+    '401':
+      description: Не авторизован
+    '404':
+      description: Файл не найден

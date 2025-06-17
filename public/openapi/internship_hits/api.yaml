@@ -153,6 +153,12 @@ paths:
     $ref: './schemas/file/DeleteFileApi.yaml'
   /files/{fileId}/download-link:
     $ref: './schemas/file/GetFileLinkApi.yaml'
+  /files/practice-diary/upload:
+    $ref: './schemas/file/UploadPracticeDiaryTemplateApi.yaml'
+  /files/practice-diary:
+    $ref: './schemas/file/GetPracticeDiaryTemplateApi.yaml'
+  /files/practice-diary/delete:
+    $ref: './schemas/file/DeletePracticeDiaryTemplateApi.yaml'
 
   /statistic/company/{companyId}:
     $ref: './schemas/statistic/GetFullCompanyStatisticApi.yaml'

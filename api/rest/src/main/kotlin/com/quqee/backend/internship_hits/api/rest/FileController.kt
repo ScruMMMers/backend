@@ -1,6 +1,7 @@
 package com.quqee.backend.internship_hits.api.rest
 
 import com.quqee.backend.internship_hits.file.service.FileService
+import com.quqee.backend.internship_hits.file.service.PracticeDiaryTemplateService
 import com.quqee.backend.internship_hits.mapper.FromInternalToApiMapper
 import com.quqee.backend.internship_hits.model.rest.FileDownloadLinkResponseView
 import com.quqee.backend.internship_hits.model.rest.FileView
@@ -16,6 +17,7 @@ import java.util.*
 @Component
 class FileController(
     private val fileService: FileService,
+    private val practiceDiaryTemplateService: PracticeDiaryTemplateService,
     private val mapFile: FromInternalToApiMapper<FileView, FileDto>,
 ) : FileApiDelegate {
     override fun filesFileIdDeleteDelete(fileId: UUID): ResponseEntity<Unit> {
@@ -34,6 +36,23 @@ class FileController(
     override fun filesPost(file: MultipartFile?): ResponseEntity<FileView> {
         if (file != null) {
             val result = fileService.uploadFile(file)
+            return ResponseEntity.ok(mapFile.fromInternal(result))
+        } else {
+            throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Invalid file path")
+        }
+    }
+
+    override fun filesPracticeDiaryDeleteDelete(): ResponseEntity<Unit> {
+        return ResponseEntity.ok(practiceDiaryTemplateService.deletePracticeDiary())
+    }
+
+    override fun filesPracticeDiaryGet(): ResponseEntity<FileView> {
+        return ResponseEntity.ok(mapFile.fromInternal(practiceDiaryTemplateService.getPracticeDiary()))
+    }
+
+    override fun filesPracticeDiaryUploadPost(file: MultipartFile?): ResponseEntity<FileView> {
+        if (file != null) {
+            val result = practiceDiaryTemplateService.uploadPracticeDiary(file)
             return ResponseEntity.ok(mapFile.fromInternal(result))
         } else {
             throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Invalid file path")
