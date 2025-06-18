@@ -8,6 +8,13 @@ class InternshipReportStrategy : DocumentGenerationStrategy<StudentSummaryDto> {
     override fun generate(params: Map<String, List<StudentSummaryDto>>): XSSFWorkbook {
         val workbook = XSSFWorkbook()
 
+        if (params.isEmpty()) {
+            val sheet = workbook.createSheet("Нет данных")
+            val row = sheet.createRow(0)
+            row.createCell(0).setCellValue("Нет доступных данных для отображения")
+            return workbook
+        }
+
         params.forEach { (companyName, students) ->
             val sheet = workbook.createSheet(companyName.take(31))
 
