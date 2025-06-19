@@ -47,9 +47,12 @@ class FileController(
     }
 
     override fun filesPracticeDiaryGet(): ResponseEntity<FileView> {
-        return ResponseEntity.ok(mapFile.fromInternal(practiceDiaryTemplateService.getPracticeDiary()))
+        return try {
+            ResponseEntity.ok(mapFile.fromInternal(practiceDiaryTemplateService.getPracticeDiary()))
+        } catch (e: Exception) {
+            ResponseEntity.noContent().build()
+        }
     }
-
     override fun filesPracticeDiaryUploadPost(file: MultipartFile?): ResponseEntity<FileView> {
         if (file != null) {
             val result = practiceDiaryTemplateService.uploadPracticeDiary(file)
