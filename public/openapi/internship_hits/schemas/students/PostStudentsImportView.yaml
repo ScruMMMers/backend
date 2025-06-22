@@ -1,0 +1,9 @@
+PostStudentsImportView:
+  type: object
+  required:
+    - fileId
+  properties:
+    fileId:
+      type: string
+      format: uuid
+      description: ID файла с csv данными студентов

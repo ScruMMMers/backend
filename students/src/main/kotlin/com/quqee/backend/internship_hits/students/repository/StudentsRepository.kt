@@ -175,28 +175,28 @@ class StudentsRepository(
             .on(LOG_TAGS.TAG_ID.eq(TAGS.ID))
     }
 
-    private fun StudentsFilterParams.toCondition(): Condition {
-        val conditions = DSL.trueCondition()
+    private fun StudentsFilterParams.toCondition(): Collection<Condition> {
+        val conditions = mutableListOf<Condition>()
 
-        course?.let { conditions.and(STUDENTS.STUDENT_COURSE.`in`(it)) }
-        group?.let { conditions.and(STUDENTS.STUDENT_GROUP.`in`(it)) }
-        logType?.let { conditions.and(LOGS.TYPE.`in`(it)) }
-        logApprovalStatus?.let { conditions.and(LOGS.APPROVAL_STATUS.`in`(it)) }
-        positionType?.let { conditions.and(POSITIONS.POSITION.`in`(it)) }
-        positionName?.let { conditions.and(POSITIONS.NAME.`in`(it)) }
-        companyIds?.let { conditions.and(STUDENTS.COMPANY_ID.`in`(it)) }
-        userIds?.let { conditions.and(STUDENTS.USER_ID.`in`(it)) }
+        course?.let { conditions.add(STUDENTS.STUDENT_COURSE.`in`(it)) }
+        group?.let { conditions.add(STUDENTS.STUDENT_GROUP.`in`(it)) }
+        logType?.let { conditions.add(LOGS.TYPE.`in`(it)) }
+        logApprovalStatus?.let { conditions.add(LOGS.APPROVAL_STATUS.`in`(it)) }
+        positionType?.let { conditions.add(POSITIONS.POSITION.`in`(it)) }
+        positionName?.let { conditions.add(POSITIONS.NAME.`in`(it)) }
+        companyIds?.let { conditions.add(STUDENTS.COMPANY_ID.`in`(it)) }
+        userIds?.let { conditions.add(STUDENTS.USER_ID.`in`(it)) }
 
         val typeIdPairs = logByCompany?.entries?.flatMap { (type, companyIdsByLog) ->
             if (companyIdsByLog.isEmpty()) {
-                conditions.and(LOGS.TYPE.eq(type.name))
+                conditions.add(LOGS.TYPE.eq(type.name))
             }
             companyIdsByLog.map { companyId ->
                 DSL.row(type.name, companyId)
             }
         }
         typeIdPairs?.let {
-            conditions.and(DSL.row(LOGS.TYPE, TAGS.COMPANY_ID).`in`(it))
+            conditions.add(DSL.row(LOGS.TYPE, TAGS.COMPANY_ID).`in`(it))
         }
 
         return conditions

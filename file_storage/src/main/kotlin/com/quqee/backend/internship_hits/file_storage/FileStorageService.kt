@@ -1,7 +1,7 @@
 package com.quqee.backend.internship_hits.file_storage
 
-import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
+import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import com.quqee.backend.internship_hits.public_interface.file_storage_public.GetLinkForFileDto
 import com.quqee.backend.internship_hits.public_interface.file_storage_public.LinkForFileDto
 import com.quqee.backend.internship_hits.public_interface.file_storage_public.UploadFileDto
@@ -16,6 +16,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest
 import java.io.ByteArrayOutputStream
+import java.io.InputStream
 import java.time.Duration
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
@@ -109,5 +110,18 @@ class FileStorageService(
         }
 
         return outputStream.toByteArray()
+    }
+
+    fun getFile(fileKey: String): InputStream {
+        try {
+            val request = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileKey)
+                .build()
+            return s3Client.getObject(request)
+        } catch (e: Exception) {
+            log.error("Ошибка при получении файла $fileKey", e)
+            throw ExceptionInApplication(ExceptionType.FATAL, "Ошибка при получении файла")
+        }
     }
 }

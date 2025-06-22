@@ -35,6 +35,7 @@ open class StudentsConfigurationMapper(
                 .map { mapStudentShortLogToApi.fromInternal(it) }
                 .groupBy { it.type.name },
             avatarUrl = model.profile.avatarUrl,
+            isOnAcademicLeave = model.isOnAcademicLeave,
         )
     }
 

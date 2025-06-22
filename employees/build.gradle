@@ -30,8 +30,10 @@ dependencies {
     implementation project(":public_interface:employees_public")
     implementation project(":public_interface:profile_public")
     implementation project(":public_interface:company_interface")
+    implementation project(":public_interface:notification_public")
     implementation project(":company")
     implementation project(":profile")
+    implementation project(":notification")
 
     implementation libs.jackson.module.kotlin
     implementation libs.kotlin.coroutines.core

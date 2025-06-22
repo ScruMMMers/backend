@@ -91,6 +91,7 @@ StudentView:
     - group
     - course
     - fullName
+    - isOnAcademicLeave
   properties:
     userId:
       type: string
@@ -106,6 +107,8 @@ StudentView:
       type: string
     company:
       $ref: '../common/ShortCompanyView.yaml#/ShortCompanyView'
+    isOnAcademicLeave:
+      type: boolean
     logs:
       additionalProperties:
         type: array

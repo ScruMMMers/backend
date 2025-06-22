@@ -183,6 +183,8 @@ paths:
     $ref: './schemas/students/PostMoveCourseApi.yaml'
   /students/deanery/delete/{userId}:
     $ref: './schemas/students/PostStudentsDeleteApi.yaml'
+  /students/import:
+    $ref: './schemas/students/PostStudentsImportApi.yaml'
 
   /locker/{featureName}/switch:
     $ref: './schemas/locker/SwitchLockStatusApi.yaml'

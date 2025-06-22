@@ -6,6 +6,7 @@ import com.quqee.backend.internship_hits.employees.dto.UpdateEmployeeDto
 import com.quqee.backend.internship_hits.employees.entity.EmployeeEntity
 import com.quqee.backend.internship_hits.employees.entity.EmployeesFilterParams
 import com.quqee.backend.internship_hits.employees.repository.EmployeesRepository
+import com.quqee.backend.internship_hits.notification.service.NotificationService
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationResponse
@@ -16,11 +17,15 @@ import com.quqee.backend.internship_hits.public_interface.common.exception.Excep
 import com.quqee.backend.internship_hits.public_interface.employees_public.EmployeeDto
 import com.quqee.backend.internship_hits.public_interface.employees_public.GetEmployeesListDto
 import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
+import com.quqee.backend.internship_hits.public_interface.notification_public.CreateNotificationDto
+import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationChannel
+import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationType
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 import com.quqee.backend.internship_hits.public_interface.employees_public.CreateEmployeeDto as ExternalCreateEmployeeDto
 import com.quqee.backend.internship_hits.public_interface.employees_public.UpdateEmployeeDto as ExternalUpdateEmployeeDto
 
@@ -28,6 +33,7 @@ import com.quqee.backend.internship_hits.public_interface.employees_public.Updat
 class EmployeesService(
     private val profileService: ProfileService,
     private val companyService: CompanyService,
+    private val notificationService: NotificationService,
     private val employeesRepository: EmployeesRepository,
 ) {
     fun getEmployeesList(dto: GetEmployeesListDto): LastIdPaginationResponse<EmployeeDto, UserId> {
@@ -61,13 +67,16 @@ class EmployeesService(
 
     @Transactional
     fun createEmployee(dto: ExternalCreateEmployeeDto): EmployeeDto {
+        val password = UUID.randomUUID().toString().take(8)
+        val login = dto.email.substringBefore("@")
+
         val userId = profileService.createProfile(
             CreateUserDto(
-                username = dto.email.substringBefore("@"),
+                username = login,
                 email = dto.email,
                 firstName = dto.fullName.split(" ")[1],
                 lastName = dto.fullName.split(" ")[0],
-                password = "123",
+                password = password,
                 roles = setOf(UserRole.DEANERY),
                 middleName = dto.fullName.split(" ").getOrNull(2),
                 photoId = dto.photoId,
@@ -82,6 +91,19 @@ class EmployeesService(
             UpdateEmployeeDto(
                 userId = userId,
                 companiesIds = dto.companyIds,
+            )
+        )
+        notificationService.createNotifications(
+            listOf(
+                CreateNotificationDto(
+                    title = "Временный пароль",
+                    message = "Для входа в систему используйте временный пароль: $password; логин: $login",
+                    userId = userId,
+                    channels = setOf(
+                        NotificationChannel.EMAIL,
+                    ),
+                    type = NotificationType.SYSTEM,
+                )
             )
         )
         return mapEmployeeToDto(employee)
