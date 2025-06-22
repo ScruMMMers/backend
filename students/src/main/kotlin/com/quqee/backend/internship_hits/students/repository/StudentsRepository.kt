@@ -177,7 +177,6 @@ class StudentsRepository(
 
     private fun StudentsFilterParams.toCondition(): Collection<Condition> {
         val conditions = mutableListOf<Condition>()
-
         course?.let { conditions.add(STUDENTS.STUDENT_COURSE.`in`(it)) }
         group?.let { conditions.add(STUDENTS.STUDENT_GROUP.`in`(it)) }
         logType?.let { conditions.add(LOGS.TYPE.`in`(it)) }
@@ -187,16 +186,20 @@ class StudentsRepository(
         companyIds?.let { conditions.add(STUDENTS.COMPANY_ID.`in`(it)) }
         userIds?.let { conditions.add(STUDENTS.USER_ID.`in`(it)) }
 
-        val typeIdPairs = logByCompany?.entries?.flatMap { (type, companyIdsByLog) ->
-            if (companyIdsByLog.isEmpty()) {
-                conditions.add(LOGS.TYPE.eq(type.name))
+        if (!logByCompany.isNullOrEmpty()) {
+            val typeIdPairs = mutableListOf<Condition>()
+            logByCompany.forEach { (type, companyIds) ->
+                if (companyIds.isEmpty()){
+                    typeIdPairs.add(LOGS.TYPE.eq(type.name))
+                } else {
+                    val companyIdPairs = companyIds.map { companyId ->
+                        DSL.row(type.name, companyId)
+                    }
+                    conditions.add(DSL.row(LOGS.TYPE, TAGS.COMPANY_ID).`in`(companyIdPairs))
+                }
             }
-            companyIdsByLog.map { companyId ->
-                DSL.row(type.name, companyId)
-            }
-        }
-        typeIdPairs?.let {
-            conditions.add(DSL.row(LOGS.TYPE, TAGS.COMPANY_ID).`in`(it))
+
+            conditions.addAll(typeIdPairs)
         }
 
         return conditions
