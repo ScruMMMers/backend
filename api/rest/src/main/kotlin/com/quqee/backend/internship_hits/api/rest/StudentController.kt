@@ -153,4 +153,9 @@ class StudentController(
         studentsService.deaneryDeleteStudent(userId)
         return ResponseEntity.ok().build()
     }
+
+    override fun studentsImportPost(postStudentsImportView: PostStudentsImportView): ResponseEntity<Unit> {
+        studentsService.importStudents(postStudentsImportView.fileId)
+        return ResponseEntity.ok().build()
+    }
 }

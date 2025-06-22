@@ -1,0 +1,18 @@
+post:
+  tags:
+    - students
+  summary: Создаем студентов по csv файлу
+  security:
+    - openIdConnect: [ ]
+  requestBody:
+    description: Передаем id файла с csv данными
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: './PostStudentsImportView.yaml#/PostStudentsImportView'
+  responses:
+    '200':
+      description: OK
+    '400':
+      description: Что-то пошло не так

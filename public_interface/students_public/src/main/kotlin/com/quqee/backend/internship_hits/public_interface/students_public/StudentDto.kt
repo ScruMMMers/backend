@@ -15,4 +15,5 @@ data class StudentDto(
     val logs: Set<ShortLogInfo>,
     val position: PositionDto?,
     val company: ShortCompanyDto?,
+    val isOnAcademicLeave: Boolean,
 ) : IHaveId<UserId>

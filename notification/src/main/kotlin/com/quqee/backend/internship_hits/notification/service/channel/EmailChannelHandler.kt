@@ -88,7 +88,6 @@ class EmailChannelHandler(
             text-align:center;
             position: relative;
         }
-        /* Убираем .icon – теперь используем img в таблице */
         .header-title {
             color:#fff;
             font-size:24px;
@@ -134,7 +133,6 @@ class EmailChannelHandler(
 <body>
     <div class="container">
         <div class="header">
-            <!-- Блок с иконкой: таблица + IMG для максимальной совместимости -->
             <table align="center" border="0" cellspacing="0" cellpadding="0" style="margin:auto;">
                 <tr>
                     <td align="center" style="
@@ -156,7 +154,7 @@ class EmailChannelHandler(
             <br>
                 $text
             <br>
-            <a class="button" href="$notificationPageLink">Посмотреть заявку</a>
+            <a class="button" href="$notificationPageLink">Посмотреть уведомления</a>
         </div>
         <div class="footer">
             &copy; Система стажировок, 2025<br>

@@ -30,11 +30,15 @@ dependencies {
     implementation project(":public_interface:profile_public")
     implementation project(":public_interface:students_public")
     implementation project(":public_interface:logs_interface")
+    implementation project(":public_interface:notification_public")
     implementation project(":profile")
     implementation project(":company")
     implementation project(":position")
+    implementation project(":notification")
+    implementation project(":file")
 
     implementation libs.email.api
+    implementation libs.apache.poi
     implementation libs.jackson.module.kotlin
     implementation libs.kotlin.coroutines.core
 

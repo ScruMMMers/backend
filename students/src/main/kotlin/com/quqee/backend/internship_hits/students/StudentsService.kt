@@ -2,9 +2,12 @@ package com.quqee.backend.internship_hits.students
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.quqee.backend.internship_hits.company.service.CompanyService
+import com.quqee.backend.internship_hits.file.service.FileService
+import com.quqee.backend.internship_hits.notification.service.NotificationService
 import com.quqee.backend.internship_hits.position.service.PositionService
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
+import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
 import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginationResponse
 import com.quqee.backend.internship_hits.public_interface.common.UserId
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
@@ -13,19 +16,26 @@ import com.quqee.backend.internship_hits.public_interface.common.exception.Excep
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.logs.ShortLogInfo
-import com.quqee.backend.internship_hits.public_interface.common.GetProfileDto
+import com.quqee.backend.internship_hits.public_interface.notification_public.CreateNotificationDto
+import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationChannel
+import com.quqee.backend.internship_hits.public_interface.notification_public.NotificationType
 import com.quqee.backend.internship_hits.public_interface.students_public.*
+import com.quqee.backend.internship_hits.students.dtos.StudentFromFileDto
 import com.quqee.backend.internship_hits.students.entity.InviteLinkConfigEntity
 import com.quqee.backend.internship_hits.students.entity.InviteLinkEntity
 import com.quqee.backend.internship_hits.students.entity.StudentEntity
 import com.quqee.backend.internship_hits.students.public_interface.CreateInviteLinkDto
 import com.quqee.backend.internship_hits.students.public_interface.CreateStudentDto
+import com.quqee.backend.internship_hits.students.public_interface.CreateStudentsFromFileDto
 import com.quqee.backend.internship_hits.students.repository.InviteLinkRepository
 import com.quqee.backend.internship_hits.students.repository.StudentsFilterParams
 import com.quqee.backend.internship_hits.students.repository.StudentsRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
+import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -41,6 +51,8 @@ class StudentsService(
     private val profileService: ProfileService,
     private val companyService: CompanyService,
     private val positionService: PositionService,
+    private val notificationService: NotificationService,
+    private val fileService: FileService,
     private val studentsRepository: StudentsRepository,
     private val inviteLinkRepository: InviteLinkRepository,
     @Value("\${client.uri}")
@@ -97,6 +109,136 @@ class StudentsService(
         )
         val inviteLink = inviteLinkRepository.createLink(createDto)
         return createInviteLinkDto(inviteLink)
+    }
+
+    @Transactional
+    fun importStudents(fileId: UUID) {
+        val studentsDtos = getStudentsForCreate(fileId)
+
+        val students = runBlocking {
+            val deferred = studentsDtos.map { dto ->
+                async {
+                    val password = UUID.randomUUID().toString().take(8)
+                    val login = dto.email.substringBefore("@")
+
+                    val userId = profileService.createProfile(
+                        CreateUserDto(
+                            username = login,
+                            email = dto.email,
+                            firstName = dto.firstName,
+                            lastName = dto.lastName,
+                            password = password,
+                            roles = getRoleByCourse(dto.course),
+                            middleName = dto.middleName,
+                            photoId = null,
+                        )
+                    )
+                    val student = studentsRepository.createStudent(
+                        CreateStudentDto(
+                            userId = userId,
+                            course = dto.course,
+                            group = dto.group,
+                            isOnAcademicLeave = false,
+                            companyId = null,
+                        )
+                    )
+
+                    StudentFromFileDto(
+                        userId = userId,
+                        password = password,
+                        login = login,
+                    )
+                }
+            }
+            deferred.awaitAll()
+        }
+
+        notificationService.createNotifications(
+            students.map { dto ->
+                CreateNotificationDto(
+                    title = "Временный пароль",
+                    message = "Для входа в систему используйте временный пароль: ${dto.password}; логин: ${dto.login}",
+                    userId = dto.userId,
+                    channels = setOf(
+                        NotificationChannel.EMAIL,
+                    ),
+                    type = NotificationType.SYSTEM,
+                )
+            }
+        )
+    }
+
+    private fun getStudentsForCreate(
+        fileId: UUID,
+    ): List<CreateStudentsFromFileDto> {
+        val file = fileService.getFileInputStream(fileId)
+            ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Файл не найден")
+        return file.use { file ->
+            XSSFWorkbook(file).use { workbook ->
+                val sheet = workbook.getSheetAt(0)
+
+                val headerRow = sheet.getRow(0)
+                val columnIndexes = mutableMapOf<String, Int>()
+                headerRow.forEach { cell ->
+                    val columnName = cell.stringCellValue
+                    columnIndexes[columnName] = cell.columnIndex
+                }
+
+                val students = mutableListOf<CreateStudentsFromFileDto>()
+                for (i in 1..sheet.lastRowNum) {
+                    val row = sheet.getRow(i) ?: continue
+
+                    val email = getCellValueAsString(row.getCell(columnIndexes["Почта"] ?: -1))
+                        ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Почта не указана")
+                    val firstName = getCellValueAsString(row.getCell(columnIndexes["Имя"] ?: -1))
+                        ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Имя не указано")
+                    val lastName = getCellValueAsString(row.getCell(columnIndexes["Фамилия"] ?: -1))
+                        ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Фамилия не указана")
+                    val course = getCellValueAsString(row.getCell(columnIndexes["Курс"] ?: -1))
+                        ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Курс не указан или некорректен")
+                    val group = getCellValueAsString(row.getCell(columnIndexes["Группа"] ?: -1))
+                        ?: throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Группа не указана")
+                    val middleName = getCellValueAsString(row.getCell(columnIndexes["Отчество"] ?: -1))
+                        .takeIf { !it.isNullOrEmpty() }
+
+                    students.add(
+                        CreateStudentsFromFileDto(
+                            email = email,
+                            firstName = firstName,
+                            lastName = lastName,
+                            course = course.toInt(),
+                            group = group,
+                            middleName = middleName
+                        )
+                    )
+                }
+                students
+            }
+        }
+    }
+
+    private fun getCellValueAsString(cell: Cell?): String? {
+        if (cell == null) return null
+        return when (cell.cellType) {
+            CellType.STRING -> cell.stringCellValue.trim()
+            CellType.NUMERIC -> {
+                val value = cell.numericCellValue
+                if (value == value.toLong().toDouble()) {
+                    value.toLong().toString()
+                } else {
+                    value.toString().trim()
+                }
+            }
+            CellType.BOOLEAN -> cell.booleanCellValue.toString()
+            CellType.FORMULA -> getCellValueAsString(
+                when (cell.cachedFormulaResultType) {
+                    CellType.STRING -> cell
+                    CellType.NUMERIC -> cell
+                    else -> cell
+                }
+            )
+            else -> cell.toString().trim()
+        }
     }
 
     @Transactional
@@ -276,6 +418,7 @@ class StudentsService(
                 )
             }.toSet(),
             position = position,
+            isOnAcademicLeave = entity.isOnAcademicLeave,
         )
     }
 

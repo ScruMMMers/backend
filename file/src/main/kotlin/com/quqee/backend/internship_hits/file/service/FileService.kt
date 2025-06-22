@@ -13,7 +13,9 @@ import com.quqee.backend.internship_hits.public_interface.file_storage_public.Ge
 import com.quqee.backend.internship_hits.public_interface.file_storage_public.UploadFileDto
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.io.InputStream
 import java.util.UUID
+import kotlin.jvm.optionals.getOrNull
 
 interface FileService {
     /**
@@ -45,6 +47,8 @@ interface FileService {
     fun getFileById(fileId: UUID): FileDto
 
     fun getZipByIds(fileIds: List<UUID>): ByteArray
+
+    fun getFileInputStream(fileId: UUID): InputStream?
 }
 
 @Service
@@ -109,5 +113,14 @@ class FileServiceImpl(
         return fileRepository.findById(fileId).orElseThrow {
             ExceptionInApplication(ExceptionType.BAD_REQUEST, "Файл с ID: $fileId не найден")
         }
+    }
+
+    override fun getFileInputStream(fileId: UUID): InputStream? {
+        val key = try {
+            getFileEntityById(fileId)
+        } catch (e: Exception) {
+            throw ExceptionInApplication(ExceptionType.BAD_REQUEST, "Файл с ID: $fileId не найден")
+        }
+        return fileStorageService.getFile(key.fileKey)
     }
 }
