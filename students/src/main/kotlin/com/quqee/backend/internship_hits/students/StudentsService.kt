@@ -349,11 +349,6 @@ class StudentsService(
         )
         val updatedStudent = studentsRepository.updateStudent(updateStudent)
 
-        val user = profileService.getUser(dto.studentId)
-        val firstName = dto.fullName.split(" ")[1]
-        val lastName = dto.fullName.split(" ")[0]
-        val middleName = dto.fullName.split(" ").getOrNull(2)
-
         if (oldCourse != newCourse){
             val fromCourseRole = getRoleByCourse(oldCourse)
             val toCourseRole = getRoleByCourse(newCourse)
@@ -361,6 +356,11 @@ class StudentsService(
             profileService.removeRoles(setOf(dto.studentId), fromCourseRole)
             profileService.addRoles(setOf(dto.studentId), toCourseRole)
         }
+
+        val user = profileService.getUser(dto.studentId)
+        val firstName = dto.fullName.split(" ")[1]
+        val lastName = dto.fullName.split(" ")[0]
+        val middleName = dto.fullName.split(" ").getOrNull(2)
 
         val updateProfileDto = user.toUpdateDto(
             email = user.email,
