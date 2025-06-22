@@ -7,6 +7,7 @@ import com.quqee.backend.internship_hits.public_interface.common.PositionDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
 import com.quqee.backend.internship_hits.public_interface.common.exception.ExceptionInApplication
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 interface PositionService {
     fun getPositionList(): List<PositionDto>
@@ -14,13 +15,14 @@ interface PositionService {
     fun getPositionEntityById(id: Long): PositionEntity
     fun getPositionListByPartName(name: String?): List<PositionDto>
     fun getPositionEntityByPartName(name: String?): List<PositionEntity>
+    fun getEmployedCount(companyId: UUID, positionId: Long?): Int
 }
 
 @Service
 class PositionServiceImpl(
     private val positionRepository: PositionJpaRepository,
     private val positionMapper: PositionMapper,
-): PositionService {
+) : PositionService {
     override fun getPositionList(): List<PositionDto> {
         return positionRepository.findAll().map { positionMapper.toDto(it) }
     }
@@ -48,5 +50,10 @@ class PositionServiceImpl(
         } else {
             positionRepository.findByPartName(name)
         }
+    }
+
+    override fun getEmployedCount(companyId: UUID, positionId: Long?): Int {
+        return positionId?.let { positionRepository.getActiveEmployers(companyId, it) }
+            ?: positionRepository.getActiveAllEmployers(companyId)
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class CompanyPositionMapper(
-    private val positionService: PositionService
+    private val positionService: PositionService,
 ) {
 
     /**
@@ -18,7 +18,7 @@ class CompanyPositionMapper(
             id = entity.id,
             companyId = entity.company.companyId,
             position = positionService.getPositionById(entity.positionId),
-            employedCount = entity.employedCount,
+            employedCount = positionService.getEmployedCount(entity.company.companyId, entity.positionId),
             interviewsCount = entity.interviewsCount
         )
     }

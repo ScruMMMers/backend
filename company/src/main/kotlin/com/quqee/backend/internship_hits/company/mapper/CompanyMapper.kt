@@ -3,6 +3,7 @@ package com.quqee.backend.internship_hits.company.mapper
 import com.quqee.backend.internship_hits.company.entity.CompanyEntity
 import com.quqee.backend.internship_hits.company.entity.CompanyPositionEntity
 import com.quqee.backend.internship_hits.file.service.FileService
+import com.quqee.backend.internship_hits.position.service.PositionService
 import com.quqee.backend.internship_hits.profile.ProfileService
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.company.CompanyDto
@@ -15,6 +16,7 @@ import java.net.URI
 class CompanyMapper(
     private val companyPositionMapper: CompanyPositionMapper,
     private val profileService: ProfileService,
+    private val positionService: PositionService,
     private val fileService: FileService,
 ) {
     /**
@@ -57,9 +59,7 @@ class CompanyMapper(
             primaryColor = entity.primaryColor,
             sinceYear = entity.sinceYear,
             description = entity.description,
-            employedCount = entity.positions.stream()
-                .mapToInt(CompanyPositionEntity::employedCount)
-                .sum()
+            employedCount = positionService.getEmployedCount(entity.companyId, null),
         )
     }
 
