@@ -291,7 +291,7 @@ class StudentsService(
 
     private fun createInviteLinkDto(inviteLinkEntity: InviteLinkEntity): InviteLinkDto {
         val link = UriComponentsBuilder.fromUriString(clientUri)
-            .pathSegment("students", "registration")
+            .pathSegment("registration")
             .queryParam("id", inviteLinkEntity.id)
             .queryParams(
                 CollectionUtils.toMultiValueMap(
