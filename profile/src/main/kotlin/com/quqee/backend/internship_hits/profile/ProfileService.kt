@@ -4,6 +4,7 @@ import com.quqee.backend.internship_hits.file.service.FileService
 import com.quqee.backend.internship_hits.profile.client.RoleClient
 import com.quqee.backend.internship_hits.profile.client.UserClient
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
+import com.quqee.backend.internship_hits.profile.dto.UpdateAvatarDto
 import com.quqee.backend.internship_hits.profile.dto.UpdateUserDto
 import com.quqee.backend.internship_hits.profile.entity.UserEntity
 import com.quqee.backend.internship_hits.public_interface.common.ShortAccountDto
@@ -65,6 +66,13 @@ class ProfileService(
         if (removedRoles.isNotEmpty()) {
             roleClient.removeRole(dto.userId, removedRoles.toSet())
         }
+    }
+
+    fun updateAvatar(dto: UpdateAvatarDto) {
+        if (dto.avatarId != null) {
+            fileService.getFileById(UUID.fromString(dto.avatarId))
+        }
+        userClient.updateAvatar(dto)
     }
 
     fun getShortAccount(dto: GetProfileDto): ShortAccountDto {

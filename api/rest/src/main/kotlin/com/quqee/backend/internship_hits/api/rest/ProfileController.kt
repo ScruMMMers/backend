@@ -7,6 +7,7 @@ import com.quqee.backend.internship_hits.model.rest.*
 import com.quqee.backend.internship_hits.notification.service.NotificationService
 import com.quqee.backend.internship_hits.oauth2_security.KeycloakUtils
 import com.quqee.backend.internship_hits.profile.ProfileService
+import com.quqee.backend.internship_hits.profile.dto.UpdateAvatarDto
 import com.quqee.backend.internship_hits.public_interface.common.PositionDto
 import com.quqee.backend.internship_hits.public_interface.common.ShortCompanyDto
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
@@ -82,6 +83,16 @@ class ProfileController(
                 profile = profileView
             )
         )
+    }
+
+    override fun profileAvatarPost(updateAvatarView: UpdateAvatarView): ResponseEntity<Unit> {
+        val userId = KeycloakUtils.getUserId()
+            ?: throw ExceptionInApplication(ExceptionType.FORBIDDEN)
+        profileService.updateAvatar(UpdateAvatarDto(
+            userId = userId,
+            updateAvatarView.avatarId
+        ))
+        return ResponseEntity.ok().build()
     }
 
     private fun createProfileView(userId: UUID): ProfileView {

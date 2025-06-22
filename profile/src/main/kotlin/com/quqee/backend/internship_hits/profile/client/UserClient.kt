@@ -1,6 +1,7 @@
 package com.quqee.backend.internship_hits.profile.client
 
 import com.quqee.backend.internship_hits.profile.dto.CreateUserDto
+import com.quqee.backend.internship_hits.profile.dto.UpdateAvatarDto
 import com.quqee.backend.internship_hits.profile.dto.UpdateUserDto
 import com.quqee.backend.internship_hits.profile.entity.UserEntity
 import com.quqee.backend.internship_hits.public_interface.common.enums.ExceptionType
@@ -99,6 +100,16 @@ class UserClient(
                     middleName = dto.middleName
                 )
             ),
+        )
+
+        usersResource.get(dto.userId.toString()).update(userRepresentation)
+    }
+
+    fun updateAvatar(dto: UpdateAvatarDto) {
+        val usersResource = getUsersResource()
+        val userRepresentation = usersResource.get(dto.userId.toString()).toRepresentation()
+        userRepresentation.attributes = mapOf(
+            "photoId" to listOf(dto.avatarId)
         )
 
         usersResource.get(dto.userId.toString()).update(userRepresentation)
