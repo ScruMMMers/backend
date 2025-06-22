@@ -1,0 +1,25 @@
+post:
+  tags:
+    - profile
+  summary: Получить свой профиль (заголовок)
+  security:
+    - openIdConnect: []
+  requestBody:
+    description: Передаем сюда id аватарки
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/UpdateAvatarView'
+  responses:
+    '200':
+      description: Аватарка обновлена
+    '403':
+      description: Недостаточно прав для доступа к ресурсу
+
+UpdateAvatarView:
+  type: object
+  properties:
+    avatarId:
+      type: string
+      description: id аватарки

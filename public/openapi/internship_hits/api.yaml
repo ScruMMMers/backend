@@ -120,6 +120,8 @@ paths:
     $ref: './schemas/profile/GetMyRolesApi.yaml'
   /profile/{userId}:
     $ref: './schemas/profile/GetProfileByIdApi.yaml'
+  /profile/avatar:
+    $ref: './schemas/profile/PostProfileUpdateAvatar.yaml'
 
   /notifications/last:
     $ref: './schemas/notifications/GetLastNotificationsApi.yaml'
