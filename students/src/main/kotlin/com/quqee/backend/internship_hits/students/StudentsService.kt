@@ -339,6 +339,9 @@ class StudentsService(
     fun deaneryEditStudent(dto: ExternalDeaneryEditStudentDto): StudentDto {
         val student = studentsRepository.getStudent(dto.studentId)
             ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Студент не найден")
+        val oldCourse = student.course
+        val newCourse = dto.course
+
         val updateStudent = student.copy(
             course = dto.course,
             group = dto.group,
@@ -350,6 +353,15 @@ class StudentsService(
         val firstName = dto.fullName.split(" ")[1]
         val lastName = dto.fullName.split(" ")[0]
         val middleName = dto.fullName.split(" ").getOrNull(2)
+
+        if (oldCourse != newCourse){
+            val fromCourseRole = getRoleByCourse(oldCourse)
+            val toCourseRole = getRoleByCourse(newCourse)
+
+            profileService.removeRoles(setOf(dto.studentId), fromCourseRole)
+            profileService.addRoles(setOf(dto.studentId), toCourseRole)
+        }
+
         val updateProfileDto = user.toUpdateDto(
             email = user.email,
             firstName = firstName,
