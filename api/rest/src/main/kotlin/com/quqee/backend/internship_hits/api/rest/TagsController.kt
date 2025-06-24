@@ -27,4 +27,9 @@ class TagsController(
         val hashtagsList = positionService.getPositionListByPartName(name).map { mapPosition.fromInternal(it) }
         return ResponseEntity.ok(PositionListView(hashtagsList))
     }
+
+    override fun positionsGet(): ResponseEntity<Map<String, List<String>>> {
+        val positions = positionService.getNamesGroupedByPosition()
+        return ResponseEntity.ok(positions)
+    }
 }

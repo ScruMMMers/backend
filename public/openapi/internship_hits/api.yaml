@@ -111,6 +111,8 @@ paths:
     $ref: './schemas/tags/GetTagsApi.yaml'
   /hashtags:
     $ref: './schemas/tags/GetHashtagsApi.yaml'
+  /positions:
+    $ref: './schemas/tags/GetGroupedPositionsApi.yaml'
 
   /profile/me:
     $ref: './schemas/profile/GetMyProfileApi.yaml'

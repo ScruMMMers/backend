@@ -1,6 +1,7 @@
 package com.quqee.backend.internship_hits.position.repository
 
 import com.quqee.backend.internship_hits.position.entity.PositionEntity
+import com.quqee.backend.internship_hits.public_interface.common.enums.Position
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
