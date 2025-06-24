@@ -16,6 +16,7 @@ interface PositionService {
     fun getPositionListByPartName(name: String?): List<PositionDto>
     fun getPositionEntityByPartName(name: String?): List<PositionEntity>
     fun getEmployedCount(companyId: UUID, positionId: Long?): Int
+    fun getNamesGroupedByPosition(): Map<String, List<String>>
 }
 
 @Service
@@ -55,5 +56,12 @@ class PositionServiceImpl(
     override fun getEmployedCount(companyId: UUID, positionId: Long?): Int {
         return positionId?.let { positionRepository.getActiveEmployers(companyId, it) }
             ?: positionRepository.getActiveAllEmployers(companyId)
+    }
+
+    override fun getNamesGroupedByPosition(): Map<String, List<String>> {
+        val allPositions = positionRepository.findAll()
+        return allPositions
+            .groupBy { it.position.name }
+            .mapValues { (_, entities) -> entities.map { it.name } }
     }
 }

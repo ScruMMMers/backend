@@ -1,0 +1,25 @@
+get:
+  tags:
+    - tags
+  summary: Получить список позиций сгруппированных по типам
+  description: Возвращает мапу, где ключ - тип позиции (например, "BACKEND"), а значение - список названий позиций
+  security:
+    - openIdConnect: [ ]
+  responses:
+    '200':
+      description: Возвращает сгруппированные позиции
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties:
+              type: array
+              items:
+                type: string
+            example:
+              BACKEND: ["Java", "Kotlin"]
+              FRONTEND: ["React"]
+    '403':
+      description: Недостаточно прав для доступа к ресурсу
+    '500':
+      description: Внутренняя ошибка сервера
