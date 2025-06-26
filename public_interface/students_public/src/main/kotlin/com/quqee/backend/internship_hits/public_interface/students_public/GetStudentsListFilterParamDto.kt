@@ -13,6 +13,12 @@ data class GetStudentsListFilterParamDto(
     val positionType: Set<Position>? = null,
     val positionName: Set<String>? = null,
     val companyIds: Set<UUID>? = null,
-    val logByCompany: Map<LogType, Set<UUID>>? = null,
+    val logByCompany: Map<LogType, LogByCompanyItem>? = null,
     val name: String? = null,
+)
+
+data class LogByCompanyItem(
+    val companyIds: Set<UUID>? = null,
+    val positionTypes: Set<Position>? = null,
+    val positionNames: Set<String>? = null,
 )
