@@ -11,14 +11,7 @@ import com.quqee.backend.internship_hits.public_interface.common.LastIdPaginatio
 import com.quqee.backend.internship_hits.public_interface.common.enums.Position
 import com.quqee.backend.internship_hits.public_interface.enums.ApprovalStatus
 import com.quqee.backend.internship_hits.public_interface.enums.LogType
-import com.quqee.backend.internship_hits.public_interface.students_public.CreateInviteLinkDto
-import com.quqee.backend.internship_hits.public_interface.students_public.CreateStudentDto
-import com.quqee.backend.internship_hits.public_interface.students_public.DeaneryEditStudentDto
-import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListDto
-import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListFilterParamDto
-import com.quqee.backend.internship_hits.public_interface.students_public.MoveToCourseAllDto
-import com.quqee.backend.internship_hits.public_interface.students_public.MoveToCourseDto
-import com.quqee.backend.internship_hits.public_interface.students_public.StudentDto
+import com.quqee.backend.internship_hits.public_interface.students_public.*
 import com.quqee.backend.internship_hits.students.StudentsService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
@@ -106,7 +99,7 @@ class StudentController(
                 positionName = positionName?.toSet(),
                 companyIds = companyId?.toSet(),
                 logByCompany = logByCompany?.let {
-                    objectMapper.readValue(it, object : TypeReference<Map<LogType, Set<UUID>>>() {})
+                    objectMapper.readValue(it, object : TypeReference<Map<LogType, LogByCompanyItem>>() {})
                 },
                 name = name?.takeIf { it.isNotBlank() }?.trim(),
             ),

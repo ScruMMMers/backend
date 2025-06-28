@@ -1,6 +1,8 @@
 package com.quqee.backend.internship_hits.api.mapper.announcement
 
-import com.quqee.backend.internship_hits.mapper.*
+import com.quqee.backend.internship_hits.mapper.EnumerationMapper
+import com.quqee.backend.internship_hits.mapper.FromApiToInternalMapper
+import com.quqee.backend.internship_hits.mapper.makeFromApiMapper
 import com.quqee.backend.internship_hits.model.rest.ApprovalStatusEnum
 import com.quqee.backend.internship_hits.model.rest.GetStudentsListFilterParamView
 import com.quqee.backend.internship_hits.model.rest.LogTypeEnum
@@ -11,7 +13,6 @@ import com.quqee.backend.internship_hits.public_interface.enums.LogType
 import com.quqee.backend.internship_hits.public_interface.students_public.GetStudentsListFilterParamDto
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import java.util.*
 
 @Configuration
 class StudentFilterMapperConfiguration(
@@ -31,11 +32,6 @@ class StudentFilterMapperConfiguration(
                 positionType = view.positionType?.map { mapPositionType.mapToInternal(it) }?.toSet(),
                 positionName = view.positionName?.toSet(),
                 companyIds = view.companyIds?.toSet(),
-                logByCompany = view.logByCompany?.mapKeys { entry ->
-                    LogType.valueOf(entry.key.uppercase())
-                }?.mapValues { entry ->
-                    entry.value.toSet()
-                },
                 name = view.name
             )
         }

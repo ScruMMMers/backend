@@ -58,7 +58,7 @@ get:
           format: uuid
     - in: query
       name: logByCompany
-      description: '{"OFFER": ["companyId"]}'
+      description: '{"OFFER": {"companyIds": [], "positionTypes": [], "positionNames": []}}'
       schema:
         type: string
     - in: query

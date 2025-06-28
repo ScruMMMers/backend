@@ -188,14 +188,33 @@ class StudentsRepository(
 
         if (!logByCompany.isNullOrEmpty()) {
             val typeIdPairs = mutableListOf<Condition>()
-            logByCompany.forEach { (type, companyIds) ->
-                if (companyIds.isEmpty()){
-                    typeIdPairs.add(LOGS.TYPE.eq(type.name))
-                } else {
+            logByCompany.forEach { (type, items) ->
+                val companyIds = items.companyIds.orEmpty()
+                if (companyIds.isNotEmpty()){
                     val companyIdPairs = companyIds.map { companyId ->
                         DSL.row(type.name, companyId)
                     }
                     conditions.add(DSL.row(LOGS.TYPE, TAGS.COMPANY_ID).`in`(companyIdPairs))
+                }
+
+                val positionTypes = items.positionTypes.orEmpty()
+                if (positionTypes.isNotEmpty()){
+                    val positionTypePairs = positionTypes.map { positionType ->
+                        DSL.row(type.name, positionType.name)
+                    }
+                    conditions.add(DSL.row(LOGS.TYPE, POSITIONS.POSITION).`in`(positionTypePairs))
+                }
+
+                val positionNames = items.positionNames.orEmpty()
+                if (positionNames.isNotEmpty()){
+                    val positionNamePairs = positionNames.map { positionName ->
+                        DSL.row(type.name, positionName)
+                    }
+                    conditions.add(DSL.row(LOGS.TYPE, POSITIONS.NAME).`in`(positionNamePairs))
+                }
+
+                if (companyIds.isEmpty() && positionTypes.isEmpty() && positionNames.isEmpty()) {
+                    typeIdPairs.add(LOGS.TYPE.eq(type.name))
                 }
             }
 
