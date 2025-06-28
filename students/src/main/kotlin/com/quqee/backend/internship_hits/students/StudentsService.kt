@@ -133,7 +133,7 @@ class StudentsService(
                             photoId = null,
                         )
                     )
-                    val student = studentsRepository.createStudent(
+                    studentsRepository.createStudent(
                         CreateStudentDto(
                             userId = userId,
                             course = dto.course,
@@ -171,9 +171,9 @@ class StudentsService(
     private fun getStudentsForCreate(
         fileId: UUID,
     ): List<CreateStudentsFromFileDto> {
-        val file = fileService.getFileInputStream(fileId)
+        val fileStream = fileService.getFileInputStream(fileId)
             ?: throw ExceptionInApplication(ExceptionType.NOT_FOUND, "Файл не найден")
-        return file.use { file ->
+        return fileStream.use { file ->
             XSSFWorkbook(file).use { workbook ->
                 val sheet = workbook.getSheetAt(0)
 
