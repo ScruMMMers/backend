@@ -36,11 +36,10 @@ GetStudentsListFilterParamView:
         type: string
         format: uuid
     logByCompany:
-      type: object
-      additionalProperties:
-        type: array
-        items:
-          type: string
-          format: uuid
+      type: string
     name:
       type: string
+    withoutLogs:
+      type: boolean
+    withoutCompanies:
+      type: boolean
