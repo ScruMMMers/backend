@@ -73,6 +73,8 @@ class StudentsService(
             companyIds = dto.filter.companyIds,
             logByCompany = dto.filter.logByCompany,
             userIds = userIds,
+            withoutCompanies = dto.filter.withoutCompanies,
+            withoutLogs = dto.filter.withoutLogs,
         )
         val students = studentsRepository.getStudents(
             pagination = dto.pagination,

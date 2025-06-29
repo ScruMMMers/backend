@@ -84,6 +84,8 @@ class StudentController(
         companyId: List<UUID>?,
         logByCompany: String?,
         name: String?,
+        withoutCompanies: Boolean?,
+        withoutLogs: Boolean?,
     ): ResponseEntity<GetStudentsListResponseView> {
         val dto = GetStudentsListDto(
             pagination = LastIdPaginationRequest(
@@ -102,6 +104,8 @@ class StudentController(
                     objectMapper.readValue(it, object : TypeReference<Map<LogType, LogByCompanyItem>>() {})
                 },
                 name = name?.takeIf { it.isNotBlank() }?.trim(),
+                withoutCompanies = withoutCompanies == true,
+                withoutLogs = withoutLogs == true,
             ),
         )
         val students = studentsService.getStudentsList(dto)

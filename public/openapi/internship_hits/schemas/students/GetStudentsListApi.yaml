@@ -65,6 +65,14 @@ get:
       name: name
       schema:
         type: string
+    - in: query
+      name: withoutLogs
+      schema:
+        type: boolean
+    - in: query
+      name: withoutCompanies
+      schema:
+        type: boolean
   responses:
     '200':
       description: Список студентов
