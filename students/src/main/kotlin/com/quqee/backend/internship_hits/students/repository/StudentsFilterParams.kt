@@ -16,4 +16,6 @@ data class StudentsFilterParams(
     val companyIds: Set<UUID>? = null,
     val logByCompany: Map<LogType, LogByCompanyItem>? = null,
     val userIds: Set<UUID>? = null,
+    val withoutCompanies: Boolean = false,
+    val withoutLogs: Boolean = false,
 )

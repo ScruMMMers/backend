@@ -51,10 +51,10 @@ class StudentsRepository(
             .fetch()
             .groupBy { it[STUDENTS.USER_ID]!! }
             .values
-            .map(::studentMapper)
+            .mapNotNull { studentMapper(it, filter.withoutLogs) }
     }
 
-    fun getFilteredStudentsSize(filter: StudentsFilterParams,): Int {
+    fun getFilteredStudentsSize(filter: StudentsFilterParams): Int {
         return dsl.fetchCount(dsl.selectStudentIdsForList()
             .where(filter.toCondition()))
     }
@@ -121,8 +121,15 @@ class StudentsRepository(
             .execute()
     }
 
-    private fun studentMapper(records: Collection<Record>): StudentEntity {
+    private fun studentMapper(records: Collection<Record>, withoutLogs: Boolean): StudentEntity? {
         val studentRecord = records.first()
+        val logsRecords = records.filter { record -> record[LOGS.ID] != null }
+            .groupBy { record -> record[LOGS.ID]!! }
+
+        if (withoutLogs && logsRecords.isNotEmpty()) {
+            return null
+        }
+
         return StudentEntity(
             userId = studentRecord[STUDENTS.USER_ID]!!,
             course = studentRecord[STUDENTS.STUDENT_COURSE]!!,
@@ -130,9 +137,7 @@ class StudentsRepository(
             isOnAcademicLeave = studentRecord[STUDENTS.IS_ON_ACADEMIC_LEAVE]!!,
             companyId = studentRecord[STUDENTS.COMPANY_ID],
             positionId = studentRecord[STUDENTS.POSITION_ID],
-            logs = records.filter { record -> record[LOGS.ID] != null }
-                .groupBy { record -> record[LOGS.ID]!! }
-            .map { (_, logRecords) ->
+            logs = logsRecords.map { (_, logRecords) ->
                 val baseRecord = logRecords.first()
                 StudentEntity.StudentLog(
                     id = baseRecord[LOGS.ID]!!,
@@ -183,7 +188,11 @@ class StudentsRepository(
         logApprovalStatus?.let { conditions.add(LOGS.APPROVAL_STATUS.`in`(it)) }
         positionType?.let { conditions.add(POSITIONS.POSITION.`in`(it)) }
         positionName?.let { conditions.add(POSITIONS.NAME.`in`(it)) }
-        companyIds?.let { conditions.add(STUDENTS.COMPANY_ID.`in`(it)) }
+        if (withoutCompanies) {
+            conditions.add(STUDENTS.COMPANY_ID.isNull)
+        } else {
+            companyIds?.let { conditions.add(STUDENTS.COMPANY_ID.`in`(it)) }
+        }
         userIds?.let { conditions.add(STUDENTS.USER_ID.`in`(it)) }
 
         if (!logByCompany.isNullOrEmpty()) {
