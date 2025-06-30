@@ -52,6 +52,7 @@ class StudentsRepository(
             .groupBy { it[STUDENTS.USER_ID]!! }
             .values
             .mapNotNull { studentMapper(it, filter.withoutLogs) }
+            .sortedBy { it.userId }
     }
 
     fun getFilteredStudentsSize(filter: StudentsFilterParams): Int {
@@ -158,7 +159,7 @@ class StudentsRepository(
             .leftJoin(LOG_POSITIONS)
             .on(LOGS.ID.eq(LOG_POSITIONS.LOG_ID))
             .leftJoin(POSITIONS)
-            .on(POSITIONS.ID.eq(LOG_POSITIONS.POSITION_ID))
+            .on(POSITIONS.ID.eq(STUDENTS.POSITION_ID))
             .leftJoin(LOG_TAGS)
             .on(LOGS.ID.eq(LOG_TAGS.LOG_ID))
             .leftJoin(TAGS)
@@ -173,7 +174,7 @@ class StudentsRepository(
             .leftJoin(LOG_POSITIONS)
             .on(LOGS.ID.eq(LOG_POSITIONS.LOG_ID))
             .leftJoin(POSITIONS)
-            .on(POSITIONS.ID.eq(LOG_POSITIONS.POSITION_ID))
+            .on(POSITIONS.ID.eq(STUDENTS.POSITION_ID))
             .leftJoin(LOG_TAGS)
             .on(LOGS.ID.eq(LOG_TAGS.LOG_ID))
             .leftJoin(TAGS)
