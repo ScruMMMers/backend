@@ -87,7 +87,7 @@ class StudentsService(
                 }
             }
             deferred.awaitAll()
-        }
+        }.sortedBy { it.id }
 
         return LastIdPaginationResponse(
             studentDtos,
