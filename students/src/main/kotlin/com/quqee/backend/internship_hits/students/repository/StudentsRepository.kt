@@ -47,12 +47,11 @@ class StudentsRepository(
 
         return dsl.selectStudentForList()
             .where(STUDENTS.USER_ID.`in`(filteredStudentIds))
-            .orderBy(pagination.sorting.toOrderBy())
+            .orderBy(STUDENTS.USER_ID.asc())
             .fetch()
             .groupBy { it[STUDENTS.USER_ID]!! }
             .values
             .mapNotNull { studentMapper(it, filter.withoutLogs) }
-            .sortedBy { it.userId }
     }
 
     fun getFilteredStudentsSize(filter: StudentsFilterParams): Int {

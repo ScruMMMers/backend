@@ -80,6 +80,8 @@ class StudentsService(
             pagination = dto.pagination,
             filter = filterDto,
         )
+
+        val idOrder = students.withIndex().associate { it.value.userId to it.index }
         val studentDtos = runBlocking {
             val deferred = students.map { studentEntity ->
                 async {
@@ -87,7 +89,7 @@ class StudentsService(
                 }
             }
             deferred.awaitAll()
-        }.sortedBy { it.id }
+        }.sortedBy { idOrder[it.id] }
 
         return LastIdPaginationResponse(
             studentDtos,
