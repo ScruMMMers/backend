@@ -153,9 +153,9 @@ tasks.named("compileKotlin") {
 }
 
 tasks.register("jooq-build") {
-    System.setProperty("jooq.codegen.jdbc.url", "jdbc:postgresql://84.201.168.8:5432/internship")
+    System.setProperty("jooq.codegen.jdbc.url", "jdbc:postgresql://127.0.0.1:5432/internship")
     System.setProperty("jooq.codegen.jdbc.username", "postgres")
-    System.setProperty("jooq.codegen.jdbc.password", "cNBxF5Ang977BPz7kUr2jHHBMu6bQfnh")
+    System.setProperty("jooq.codegen.jdbc.password", "password")
 }
 
 tasks.named("jooqCodegen") {

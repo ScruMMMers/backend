@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://84.201.168.8:5432/${INTERNSHIP_DATABASE}
+    url: jdbc:postgresql://127.0.0.1:5432/${INTERNSHIP_DATABASE}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
 
@@ -28,14 +28,14 @@ spring:
           keycloak:
             authorization-grant-type: authorization_code
             client-id: users-app
-            client-secret: BpD82qIQTGRARjrZLjx6FLeDXrBUrHYk
+            client-secret: password
             scope:
               - openid
               - microprofile-jwt
               - profile
 
   kafka:
-    bootstrap-servers: 84.201.168.8:9095
+    bootstrap-servers: 127.0.0.1:9095
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:

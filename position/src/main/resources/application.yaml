@@ -7,6 +7,6 @@ spring:
         format_sql: true
         ddl-auto: validate
   datasource:
-    url: jdbc:postgresql://84.201.168.8:5432/${POSTGRES_DATABASE}
+    url: jdbc:postgresql://127.0.0.1:5432/${POSTGRES_DATABASE}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
